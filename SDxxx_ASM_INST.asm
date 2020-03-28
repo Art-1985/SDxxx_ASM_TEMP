@@ -781,6 +781,56 @@ INST_FAIL:
 			JMP	INS_FAIL
 			JBC		N			; Check N = 0?
 			JMP	INS_FAIL
+		INST_OR_A_R:		;-------Instruction Test => OR A,R
+			MOV		A,@0x0E
+			MOV		INST,A
+			MOV		A,@0x00
+			MOV		STATUS,A
+			MOV		A,@0x00
+			MOV		0x50,A		; [0x50] = 0x00
+			MOV		A,@0x00
+			BC		Z
+			OR		A,0x50		; A = A | [0x50]
+			JBC		C			; Check C = 0?
+			JMP	INS_FAIL
+			JBC		DC			; Check DC = 0?
+			JMP	INS_FAIL
+			JBS		Z			; Check Z = 1?
+			JMP	INS_FAIL
+			JBC		OV			; Check OV = 0?
+			JMP	INS_FAIL
+			JBC		N			; Check N = 0?
+			JMP	INS_FAIL
+			BC		Z
+			XOR		A,@0x00		; Check Result ?
+			JBS		Z			; Check Z = 1?
+			JMP	INS_FAIL
+			JBC		N			; Check N = 0?
+			JMP	INS_FAIL
+			MOV		A,@0x00
+			MOV		STATUS,A
+			MOV		A,@0x55
+			MOV		0x50,A		; [0x50] = 0x55
+			MOV		A,@0xAA
+			BC		Z
+			OR		A,0x50		; A = A | [0x50]
+			JBC		C			; Check C = 0?
+			JMP	INS_FAIL
+			JBC		DC			; Check DC = 0?
+			JMP	INS_FAIL
+			JBC		Z			; Check Z = 0?
+			JMP	INS_FAIL
+			JBC		OV			; Check OV = 0?
+			JMP	INS_FAIL
+			JBS		N			; Check N = 1?
+			JMP	INS_FAIL
+			BC		Z
+			XOR		A,@0xFF		; Check Result ?
+			JBS		Z			; Check Z = 1?
+			JMP	INS_FAIL
+			JBC		N			; Check N = 0?
+			JMP	INS_FAIL
+
 		RETI
 	TEST_INST_TRANSFER:
 		INST_MOV:			;-------Instruction Test => MOV R,A
@@ -852,59 +902,8 @@ TEST_INST:
 		;JBC		N			; Check N = 0?
 		;JMP	INS_FAIL
 	
-
-
-
 		
-	;========== Instruction Test => OR A,R
-	MOV		A,@0x0E
-	MOV		INST,A
-	MOV		A,@0x00
-	MOV		STATUS,A
-		MOV		A,@0x00
-		MOV		0x50,A		; [0x50] = 0x00
-		MOV		A,@0x00
-		BC		Z
-		OR		A,0x50		; A = A | [0x50]
-		JBC		C			; Check C = 0?
-		JMP	INS_FAIL
-		JBC		DC			; Check DC = 0?
-		JMP	INS_FAIL
-		JBS		Z			; Check Z = 1?
-		JMP	INS_FAIL
-		JBC		OV			; Check OV = 0?
-		JMP	INS_FAIL
-		JBC		N			; Check N = 0?
-		JMP	INS_FAIL
-		BC		Z
-		XOR		A,@0x00		; Check Result ?
-		JBS		Z			; Check Z = 1?
-		JMP	INS_FAIL
-		JBC		N			; Check N = 0?
-		JMP	INS_FAIL
-	MOV		A,@0x00
-	MOV		STATUS,A
-		MOV		A,@0x55
-		MOV		0x50,A		; [0x50] = 0x55
-		MOV		A,@0xAA
-		BC		Z
-		OR		A,0x50		; A = A | [0x50]
-		JBC		C			; Check C = 0?
-		JMP	INS_FAIL
-		JBC		DC			; Check DC = 0?
-		JMP	INS_FAIL
-		JBC		Z			; Check Z = 0?
-		JMP	INS_FAIL
-		JBC		OV			; Check OV = 0?
-		JMP	INS_FAIL
-		JBS		N			; Check N = 1?
-		JMP	INS_FAIL
-		BC		Z
-		XOR		A,@0xFF		; Check Result ?
-		JBS		Z			; Check Z = 1?
-		JMP	INS_FAIL
-		JBC		N			; Check N = 0?
-		JMP	INS_FAIL
+
 
 	;========== Instruction Test => OR R,A
 	MOV		A,@0x0F
