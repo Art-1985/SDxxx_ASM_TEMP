@@ -96,8 +96,8 @@ BACK_GROUND_LOOP:
 	;CALL	TEST_INST
 	CALL	TEST_INST_ARITHEMATIC	;ADD, SUB, DAA, DEC, DECA, INC, INCA, ADC, SUBB, NEG
 	CALL	TEST_INST_LOGIC_I		;AND, OR, COM, COMA, XOR, CLR, CLRA, BTG
-	CALL	TEST_INST_LOGIC_II		;RLC, RLCA, RRC, RRCA, SWAP, SWAPA, RRA, RR, RLA, RL, XCH
-	CALL	TEST_INST_TRANSFER		;MOV
+	CALL	TEST_INST_LOGIC_II		;RLC, RLCA, RRC, RRCA, RRA, RR, RLA, RL, XCH
+	CALL	TEST_INST_TRANSFER		;MOV, SWAP, SWAPA
 	CALL	TEST_INST_MANIPULATION	;BC, BS, JBC, JBS
 	CALL	TEST_INST_BRANCH		;JE R, JGE, JLE, JE K, JC, JNC, JZ, JNZ, DJZ, DJZA, JZ, JZA, RETL, CALL, JMP, LCALL, LJMP
 	CALL	TEST_INST_CONTROL		;ENI, DISI, WDTC, SLEP, NOP, RETI, RET
@@ -119,7 +119,7 @@ RAM_FAIL:
 
 INS_FAIL:
 	SBANK	0
-	JMP		INST_FAIL
+	JMP		INS_FAIL
 
 ;================== PEIPHERAL_INITIAL ==================
 	;-------------------------------;
@@ -263,7 +263,12 @@ INS_FAIL:
 		MOV		A,@0x00
 		MOV		STATUS,A
 		RET
-	
+	INST_XOR_JUDGE:
+		JBS		Z			; IF(Z=1) BRANCH
+		JMP		INS_FAIL
+		JBC		N			; IF(N=0) BRANCH
+		JMP		INS_FAIL
+		RET
 ;================== Jmp Sub Function ==================
 	TEST_INST_ARITHEMATIC:
 		INST_DAA:			;-------Instruction Test => DAA , C?
@@ -976,14 +981,14 @@ INS_FAIL:
 			MOV		A,@0x06
 			MOV		INST,A
 			MOV		A,@0x00
-			MOV		P5,A
-			BTG		P5,0
-			MOV		A,P5
-			XOR		A,@0x01		; Check Result ?
-			JBS		Z			; Check Z = 1?
-			JMP	INS_FAIL
-			JBC		N			; Check N = 0?
-			JMP	INS_FAIL
+			;MOV		P5,A
+			;BTG		P5,0
+			;MOV		A,P5
+			;XOR		A,@0x01		; Check Result ?
+			;JBS		Z			; Check Z = 1?
+			;JMP	INS_FAIL
+			;JBC		N			; Check N = 0?
+			;JMP	INS_FAIL
 			MOV		A,@0xFF
 			MOV		RSR,A		; Start Address
 			BTG		RSR
@@ -1176,6 +1181,43 @@ INS_FAIL:
 			JMP	INS_FAIL
 			JBC		N			; Check N = 0?
 			JMP	INS_FAIL
+		INST_AND_A_K:		;-------Instruction Test => AND A,k
+			MOV		A,@0x29
+			MOV		INST,A
+			CALL	STATUS_CLEAR
+			MOV		A,@0xAA
+			AND		A,@0x55		; A = 0xAA & 0x55
+			JBC		C			; Check C = 0?
+			JMP	INS_FAIL
+			JBC		DC			; Check DC = 0?
+			JMP	INS_FAIL
+			JBS		Z			; Check Z = 1?
+			JMP	INS_FAIL
+			JBC		OV			; Check OV = 0?
+			JMP	INS_FAIL
+			JBC		N			; Check N = 0?
+			JMP	INS_FAIL
+			XOR		A,@0x00		; Check Result ?
+			JBS		Z			; Check Z = 1?
+			JMP	INS_FAIL
+			JBC		N			; Check N = 0?
+			JMP	INS_FAIL
+			CALL	STATUS_CLEAR
+			MOV		A,@0xAA
+			AND		A,@0xFF		; A = A & 0xFF
+			JBC		C			; Check C = 0?
+			JMP	INS_FAIL
+			JBC		DC			; Check DC = 0?
+			JMP	INS_FAIL
+			JBC		Z			; Check Z = 0?
+			JMP	INS_FAIL
+			JBC		OV			; Check OV = 0?
+			JMP	INS_FAIL
+			JBS		N			; Check N = 1?
+			JMP	INS_FAIL
+			XOR		A,@0xAA		; Check Result ?
+			CALL	INST_XOR_JUDGE
+
 		INST_COMA:			;-------Instruction Test => COMA R
 			MOV		A,@0x15
 			MOV		INST,A
@@ -1258,32 +1300,163 @@ INS_FAIL:
 			JMP	INS_FAIL
 			JBC		N			; Check N = 0?
 			JMP	INS_FAIL
+		INST_OR_A_K:		;-------Instruction Test => OR A,k
+			MOV		A,@0x26
+			MOV		INST,A
+			CALL	STATUS_CLEAR
+			MOV		A,@0xA5
+			OR		A,@0x5A		; A = 0xA5 | 0x5A
+			XOR		A,@0xFF		; Check Result ?
+			CALL	INST_XOR_JUDGE
 		RET
 
 	TEST_INST_LOGIC_II:
-		RET
-	TEST_INST_TRANSFER:
-		INST_MOV_R_A:			;-------Instruction Test => MOV R,A
-			MOV		A,@0x07
+		INST_RRCA_R:		;-------Instruction Test => RRCA R
+			MOV		A,@0x1B
 			MOV		INST,A
-			MOV		A,@0x00
-			MOV		STATUS,A
-			MOV		A,@0xFF
-			MOV		0x50,A
+			CALL	STATUS_CLEAR
+			BS		C
+			MOV		A,@0xAA
+			MOV		0x50,A		; [0x50] = 0xAA
+			RRCA	0x50		; A = [0x50] >> 1
+			JBC		C			; Check C = 0?
+			JMP	INS_FAIL
+			JBC		DC			; Check DC = 0?
+			JMP	INS_FAIL
+			JBC		Z			; Check Z = 0?
+			JMP	INS_FAIL
+			JBC		OV			; Check OV = 0?
+			JMP	INS_FAIL
+			JBS		N			; Check N = 1?
+			JMP	INS_FAIL
+			XOR		A,@0xD5		; Check Result ?
+			CALL	INST_XOR_JUDGE
+			CALL	STATUS_CLEAR
+			MOV		A,@0x55
+			MOV		0x50,A		; [0x50] = 0x55
+			RRCA	0x50		; A = [0x50] >> 1
+			JBS		C			; Check C = 1?
+			JMP	INS_FAIL
+			JBC		DC			; Check DC = 0?
+			JMP	INS_FAIL
+			JBC		Z			; Check Z = 0?
+			JMP	INS_FAIL
+			JBC		OV			; Check OV = 0?
+			JMP	INS_FAIL
+			JBC		N			; Check N = 0?
+			JMP	INS_FAIL
+			XOR		A,@0x2A		; Check Result ?
+			CALL	INST_XOR_JUDGE
+		INST_RRC_R:			;-------Instruction Test => RRC R
+			MOV		A,@0x1C
+			MOV		INST,A
+			CALL	STATUS_CLEAR
+			BS		C
+			MOV		A,@0xAA
+			MOV		0x50,A		; [0x50] = 0xAA
+			BC		Z
+			RRC		0x50		; [0x50] = [0x50] >> 1
 			MOV		A,STATUS
-			XOR		A,@0x98		; Check Status ? ;; For not reset
-			;;XOR		A,@0x10		; Check Status ?
+			XOR		A,@0x58		; Check Status ?
+			;;XOR		A,@0x50		; Check Status ?
+			CALL	INST_XOR_JUDGE
+			MOV		A,0x50
+			XOR		A,@0xD5		; Check Result ?
+			CALL	INST_XOR_JUDGE
+			CALL	STATUS_CLEAR
+			MOV		A,@0x55
+			MOV		0x50,A		; [0x50] = 0x55
+			BC		Z
+			RRC		0x50		; [0x50] = [0x50] >> 1
+			MOV		A,STATUS
+			XOR		A,@0x19		; Check Status ?
+			;;XOR		A,@0x11		; Check Status ?
 			JBS		Z			; Check Z = 1?
 			JMP	INS_FAIL
 			JBC		N			; Check N = 0?
 			JMP	INS_FAIL
 			MOV		A,0x50
-			XOR		A,@0xFF		; Check Result ?
-			JBS		Z			; Check Z = 1?
+			XOR		A,@0x2A		; Check Result ?
+			CALL	INST_XOR_JUDGE
+		INST_RLCA_R:		;-------Instruction Test => RLCA R
+			MOV		A,@0x1D
+			MOV		INST,A
+			CALL STATUS_CLEAR
+			BS		C
+			MOV		A,@0x55
+			MOV		0x50,A		; [0x50] = 0x55
+			RLCA	0x50		; A = [0x50] << 1
+			JBC		C			; Check C = 0?
+			JMP	INS_FAIL
+			JBC		DC			; Check DC = 0?
+			JMP	INS_FAIL
+			JBC		Z			; Check Z = 0?
+			JMP	INS_FAIL
+			JBC		OV			; Check OV = 0?
+			JMP	INS_FAIL
+			JBS		N			; Check N = 1?
+			JMP	INS_FAIL
+			XOR		A,@0xAB		; Check Result ?
+			CALL	INST_XOR_JUDGE
+			CALL	STATUS_CLEAR
+			MOV		A,@0xAA
+			MOV		0x50,A		; [0x50] = 0xAA
+			RLCA	0x50		; A = [0x50] << 1
+			JBS		C			; Check C = 1?
+			JMP	INS_FAIL
+			JBC		DC			; Check DC = 0?
+			JMP	INS_FAIL
+			JBC		Z			; Check Z = 0?
+			JMP	INS_FAIL
+			JBC		OV			; Check OV = 0?
 			JMP	INS_FAIL
 			JBC		N			; Check N = 0?
 			JMP	INS_FAIL
-		INST_MOV_R_R:			;-------Instruction Test => MOV R,R
+			XOR		A,@0x54		; Check Result ?
+			CALL	INST_XOR_JUDGE
+		INST_RLC_R:			;-------Instruction Test => RLC R
+			MOV		A,@0x1E
+			MOV		INST,A
+			CALL	STATUS_CLEAR
+			BS		C
+			MOV		A,@0x55
+			MOV		0x50,A		; [0x50] = 0x55
+			RLC		0x50		; [0x50] = [0x50] << 1
+			MOV		A,STATUS
+			XOR		A,@0x58		; Check Status ?
+			;;XOR		A,@0x50		; Check Status ?
+			CALL	INST_XOR_JUDGE
+			MOV		A,0x50
+			XOR		A,@0xAB		; Check Result ?
+			CALL	INST_XOR_JUDGE
+			CALL	STATUS_CLEAR
+			MOV		A,@0xAA
+			MOV		0x50,A		; [0x50] = 0xAA
+			RLC		0x50		; [0x50] = [0x50] << 1
+			MOV		A,STATUS
+			XOR		A,@0x19		; Check Status ?
+			;;XOR		A,@0x11		; Check Status ?
+			CALL	INST_XOR_JUDGE
+			MOV		A,0x50
+			XOR		A,@0x54		; Check Result ?
+			CALL	INST_XOR_JUDGE
+		RET
+	TEST_INST_TRANSFER:
+		INST_MOV_R_A:		;-------Instruction Test => MOV R,A
+			MOV		A,@0x07
+			MOV		INST,A
+			CALL	STATUS_CLEAR
+			MOV		A,@0xFF
+			MOV		0x50,A
+			MOV		A,STATUS
+			XOR		A,@0x18		;At  OCDS
+			;XOR		A,@0x98		; Check Status ? ;; For not reset
+			;;XOR		A,@0x10		; Check Status ?
+			CALL	INST_XOR_JUDGE
+			MOV		A,0x50
+			XOR		A,@0xFF		; Check Result ?
+			CALL	INST_XOR_JUDGE
+		INST_MOV_R_R:		;-------Instruction Test => MOV R,R
 			MOV		A,@0x14
 			MOV		INST,A
 			CALL	STATUS_CLEAR
@@ -1311,10 +1484,27 @@ INS_FAIL:
 			BS		0x50,0
 			MOV		A,0x50
 			XOR		A,@0x01		; Check Result ?
-			JBS		Z			; Check Z = 1?
-			JMP	INS_FAIL
-			JBC		N			; Check N = 0?
-			JMP	INS_FAIL
+			CALL	INST_XOR_JUDGE
+
+		INST_SWAPA_R:		;-------Instruction Test => SWAPA R
+			MOV		A,@0x1F
+			MOV		INST,A
+			CALL	STATUS_CLEAR
+			MOV		A,@0x5A
+			MOV		0x50,A		; [0x50] = 0x5A
+			SWAPA	0x50
+			XOR		A,@0xA5		; Check Result ?
+			CALL	INST_XOR_JUDGE
+		INST_SWAP_R:			;-------Instruction Test => SWAP R
+			MOV		A,@0x20
+			MOV		INST,A
+			CALL	STATUS_CLEAR
+			MOV		A,@0x5A
+			MOV		0x50,A		; [0x50] = 0x5A
+			SWAP	0x50
+			MOV		A,0x50
+			XOR		A,@0xA5		; Check Result ?
+			CALL	INST_XOR_JUDGE
 		RET
 
 	TEST_INST_MANIPULATION:
@@ -1421,209 +1611,6 @@ TEST_INST:
 		JMP		$+2
 		JMP	INS_FAIL
 
-	;========== Instruction Test => RRCA R
-	MOV		A,@0x1B
-	MOV		INST,A
-	MOV		A,@0x00
-	MOV		STATUS,A
-		BS		C
-		MOV		A,@0xAA
-		MOV		0x50,A		; [0x50] = 0xAA
-		RRCA	0x50		; A = [0x50] >> 1
-		JBC		C			; Check C = 0?
-		JMP	INS_FAIL
-		JBC		DC			; Check DC = 0?
-		JMP	INS_FAIL
-		JBC		Z			; Check Z = 0?
-		JMP	INS_FAIL
-		JBC		OV			; Check OV = 0?
-		JMP	INS_FAIL
-		JBS		N			; Check N = 1?
-		JMP	INS_FAIL
-		XOR		A,@0xD5		; Check Result ?
-		JBS		Z			; Check Z = 1?
-		JMP	INS_FAIL
-		JBC		N			; Check N = 0?
-		JMP	INS_FAIL
-	MOV		A,@0x00
-	MOV		STATUS,A
-		MOV		A,@0x55
-		MOV		0x50,A		; [0x50] = 0x55
-		RRCA	0x50		; A = [0x50] >> 1
-		JBS		C			; Check C = 1?
-		JMP	INS_FAIL
-		JBC		DC			; Check DC = 0?
-		JMP	INS_FAIL
-		JBC		Z			; Check Z = 0?
-		JMP	INS_FAIL
-		JBC		OV			; Check OV = 0?
-		JMP	INS_FAIL
-		JBC		N			; Check N = 0?
-		JMP	INS_FAIL
-		XOR		A,@0x2A		; Check Result ?
-		JBS		Z			; Check Z = 1?
-		JMP	INS_FAIL
-		JBC		N			; Check N = 0?
-		JMP	INS_FAIL
-
-	;========== Instruction Test => RRC R
-	MOV		A,@0x1C
-	MOV		INST,A
-	MOV		A,@0x00
-	MOV		STATUS,A
-		BS		C
-		MOV		A,@0xAA
-		MOV		0x50,A		; [0x50] = 0xAA
-		BC		Z
-		RRC		0x50		; [0x50] = [0x50] >> 1
-		MOV		A,STATUS
-		XOR		A,@0x58		; Check Status ?
-		;;XOR		A,@0x50		; Check Status ?
-		JBS		Z			; Check Z = 1?
-		JMP	INS_FAIL
-		JBC		N			; Check N = 0?
-		JMP	INS_FAIL	
-		MOV		A,0x50
-		XOR		A,@0xD5		; Check Result ?
-		JBS		Z			; Check Z = 1?
-		JMP	INS_FAIL
-		JBC		N			; Check N = 0?
-		JMP	INS_FAIL
-	MOV		A,@0x00
-	MOV		STATUS,A
-		MOV		A,@0x55
-		MOV		0x50,A		; [0x50] = 0x55
-		BC		Z
-		RRC		0x50		; [0x50] = [0x50] >> 1
-		MOV		A,STATUS
-		XOR		A,@0x19		; Check Status ?
-		;;XOR		A,@0x11		; Check Status ?
-		JBS		Z			; Check Z = 1?
-		JMP	INS_FAIL
-		JBC		N			; Check N = 0?
-		JMP	INS_FAIL
-		MOV		A,0x50
-		XOR		A,@0x2A		; Check Result ?
-		JBS		Z			; Check Z = 1?
-		JMP	INS_FAIL
-		JBC		N			; Check N = 0?
-		JMP	INS_FAIL
-
-	;========== Instruction Test => RLCA R
-	MOV		A,@0x1D
-	MOV		INST,A
-	MOV		A,@0x00
-	MOV		STATUS,A
-		BS		C
-		MOV		A,@0x55
-		MOV		0x50,A		; [0x50] = 0x55
-		RLCA	0x50		; A = [0x50] << 1
-		JBC		C			; Check C = 0?
-		JMP	INS_FAIL
-		JBC		DC			; Check DC = 0?
-		JMP	INS_FAIL
-		JBC		Z			; Check Z = 0?
-		JMP	INS_FAIL
-		JBC		OV			; Check OV = 0?
-		JMP	INS_FAIL
-		JBS		N			; Check N = 1?
-		JMP	INS_FAIL
-		XOR		A,@0xAB		; Check Result ?
-		JBS		Z			; Check Z = 1?
-		JMP	INS_FAIL
-		JBC		N			; Check N = 0?
-		JMP	INS_FAIL
-	MOV		A,@0x00
-	MOV		STATUS,A
-		MOV		A,@0xAA
-		MOV		0x50,A		; [0x50] = 0xAA
-		RLCA	0x50		; A = [0x50] << 1
-		JBS		C			; Check C = 1?
-		JMP	INS_FAIL
-		JBC		DC			; Check DC = 0?
-		JMP	INS_FAIL
-		JBC		Z			; Check Z = 0?
-		JMP	INS_FAIL
-		JBC		OV			; Check OV = 0?
-		JMP	INS_FAIL
-		JBC		N			; Check N = 0?
-		JMP	INS_FAIL
-		XOR		A,@0x54		; Check Result ?
-		JBS		Z			; Check Z = 1?
-		JMP	INS_FAIL
-		JBC		N			; Check N = 0?
-		JMP	INS_FAIL
-
-
-	;========== Instruction Test => RLC R
-	MOV		A,@0x1E
-	MOV		INST,A
-	MOV		A,@0x00
-	MOV		STATUS,A
-		BS		C
-		MOV		A,@0x55
-		MOV		0x50,A		; [0x50] = 0x55
-		RLC		0x50		; [0x50] = [0x50] << 1
-		MOV		A,STATUS
-		XOR		A,@0x58		; Check Status ?
-		;;XOR		A,@0x50		; Check Status ?
-		JBS		Z			; Check Z = 1?
-		JMP	INS_FAIL
-		JBC		N			; Check N = 0?
-		JMP	INS_FAIL
-		MOV		A,0x50
-		XOR		A,@0xAB		; Check Result ?
-		JBS		Z			; Check Z = 1?
-		JMP	INS_FAIL
-		JBC		N			; Check N = 0?
-		JMP	INS_FAIL
-	MOV		A,@0x00
-	MOV		STATUS,A
-		MOV		A,@0xAA
-		MOV		0x50,A		; [0x50] = 0xAA
-		RLC		0x50		; [0x50] = [0x50] << 1
-		MOV		A,STATUS
-		XOR		A,@0x19		; Check Status ?
-		;;XOR		A,@0x11		; Check Status ?
-		JBS		Z			; Check Z = 1?
-		JMP	INS_FAIL
-		JBC		N			; Check N = 0?
-		JMP	INS_FAIL
-		MOV		A,0x50
-		XOR		A,@0x54		; Check Result ?
-		JBS		Z			; Check Z = 1?
-		JMP	INS_FAIL
-		JBC		N			; Check N = 0?
-		JMP	INS_FAIL
-
-	;========== Instruction Test => SWAPA R
-	MOV		A,@0x1F
-	MOV		INST,A
-	MOV		A,@0x00
-	MOV		STATUS,A
-		MOV		A,@0x5A
-		MOV		0x50,A		; [0x50] = 0x5A
-		SWAPA	0x50
-		XOR		A,@0xA5		; Check Result ?
-		JBS		Z			; Check Z = 1?
-		JMP	INS_FAIL
-		JBC		N			; Check N = 0?
-		JMP	INS_FAIL
-
-	;========== Instruction Test => SWAP R
-	MOV		A,@0x20
-	MOV		INST,A
-	MOV		A,@0x00
-	MOV		STATUS,A
-		MOV		A,@0x5A
-		MOV		0x50,A		; [0x50] = 0x5A
-		SWAP	0x50
-		MOV		A,0x50
-		XOR		A,@0xA5		; Check Result ?
-		JBS		Z			; Check Z = 1?
-		JMP	INS_FAIL
-		JBC		N			; Check N = 0?
-		JMP	INS_FAIL
 
 	;========== Instruction Test => JZA R
 	MOV		A,@0x21
@@ -1739,18 +1726,6 @@ TEST_INST:
 		JMP		$+2
 		JMP		INS_FAIL
 
-	;========== Instruction Test => OR A,k
-	MOV		A,@0x26
-	MOV		INST,A
-	MOV		A,@0x00
-	MOV		STATUS,A
-		MOV		A,@0xA5
-		OR		A,@0x5A		; A = 0xA5 | 0x5A
-		XOR		A,@0xFF		; Check Result ?
-		JBS		Z			; Check Z = 1?
-		JMP	INS_FAIL
-		JBC		N			; Check N = 0?
-		JMP	INS_FAIL
 
 	;========== Instruction Test => JE k
 	MOV		A,@0x27
@@ -1822,47 +1797,7 @@ TEST_INST:
 		JBC		N			; Check N = 0?
 		JMP	INS_FAIL
 */
-	;========== Instruction Test => AND A,k
-	MOV		A,@0x29
-	MOV		INST,A
-	MOV		A,@0x00
-	MOV		STATUS,A
-		MOV		A,@0xAA
-		AND		A,@0x55		; A = 0xAA & 0x55
-		JBC		C			; Check C = 0?
-		JMP	INS_FAIL
-		JBC		DC			; Check DC = 0?
-		JMP	INS_FAIL
-		JBS		Z			; Check Z = 1?
-		JMP	INS_FAIL
-		JBC		OV			; Check OV = 0?
-		JMP	INS_FAIL
-		JBC		N			; Check N = 0?
-		JMP	INS_FAIL
-		XOR		A,@0x00		; Check Result ?
-		JBS		Z			; Check Z = 1?
-		JMP	INS_FAIL
-		JBC		N			; Check N = 0?
-		JMP	INS_FAIL
-	MOV		A,@0x00
-	MOV		STATUS,A
-		MOV		A,@0xAA
-		AND		A,@0xFF		; A = A & 0xFF
-		JBC		C			; Check C = 0?
-		JMP	INS_FAIL
-		JBC		DC			; Check DC = 0?
-		JMP	INS_FAIL
-		JBC		Z			; Check Z = 0?
-		JMP	INS_FAIL
-		JBC		OV			; Check OV = 0?
-		JMP	INS_FAIL
-		JBS		N			; Check N = 1?
-		JMP	INS_FAIL
-		XOR		A,@0xAA		; Check Result ?
-		JBS		Z			; Check Z = 1?
-		JMP	INS_FAIL
-		JBC		N			; Check N = 0?
-		JMP	INS_FAIL
+
 
 	;========== Instruction Test => RRA R
 	MOV		A,@0x2A
