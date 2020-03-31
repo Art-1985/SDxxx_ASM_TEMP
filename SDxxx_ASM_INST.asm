@@ -22,9 +22,9 @@
 ;Include	"SD028.INC"
 Include	"SD062.INC"
 
+
 ;================ General Purpose Register ===============
 	TMP50	== 0x50
-	INST	== 0x50
 	TMP51	== 0x51
 	TMP52	== 0x52
 	TMP53	== 0x53
@@ -40,6 +40,8 @@ Include	"SD062.INC"
 	TMP5D	== 0x5D
 	TMP5E	== 0x5E
 	TMP5F	== 0x5F
+	
+	INST	== 0x5A
 
 	TMP80	== 0x80
 	TMP81	== 0x81
@@ -99,10 +101,17 @@ BACK_GROUND_LOOP:
 	CALL	TEST_INST_LOGIC_II		;RLC, RLCA, RRC, RRCA, RRA, RR, RLA, RL, XCH
 	CALL	TEST_INST_TRANSFER		;MOV, SWAP, SWAPA
 	CALL	TEST_INST_MANIPULATION	;BC, BS, JBC, JBS
-	CALL	TEST_INST_BRANCH		;JE R, JGE, JLE, JE K, JC, JNC, JZ, JNZ, DJZ, DJZA, JZ, JZA, RETL, CALL, JMP, LCALL, LJMP
+	CALL	TEST_INST_BRANCH_I		;JE R, JGE, JLE, JE K, JC, JNC, JZ, JNZ, DJZ, DJZA, JZ, JZA
+	;CALL	TEST_INST_BRANCH_II		;CALL, JMP, LCALL, LJMP, RETL
 	CALL	TEST_INST_CONTROL		;ENI, DISI, WDTC, SLEP, NOP, RETI, RET
 	;CALL	TEST_ROM				;TBRD, TBRDA
-	;CALL	TEST_RAM
+
+
+
+	CALL	TEST_RAM_BANK_0_5		;Write(0x55),Read(0x55),Clear(0x00)
+	CALL	TEST_RAM_BANK_0_A		;Write(0xAA),Read(0xAA),Clear(0x00)
+	CALL	TEST_RAM_BANK_1_3		;Write(0x33),Read(0x33),Clear(0x00)
+	CALL	TEST_RAM_BANK_1_C		;Write(0xCC),Read(0xCC),Clear(0x00)
 	JMP		BACK_GROUND_LOOP
 
 ;====================== ERROR_LOOP =====================
@@ -259,10 +268,12 @@ INS_FAIL:
 		JBS		Z
 		JMP		EEPROM_INIT_LOOP
 		RET
+	;-------------------------------;
 	STATUS_CLEAR:
 		MOV		A,@0x00
 		MOV		STATUS,A
 		RET
+	;-------------------------------;
 	INST_XOR_JUDGE:
 		JBS		Z			; IF(Z=1) BRANCH
 		JMP		INS_FAIL
@@ -365,10 +376,6 @@ INS_FAIL:
 			JMP	INS_FAIL
 			JBC		N			; Check N = 0?
 			JMP	INS_FAIL
-
-
-
-
 
 		
 		INST_CLA:			;-------Instruction Test => CLA
@@ -1071,6 +1078,46 @@ INS_FAIL:
 			JMP	INS_FAIL
 			XOR		A,@0xFF		; Check Result ?
 			CALL	INST_XOR_JUDGE
+		INST_ADC_A_R:	;-------Instruction Test => ADC A,R
+			MOV		A,@0x36
+			MOV		INST,A
+			CALL	STATUS_CLEAR
+			BS		C			; 0x7F+0x00
+			MOV		A,@0x7F		
+			MOV		0x50,A		; [0x50] = 0x7F
+			MOV		A,@0x00		; A = 0x00
+			ADC		A,0x50		; A = A + [0x50] + C
+			JBC		C			; Check C = 0?
+			JMP	INS_FAIL
+			JBS		DC			; Check DC = 1?
+			JMP	INS_FAIL
+			JBC		Z			; Check Z = 0?
+			JMP	INS_FAIL
+			JBS		OV			; Check OV = 1?
+			JMP	INS_FAIL
+			JBS		N			; Check N = 1?
+			JMP	INS_FAIL
+			XOR		A,@0x80		; Check Result ?
+			CALL	INST_XOR_JUDGE
+			CALL	STATUS_CLEAR
+			BS		C			; 0x80+0x7F
+			MOV		A,@0x80
+			MOV		0x50,A		; [0x50] = 0x80
+			MOV		A,@0x7F		; A = 0x7F
+			ADC		A,0x50		; A = A + [0x50] + C
+			JBS		C			; Check C = 1?
+			JMP	INS_FAIL
+			JBS		DC			; Check DC = 1?
+			JMP	INS_FAIL
+			JBS		Z			; Check Z = 1?
+			JMP	INS_FAIL
+			JBC		OV			; Check OV = 0?
+			JMP	INS_FAIL
+			JBC		N			; Check N = 0?
+			JMP	INS_FAIL
+			XOR		A,@0x00		; Check Result ?
+			CALL	INST_XOR_JUDGE
+
 		INST_INCA:			;-------Instruction Test => INCA R
 			MOV		A,@0x17
 			MOV		INST,A
@@ -1815,7 +1862,10 @@ INS_FAIL:
 
 	TEST_INST_MANIPULATION:
 		RET
-	TEST_INST_BRANCH:
+	TEST_INST_BRANCH_I:
+		
+		RET
+	TEST_INST_BRANCH_II:
 		RET
 	TEST_INST_CONTROL:
 		INST_ENI:			;-------Instruction Test => ENI , IT?
@@ -2345,66 +2395,105 @@ _IPass:
 		;JBC		N			; Check N = 0?
 		;JMP	INS_FAIL
 		
+
+
 ;================== RAM Test Routine =====================
-TEST_RAM:
-;=======================
-; Write 55 Bank0
-;=======================
-	;BS		P5,2  			; Working
-	GBANK   1
-	MOV		A,@0x50
-	MOV		RSR,A			; Start Address
-	MOV		A,@0xAF			; For count from 0x50~0xFF
-	MOV		0xFF,A			; [0xFF] = 0xAF, count value
-	
-LOOP1:
-	MOV		A,@0x55			; IAR = 0x55
-	MOV		IAR,A			; Write IAR to [RSR]
-	INC		RSR				; RSR = RSR + 1
-	DJZ		0xFF			; [0xFF] = [0xFF] - 1
-	JMP		LOOP1			; Until [0xFF] = 0
-	
-	MOV		A,@0x50
-	MOV		RSR,A
-	MOV		A,@0xAF
-	MOV		0xFF,A
-CHECK1:
-	MOV		A,@0xAA
-	COM		IAR				; IAR = ~IAR
-	XOR		IAR,A
-	JBS		Z
-	JMP		RAM_FAIL
-	INC		RSR				; RSR = RSR + 1
-	DJZ		0xFF			; [0xFF] = [0xFF] - 1
-	JMP		CHECK1			; Until [0xFF] = 0
-	
-;=======================
-; Write AA  Bank0
-;=======================
-	MOV		A,@0x50
-	MOV		RSR,A			; Start Address
-	MOV		A,@0xAF			; For count from 0x50~0xFF
-	MOV		0xFF,A			; [0xFF] = 0xAF, count value
-LOOP2:
-	MOV		A,@0xAA			; IAR = 0xAA
-	MOV		IAR,A			; Write IAR to [RSR]
-	INC		RSR				; RSR = RSR + 1
-	DJZ		0xFF			; [0xFF] = [0xFF] - 1
-	JMP		LOOP2			; Until  [0xFF] = 0	
-	
-	MOV		A,@0x50
-	MOV		RSR,A			; RSR = 0x50
-	MOV		A,@0xAF
-	MOV		0xFF,A			; [0xFF] = 0xAF
-CHECK2:
-	MOV		A,@0xAA
-	XOR		IAR,A
-	JBS		Z
-	JMP		RAM_FAIL
-	INC		RSR
-	DJZ		0xFF
-	JMP		CHECK2			; Until [0xFF] = 0
-	NOP
+	TEST_RAM_BANK_0_5:
+		MOV		A,@0x80		; Write Start SRAM(0x55)
+		MOV		RSR,A
+		GBANK	0
+		MOV		A,@0x55
+		MOV		IAR,A
+		INC		RSR
+		MOV		A,@0x00
+		XOR		RSR,A		; INC(0x80),UNTIL(0x00)
+		JBS		Z
+		JMP		$-6
+		MOV		A,@0x80		; Read Start SRAM(0x55)
+		MOV		RSR,A
+		GBANK	0
+		MOV		A,@0x55
+		XOR		IAR,A
+		JBS		Z
+		JMP		RAM_FAIL
+		INC		RSR
+		MOV		A,@0x00
+		XOR		RSR,A		; INC(0x80),UNTIL(0x00)
+		JBS		Z
+		JMP		$-8
+		RET
+	TEST_RAM_BANK_0_A:
+		MOV		A,@0x80		; Write Start SRAM(0xAA)
+		MOV		RSR,A
+		GBANK	0
+		MOV		A,@0xAA		; SRAM(0xAA)
+		MOV		IAR,A
+		INC		RSR
+		MOV		A,@0x00
+		XOR		RSR,A		; INC(0x80),UNTIL(0x00)
+		JBS		Z
+		JMP		$-6
+		MOV		A,@0x80
+		MOV		RSR,A
+		GBANK	0
+		MOV		A,@0xAA
+		XOR		IAR,A
+		JBS		Z
+		JMP		RAM_FAIL
+		INC		RSR
+		MOV		A,@0x00
+		XOR		RSR,A		; INC(0x80),UNTIL(0x00)
+		JBS		Z
+		JMP		$-8
+		RET
+	TEST_RAM_BANK_1_3:
+		MOV		A,@0x80		; Write Start SRAM(0x33)
+		MOV		RSR,A
+		GBANK	1
+		MOV		A,@0x33		; SRAM(0x33)
+		MOV		IAR,A
+		INC		RSR
+		MOV		A,@0x00
+		XOR		RSR,A		; INC(0x80),UNTIL(0x00)
+		JBS		Z
+		JMP		$-6
+		MOV		A,@0x80
+		MOV		RSR,A
+		GBANK	1
+		MOV		A,@0x33
+		XOR		IAR,A
+		JBS		Z
+		JMP		RAM_FAIL
+		INC		RSR
+		MOV		A,@0x00
+		XOR		RSR,A		; INC(0x80),UNTIL(0x00)
+		JBS		Z
+		JMP		$-8
+		RET
+	TEST_RAM_BANK_1_C:
+		MOV		A,@0x80		; Write Start SRAM(0xCC)
+		MOV		RSR,A
+		GBANK	1
+		MOV		A,@0xCC		; SRAM(0xCC)
+		MOV		IAR,A
+		INC		RSR
+		MOV		A,@0x00
+		XOR		RSR,A		; INC(0x80),UNTIL(0x00)
+		JBS		Z
+		JMP		$-6
+		MOV		A,@0x80
+		MOV		RSR,A
+		GBANK	1
+		MOV		A,@0xCC
+		XOR		IAR,A
+		JBS		Z
+		JMP		RAM_FAIL
+		INC		RSR
+		MOV		A,@0x00
+		XOR		RSR,A		; INC(0x80),UNTIL(0x00)
+		JBS		Z
+		JMP		$-8
+		RET
 
 ;===================== Sub Routine =======================
 ;CALL_Test:
