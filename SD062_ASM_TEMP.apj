@@ -197,6 +197,6 @@ Disable EEPROM Protect Msg=0
 [C_LIB BUILD SETTING]
 No Debug Info=0
 [$\SDxxx_ASM_INST.asm]
-Rectangle=0050 0050 0760 0402
+Rectangle=0025 0025 0957 0435
 Iconized=0
 Maximized=0
