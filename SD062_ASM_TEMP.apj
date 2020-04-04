@@ -11,7 +11,7 @@ BlockNum=0
 BlockNum=0
 [BREAKPOINT]
 BP Num=1
-BP0=1,A,1631916,1,1691527140,93,$\SDxxx_ASM_INST.asm
+BP0=1,A,1634908,1,1815848932,93,$\SDxxx_ASM_INST.asm
 [CODEOPTION]
 Option Num=115
 IRC Trim=1
@@ -157,7 +157,7 @@ File Num=1
 File0=$\SDxxx_ASM_INST.lst
 [Map Files]
 File Num=1
-File0=$\SD062_ASM_TEMP.map
+File0=?
 [Library Files]
 File Num=0
 [BOOKMARK]
@@ -443,15 +443,6 @@ R4C=4C
 R4D=4D
 R4E=4E
 R4F=4F
-[RAMBreakPoint]
-Set0=0 0 0 0 0 0 0
-Set1=0 0 0 0 0 0 0
-Set2=0 0 0 0 0 0 0
-Set3=0 0 0 0 0 0 0
-Set4=0 0 0 0 0 0 0
-Set5=0 0 0 0 0 0 0
-Set6=0 0 0 0 0 0 0
-Set7=0 0 0 0 0 0 0
 [Watch]
 Size#0=0
 Size#1=0
