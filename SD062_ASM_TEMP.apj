@@ -11,7 +11,7 @@ BlockNum=0
 BlockNum=0
 [BREAKPOINT]
 BP Num=1
-BP0=1,A,1633272,1,1691527140,93,$\SDxxx_ASM_INST.asm
+BP0=1,A,1631916,1,1691527140,93,$\SDxxx_ASM_INST.asm
 [CODEOPTION]
 Option Num=115
 IRC Trim=1
@@ -470,3 +470,7 @@ PopUp WDTReset Msg=1
 Disable EEPROM Protect Msg=0
 [C_LIB BUILD SETTING]
 No Debug Info=0
+[$\SDxxx_ASM_INST.asm]
+Rectangle=0150 0150 0779 0610
+Iconized=0
+Maximized=0
