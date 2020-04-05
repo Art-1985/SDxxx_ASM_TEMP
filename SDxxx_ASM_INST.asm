@@ -107,7 +107,6 @@ BACK_GROUND_LOOP:
 	;CALL	TEST_ROM				;TBRD, TBRDA
 
 
-
 	CALL	TEST_RAM_BANK_0_5		;Write(0x55),Read(0x55),Clear(0x00)
 	CALL	TEST_RAM_BANK_0_A		;Write(0xAA),Read(0xAA),Clear(0x00)
 	CALL	TEST_RAM_BANK_1_3		;Write(0x33),Read(0x33),Clear(0x00)
@@ -1862,10 +1861,88 @@ INS_FAIL:
 
 	TEST_INST_MANIPULATION:
 		RET
+
 	TEST_INST_BRANCH_I:
-		
+		INST_DJZ_R:				;------- Instruction Test => DJZ R
+			MOV		A,@0x1A
+			MOV		INST,A
+			CALL	STATUS_CLEAR
+			MOV		A,@0x01
+			MOV		0x50,A		; [0x50] = 0x01
+			DJZ		0x50		; [0x50] = [0x50] - 1,if z,skip
+			JMP		INS_FAIL
+			MOV		A,0x50
+			XOR		A,@0x00		; Check Result ?
+			CALL	INST_XOR_JUDGE	
+			CALL	STATUS_CLEAR
+			MOV		A,@0x02
+			MOV		0x50,A		; [0x50] = 0x02
+			DJZ		0x50		; [0x50] = [0x50] - 1,if z,skip
+			JMP		$+2
+			JMP		INS_FAIL
+		INST_DJZA_R:			;------- Instruction Test => DJZA R
+			MOV		A,@0x19
+			MOV		INST,A
+			CALL	STATUS_CLEAR
+			MOV		A,@0x01
+			MOV		0x50,A		; [0x50] = 0x01
+			DJZA	0x50		; A = [0x50] - 0x01,if z,skip
+			JMP	INS_FAIL
+			XOR		A,@0x00		; Check Result ?
+			CALL	INST_XOR_JUDGE
+			CALL	STATUS_CLEAR
+			MOV		A,@0x02
+			MOV		0x50,A		; [0x50] = 0x02
+			DJZA	0x50		; A = [0x50] - 0x01,if z,skip
+			JMP		$+2
+			JMP	INS_FAIL
+		INST_JZA_R:			;-------Instruction Test => JZA R
+			MOV		A,@0x21
+			MOV		INST,A
+			CALL	STATUS_CLEAR
+			MOV		A,@0xFF
+			MOV		0x50,A
+			JZA		0x50		; A = [0x50] + 1,if 0 skip
+			JMP		INS_FAIL
+			XOR		A,@0x00		; Check Result ?
+			CALL	INST_XOR_JUDGE
+			CALL	STATUS_CLEAR
+			MOV		A,@0x80
+			MOV		0x50,A
+			JZA		0x50		; A = [0x50] + 1,if 0 skip
+			JMP		$+2
+			JMP		INS_FAIL
+
 		RET
 	TEST_INST_BRANCH_II:
+		;========== Instruction Test => CALL k
+		;MOV		A,@0x02
+		;MOV		INST,A
+		;MOV		A,@0x00
+		;MOV		STATUS,A
+			;MOV		A,@0x03
+			;MOV		0x50,A
+			;CALL	CALL_Test
+			;MOV		A,0x50
+			;XOR		A,@0x04		; Check Result ?
+			;JBS		Z			; Check Z = 1?
+			;JMP	INS_FAIL
+			;JBC		N			; Check N = 0?
+			;JMP	INS_FAIL
+		;========== Instruction Test => LCALL k
+		;MOV		A,@0x03
+		;MOV		INST,A
+		;MOV		A,@0x00
+		;MOV		STATUS,A
+			;MOV		A,@0x03
+			;MOV		0x51,A
+			;LCALL	LCALL_Test
+			;MOV		A,0x51
+			;XOR		A,@0x04		; Check Result ?
+			;JBS		Z			; Check Z = 1?
+			;JMP	INS_FAIL
+			;JBC		N			; Check N = 0?
+			;JMP	INS_FAIL
 		RET
 	TEST_INST_CONTROL:
 		INST_ENI:			;-------Instruction Test => ENI , IT?
@@ -1883,59 +1960,6 @@ INS_FAIL:
 		RET
 
 TEST_INST:	
-	;========== Instruction Test => CALL k
-	;MOV		A,@0x02
-	;MOV		INST,A
-	;MOV		A,@0x00
-	;MOV		STATUS,A
-		;MOV		A,@0x03
-		;MOV		0x50,A
-		;CALL	CALL_Test
-		;MOV		A,0x50
-		;XOR		A,@0x04		; Check Result ?
-		;JBS		Z			; Check Z = 1?
-		;JMP	INS_FAIL
-		;JBC		N			; Check N = 0?
-		;JMP	INS_FAIL
-
-	;========== Instruction Test => LCALL k
-	;MOV		A,@0x03
-	;MOV		INST,A
-	;MOV		A,@0x00
-	;MOV		STATUS,A
-		;MOV		A,@0x03
-		;MOV		0x51,A
-		;LCALL	LCALL_Test
-		;MOV		A,0x51
-		;XOR		A,@0x04		; Check Result ?
-		;JBS		Z			; Check Z = 1?
-		;JMP	INS_FAIL
-		;JBC		N			; Check N = 0?
-		;JMP	INS_FAIL
-
-	
-		
-	;========== Instruction Test => DJZA R
-	MOV		A,@0x19
-	MOV		INST,A
-	MOV		A,@0x00
-	MOV		STATUS,A
-		MOV		A,@0x01
-		MOV		0x50,A		; [0x50] = 0x01
-		DJZA	0x50		; A = [0x50] - 0x01,if z,skip
-		JMP	INS_FAIL
-		XOR		A,@0x00		; Check Result ?
-		JBS		Z			; Check Z = 1?
-		JMP	INS_FAIL
-		JBC		N			; Check N = 0?
-		JMP	INS_FAIL
-	MOV		A,@0x00
-	MOV		STATUS,A
-		MOV		A,@0x02
-		MOV		0x50,A		; [0x50] = 0x02
-		DJZA	0x50		; A = [0x50] - 0x01,if z,skip
-		JMP		$+2
-		JMP	INS_FAIL
 
 	;GBANK   1
 	;MOV		A,@0x50
@@ -1943,71 +1967,18 @@ TEST_INST:
 	;MOV		A,@0xAF			; For count from 0x50~0xFF
 	;MOV		0xFF,A			; [0xFF] = 0xAF, count value
 
-	;========== Instruction Test => DJZ R
-	MOV		A,@0x1A
-	MOV		INST,A
-	MOV		A,@0x00
-	MOV		STATUS,A
-		MOV		A,@0x01
-		MOV		0x50,A		; [0x50] = 0x01
-		DJZ		0x50		; [0x50] = [0x50] - 1,if z,skip
-		JMP	INS_FAIL
-		MOV		A,0x50
-		XOR		A,@0x00		; Check Result ?
-		JBS		Z			; Check Z = 1?
-		JMP	INS_FAIL
-		JBC		N			; Check N = 0?
-		JMP	INS_FAIL
-		
-	MOV		A,@0x00
-	MOV		STATUS,A
-		MOV		A,@0x02
-		MOV		0x50,A		; [0x50] = 0x02
-		DJZ		0x50		; [0x50] = [0x50] - 1,if z,skip
-		JMP		$+2
-		JMP	INS_FAIL
-
-
-	;========== Instruction Test => JZA R
-	MOV		A,@0x21
-	MOV		INST,A
-	MOV		A,@0x00
-	MOV		STATUS,A
-		MOV		A,@0xFF
-		MOV		0x50,A
-		JZA		0x50		; A = [0x50] + 1,if 0 skip
-		JMP		INS_FAIL
-		XOR		A,@0x00		; Check Result ?
-		JBS		Z			; Check Z = 1?
-		JMP	INS_FAIL
-		JBC		N			; Check N = 0?
-		JMP	INS_FAIL
-	MOV		A,@0x00
-	MOV		STATUS,A
-		MOV		A,@0x80
-		MOV		0x50,A
-		JZA		0x50		; A = [0x50] + 1,if 0 skip
-		JMP		$+2
-		JMP		INS_FAIL
-		
-
 	;========== Instruction Test => JZ R
 	MOV		A,@0x22
 	MOV		INST,A
-	MOV		A,@0x00
-	MOV		STATUS,A
+		CALL	STATUS_CLEAR
 		MOV		A,@0xFF
 		MOV		0x50,A		; [0x50] = 0xFF
 		JZ		0x50		; [0x50] = [0x50] + 1,if 0 skip
 		JMP		INS_FAIL
 		MOV		A,0x50
 		XOR		A,@0x00		; Check Result ?
-		JBS		Z			; Check Z = 1?
-		JMP	INS_FAIL
-		JBC		N			; Check N = 0?
-		JMP	INS_FAIL
-	MOV		A,@0x00
-	MOV		STATUS,A
+		CALL	INST_XOR_JUDGE
+		CALL	STATUS_CLEAR
 		MOV		A,@0x80
 		MOV		0x50,A		; [0x50] = 0xFF
 		JZ		0x50		; [0x50] = [0x50] + 1,if 0 skip
@@ -2017,8 +1988,7 @@ TEST_INST:
 	;========== Instruction Test => JE R
 	MOV		A,@0x23
 	MOV		INST,A
-	MOV		A,@0x00
-	MOV		STATUS,A
+		CALL	STATUS_CLEAR
 		MOV		A,@0x5A
 		MOV		0x50,A		; [0x50] = 0x5A
 		JE		0x50		; [0x50] = A?
