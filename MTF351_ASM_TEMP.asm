@@ -266,7 +266,7 @@ INS_FAIL:
 		MOV		IAR,A
 		INC		RSR
 		MOV		A,@0x80
-		XOR		RSR,A
+		XOR		A,RSR
 		JBS		Z
 		JMP		$-6
 		RET
@@ -280,7 +280,7 @@ INS_FAIL:
 		MOV		IAR,A
 		INC		RSR
 		MOV		A,@0x00
-		XOR		RSR,A
+		XOR		A,RSR
 		JBS		Z
 		JMP		RAM_IND_LOOP_0
 		MOV		A,@0x80
@@ -291,7 +291,7 @@ INS_FAIL:
 		MOV		IAR,A
 		INC		RSR
 		MOV		A,@0x00
-		XOR		RSR,A
+		XOR		A,RSR
 		JBS		Z
 		JMP		RAM_IND_LOOP_1
 		MOV		A,@0x80
@@ -405,8 +405,6 @@ INS_FAIL:
 			JMP	INS_FAIL
 			JBC		N			; Check N = 0?
 			JMP	INS_FAIL
-
-		
 		INST_CLA:			;-------Instruction Test => CLA
 			MOV		A,@0x08
 			MOV		INST,A
@@ -2278,7 +2276,7 @@ ORG	0x0F00	; ADDR(3840)
 		MOV		IAR,A
 		INC		RSR
 		MOV		A,@0x00
-		XOR		RSR,A		; INC(0x80),UNTIL(0x00)
+		XOR		A,RSR		; INC(0x80),UNTIL(0x00)
 		JBS		Z
 		JMP		$-6
 		MOV		A,@0x80		; Read Start SRAM(0x55)
@@ -2290,7 +2288,7 @@ ORG	0x0F00	; ADDR(3840)
 		JMP		RAM_FAIL
 		INC		RSR
 		MOV		A,@0x00
-		XOR		RSR,A		; INC(0x80),UNTIL(0x00)
+		XOR		A,RSR		; INC(0x80),UNTIL(0x00)
 		JBS		Z
 		JMP		$-8
 		RET
@@ -2302,7 +2300,7 @@ ORG	0x0F00	; ADDR(3840)
 		MOV		IAR,A
 		INC		RSR
 		MOV		A,@0x00
-		XOR		RSR,A		; INC(0x80),UNTIL(0x00)
+		XOR		A,RSR		; INC(0x80),UNTIL(0x00)
 		JBS		Z
 		JMP		$-6
 		MOV		A,@0x80
@@ -2314,7 +2312,7 @@ ORG	0x0F00	; ADDR(3840)
 		JMP		RAM_FAIL
 		INC		RSR
 		MOV		A,@0x00
-		XOR		RSR,A		; INC(0x80),UNTIL(0x00)
+		XOR		A,RSR		; INC(0x80),UNTIL(0x00)
 		JBS		Z
 		JMP		$-8
 		RET
@@ -2326,7 +2324,7 @@ ORG	0x0F00	; ADDR(3840)
 		MOV		IAR,A
 		INC		RSR
 		MOV		A,@0x00
-		XOR		RSR,A		; INC(0x80),UNTIL(0x00)
+		XOR		A,RSR		; INC(0x80),UNTIL(0x00)
 		JBS		Z
 		JMP		$-6
 		MOV		A,@0x80
@@ -2338,7 +2336,7 @@ ORG	0x0F00	; ADDR(3840)
 		JMP		RAM_FAIL
 		INC		RSR
 		MOV		A,@0x00
-		XOR		RSR,A		; INC(0x80),UNTIL(0x00)
+		XOR		A,RSR		; INC(0x80),UNTIL(0x00)
 		JBS		Z
 		JMP		$-8
 		RET
@@ -2350,7 +2348,7 @@ ORG	0x0F00	; ADDR(3840)
 		MOV		IAR,A
 		INC		RSR
 		MOV		A,@0x00
-		XOR		RSR,A		; INC(0x80),UNTIL(0x00)
+		XOR		A,RSR		; INC(0x80),UNTIL(0x00)
 		JBS		Z
 		JMP		$-6
 		MOV		A,@0x80
@@ -2362,7 +2360,7 @@ ORG	0x0F00	; ADDR(3840)
 		JMP		RAM_FAIL
 		INC		RSR
 		MOV		A,@0x00
-		XOR		RSR,A		; INC(0x80),UNTIL(0x00)
+		XOR		A,RSR		; INC(0x80),UNTIL(0x00)
 		JBS		Z
 		JMP		$-8
 		RET
