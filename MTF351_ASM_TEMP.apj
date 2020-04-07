@@ -11,7 +11,7 @@ BlockNum=0
 BlockNum=0
 [BREAKPOINT]
 BP Num=1
-BP0=1,A,1634908,1,1691527140,91,$\MTF351_ASM_TEMP.asm
+BP0=1,A,1631916,1,1716299748,149,$\MTF351_ASM_TEMP.asm
 [CODEOPTION]
 Option Num=97
 IRC Trim=1
@@ -25,7 +25,7 @@ RESETEN=0
 WD0 7=0
 WD0 8=0
 HLP=0
-HLFS=1
+HLFS=0
 WD0 11=0
 WD0 12=0
 IRCWUT=1
@@ -504,14 +504,14 @@ R4D=4D
 R4E=4E
 R4F=4F
 [RAMBreakPoint]
-Set0=0 0 0 0 0 0 0
-Set1=0 0 0 0 0 0 0
-Set2=0 0 0 0 0 0 0
-Set3=0 0 0 0 0 0 0
-Set4=0 0 0 0 0 0 0
-Set5=0 0 0 0 0 0 0
-Set6=0 0 0 0 0 0 0
-Set7=0 0 0 0 0 0 0
+Set0=0 0 0 0 0 0
+Set1=0 0 0 0 0 0
+Set2=0 0 0 0 0 0
+Set3=0 0 0 0 0 0
+Set4=0 0 0 0 0 0
+Set5=0 0 0 0 0 0
+Set6=0 0 0 0 0 0
+Set7=0 0 0 0 0 0
 [Watch]
 Size#0=0
 Size#1=0
@@ -531,6 +531,6 @@ Disable EEPROM Protect Msg=0
 [C_LIB BUILD SETTING]
 No Debug Info=0
 [$\MTF351_ASM_TEMP.asm]
-Rectangle=0025 0025 0823 0382
+Rectangle=0100 0100 0729 0560
 Iconized=0
 Maximized=0
