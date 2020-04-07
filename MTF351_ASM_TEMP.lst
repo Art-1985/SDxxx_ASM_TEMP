@@ -1599,7 +1599,7 @@
    266 000AD 0100          		MOV		IAR,A
    267 000AE 1504          		INC		RSR
    268 000AF 6080          		MOV		A,@0x80
-   269 000B0 0D04          		XOR		RSR,A
+   269 000B0 0C04          		XOR		A,RSR
    270 000B1 3A03          		JBS		Z
    271 000B2 50AC          		JMP		$-6
    272 000B3 0012          		RET
@@ -1613,7 +1613,7 @@
    280 000B8 0100          		MOV		IAR,A
    281 000B9 1504          		INC		RSR
    282 000BA 6000          		MOV		A,@0x00
-   283 000BB 0D04          		XOR		RSR,A
+   283 000BB 0C04          		XOR		A,RSR
    284 000BC 3A03          		JBS		Z
    285 000BD 50B6          		JMP		RAM_IND_LOOP_0
    286 000BE 6080          		MOV		A,@0x80
@@ -1624,7 +1624,7 @@
    291 000C2 0100          		MOV		IAR,A
    292 000C3 1504          		INC		RSR
    293 000C4 6000          		MOV		A,@0x00
-   294 000C5 0D04          		XOR		RSR,A
+   294 000C5 0C04          		XOR		A,RSR
    295 000C6 3A03          		JBS		Z
    296 000C7 50C0          		JMP		RAM_IND_LOOP_1
    297 000C8 6080          		MOV		A,@0x80
@@ -1738,1971 +1738,1969 @@
    405 0012B 506C          			JMP	INS_FAIL
    406 0012C 3603          			JBC		N			; Check N = 0?
    407 0012D 506C          			JMP	INS_FAIL
-   408                     
-   409                     		
-   410 0012E               		INST_CLA:			;-------Instruction Test => CLA
-   411 0012E 6008          			MOV		A,@0x08
-   412 0012F 015A          			MOV		INST,A
-   413 00130 605A          			MOV		A,@0x5A
-   414 00131 6C5A          			XOR		A,@0x5A		; Check Result ?
-   415 00132 3A03          			JBS		Z			; Check Z = 1?
-   416 00133 506C          			JMP	INS_FAIL
-   417 00134 3603          			JBC		N			; Check N = 0?
-   418 00135 506C          			JMP	INS_FAIL
-   419 00136 605A          			MOV		A,@0x5A
-   420 00137 0200          			CLRA
-   421 00138 3A03          			JBS		Z			; Check Z = 1?
-   422 00139 506C          			JMP	INS_FAIL
-   423 0013A 2203          			BC		Z
-   424 0013B 6C00          			XOR		A,@0x00		; Check Result ?
-   425 0013C 3A03          			JBS		Z			; Check Z = 1?
-   426 0013D 506C          			JMP	INS_FAIL
-   427 0013E 3603          			JBC		N			; Check N = 0?
-   428 0013F 506C          			JMP	INS_FAIL
-   429 00140               		INST_CLR:			;-------Instruction Test => CLR
-   430 00140 6009          			MOV		A,@0x09
-   431 00141 015A          			MOV		INST,A
-   432 00142 60AA          			MOV		A,@0xAA
-   433 00143 0150          			MOV		0x50,A
-   434 00144 1050          			MOV		A,0x50
-   435 00145 6CAA          			XOR		A,@0xAA		; Check Result ?
-   436 00146 3A03          			JBS		Z			; Check Z = 1?
-   437 00147 506C          			JMP	INS_FAIL
-   438 00148 3603          			JBC		N			; Check N = 0?
-   439 00149 506C          			JMP	INS_FAIL
-   440 0014A 0350          			CLR		0x50
-   441 0014B 3A03          			JBS		Z			; Check Z = 1?
-   442 0014C 506C          			JMP	INS_FAIL
-   443 0014D 2203          			BC		Z
-   444 0014E 1050          			MOV		A,0x50
-   445 0014F 6C00          			XOR		A,@0x00		; Check Result ?
-   446 00150 3A03          			JBS		Z			; Check Z = 1?
-   447 00151 506C          			JMP	INS_FAIL
-   448 00152 3603          			JBC		N			; Check N = 0?
-   449 00153 506C          			JMP	INS_FAIL
-   450 00154               		INST_SUB_A_R:		;-------Instruction Test => SUB A,R
-   451 00154 600A          			MOV		A,@0x0A
-   452 00155 015A          			MOV		INST,A
-   453 00156 6000          			MOV		A,@0x00
-   454 00157 0103          			MOV		STATUS,A
-   455 00158 6002          			MOV		A,@0x02		; SUB(2-1)=1
-   456 00159 0150          			MOV		0x50,A		; [0x50] = 0x02
-   457 0015A 6001          			MOV		A,@0x01
-   458 0015B 0450          			SUB		A,0x50		; A = [0x50] - A
-   459 0015C 3803          			JBS		C			; Check C = 1? 	; Resulet is Positive
-   460 0015D 506C          			JMP	INS_FAIL
-   461 0015E 3903          			JBS		DC			; Check DC = 1?	; Low-Byte is Positve
-   462 0015F 506C          			JMP	INS_FAIL
-   463 00160 3203          			JBC		Z			; Check Z = 0?
-   464 00161 506C          			JMP	INS_FAIL
-   465 00162 3503          			JBC		OV			; Check OV = 0?
-   466 00163 506C          			JMP	INS_FAIL
-   467 00164 3603          			JBC		N			; Check N = 0?
-   468 00165 506C          			JMP	INS_FAIL
-   469 00166 2203          			BC		Z
-   470 00167 6C01          			XOR		A,@0x01		; Check Result ?
-   471 00168 3A03          			JBS		Z			; Check Z = 1?
-   472 00169 506C          			JMP	INS_FAIL
-   473 0016A 3603          			JBC		N			; Check N = 0?
-   474 0016B 506C          			JMP	INS_FAIL
-   475 0016C 6000          			MOV		A,@0x00
-   476 0016D 0103          			MOV		STATUS,A
-   477 0016E 6002          			MOV		A,@0x02		; SUB(2-2)=0
-   478 0016F 0150          			MOV		0x50,A		; [0x50] = 0x02
-   479 00170 6002          			MOV		A,@0x02
-   480 00171 0450          			SUB		A,0x50		; A = [0x50] - A
-   481 00172 3803          			JBS		C			; Check C = 1?	; Result is Positive
-   482 00173 506C          			JMP	INS_FAIL
-   483 00174 3903          			JBS		DC			; Check DC = 1?	; Low-Byte is Positve
-   484 00175 506C          			JMP	INS_FAIL
-   485 00176 3A03          			JBS		Z			; Check Z = 1?	; Result is Zero
-   486 00177 506C          			JMP	INS_FAIL
-   487 00178 3503          			JBC		OV			; Check OV = 0?
-   488 00179 506C          			JMP	INS_FAIL
-   489 0017A 3603          			JBC		N			; Check N = 0?
-   490 0017B 506C          			JMP	INS_FAIL
-   491 0017C 2203          			BC		Z
-   492 0017D 6C00          			XOR		A,@0x00		; Check Result ?
-   493 0017E 3A03          			JBS		Z			; Check Z = 1?
-   494 0017F 506C          			JMP	INS_FAIL
-   495 00180 3603          			JBC		N			; Check N = 0?
-   496 00181 506C          			JMP	INS_FAIL
-   497 00182 6000          			MOV		A,@0x00
-   498 00183 0103          			MOV		STATUS,A
-   499 00184 60FF          			MOV		A,@0xFF		; SUB(-1-127) = -128(0x80)
-   500 00185 0150          			MOV		0x50,A		; [0x50] = 0xFF
-   501 00186 607F          			MOV		A,@0x7F
-   502 00187 0450          			SUB		A,0x50		; A = [0x50] - A
-   503 00188 3803          			JBS		C			; Check C = 1?
-   504 00189 506C          			JMP	INS_FAIL
-   505 0018A 3903          			JBS		DC			; Check DC = 1?
-   506 0018B 506C          			JMP	INS_FAIL
-   507 0018C 3203          			JBC		Z			; Check Z = 0?
-   508 0018D 506C          			JMP	INS_FAIL
-   509 0018E 3503          			JBC		OV			; Check OV = 0?
-   510 0018F 506C          			JMP	INS_FAIL
-   511 00190 3E03          			JBS		N			; Check N = 1?
-   512 00191 506C          			JMP	INS_FAIL
-   513 00192 2203          			BC		Z
-   514 00193 2603          			BC		N
-   515 00194 6C80          			XOR		A,@0x80		; Check Result ?
-   516 00195 3A03          			JBS		Z			; Check Z = 1?
-   517 00196 506C          			JMP	INS_FAIL
-   518 00197 3603          			JBC		N			; Check N = 0?
-   519 00198 506C          			JMP	INS_FAIL
-   520 00199 6000          			MOV		A,@0x00
-   521 0019A 0103          			MOV		STATUS,A
-   522 0019B 6080          			MOV		A,@0x80		; SUB(-128-127) = 1(0x01)
-   523 0019C 0150          			MOV		0x50,A		; [0x50] = 0x80
-   524 0019D 607F          			MOV		A,@0x7F
-   525 0019E 0450          			SUB		A,0x50		; A = [0x50] - A
-   526 0019F 3803          			JBS		C			; Check C = 1?
-   527 001A0 506C          			JMP	INS_FAIL
-   528 001A1 3103          			JBC		DC			; Check DC = 0?
-   529 001A2 506C          			JMP	INS_FAIL
-   530 001A3 3203          			JBC		Z			; Check Z = 0?
-   531 001A4 506C          			JMP	INS_FAIL
-   532 001A5 3D03          			JBS		OV			; Check OV = 1?
-   533 001A6 506C          			JMP	INS_FAIL
-   534 001A7 3603          			JBC		N			; Check N = 0?
-   535 001A8 506C          			JMP	INS_FAIL
-   536 001A9 2203          			BC		Z
-   537 001AA 2603          			BC		N
-   538 001AB 6C01          			XOR		A,@0x01		; Check Result ?
-   539 001AC 3A03          			JBS		Z			; Check Z = 1?
-   540 001AD 506C          			JMP	INS_FAIL
-   541 001AE 3603          			JBC		N			; Check N = 0?
-   542 001AF 506C          			JMP	INS_FAIL
-   543 001B0 6000          			MOV		A,@0x00
-   544 001B1 0103          			MOV		STATUS,A
-   545 001B2 6001          			MOV		A,@0x01		; SUB(1-3) = -2(0xFE)
-   546 001B3 0150          			MOV		0x50,A		; [0x50] = 0x01
-   547 001B4 6003          			MOV		A,@0x03
-   548 001B5 0450          			SUB		A,0x50		; A = [0x50] - A
-   549 001B6 3003          			JBC		C			; Check C = 0?
-   550 001B7 506C          			JMP	INS_FAIL
-   551 001B8 3103          			JBC		DC			; Check DC = 0?
-   552 001B9 506C          			JMP	INS_FAIL
-   553 001BA 3203          			JBC		Z			; Check Z = 0?
-   554 001BB 506C          			JMP	INS_FAIL
-   555 001BC 3503          			JBC		OV			; Check OV = 0?
-   556 001BD 506C          			JMP	INS_FAIL
-   557 001BE 3E03          			JBS		N			; Check N = 1?
-   558 001BF 506C          			JMP	INS_FAIL
-   559 001C0 2203          			BC		Z
-   560 001C1 2603          			BC		N
-   561 001C2 6CFE          			XOR		A,@0xFE		; Check Result ?
-   562 001C3 3A03          			JBS		Z			; Check Z = 1?
-   563 001C4 506C          			JMP	INS_FAIL
-   564 001C5 3603          			JBC		N			; Check N = 0?
-   565 001C6 506C          			JMP	INS_FAIL
-   566 001C7               		INST_SUB_R_A:		;-------Instruction Test => SUB R,A
-   567 001C7 600B          			MOV		A,@0x0B
-   568 001C8 015A          			MOV		INST,A
-   569 001C9 6000          			MOV		A,@0x00
-   570 001CA 0103          			MOV		STATUS,A
-   571 001CB 6002          			MOV		A,@0x02
-   572 001CC 0150          			MOV		0x50,A		; [0x50] = 0x02
-   573 001CD 6001          			MOV		A,@0x01
-   574 001CE 0550          			SUB		0x50,A		; [0x50] = [0x50] - 0x01
-   575 001CF 1003          			MOV		A,STATUS
-   576 001D0 6C1B          			XOR		A,@0x1B		; for non reset
-   577                     			;;XOR		A,@0x13
-   578 001D1 40CE          			CALL	INST_XOR_JUDGE
-   579 001D2 2203          			BC		Z
-   580 001D3 2603          			BC		N
-   581 001D4 1050          			MOV		A,0x50
-   582 001D5 6C01          			XOR		A,@0x01		; Check Result ?
-   583 001D6 40CE          			CALL	INST_XOR_JUDGE
-   584 001D7 6000          			MOV		A,@0x00
-   585 001D8 0103          			MOV		STATUS,A
-   586 001D9 6002          			MOV		A,@0x02
-   587 001DA 0150          			MOV		0x50,A		; [0x50] = 0x02
-   588 001DB 6002          			MOV		A,@0x02
-   589 001DC 0550          			SUB		0x50,A		; [0x50] = [0x50] - 0x02
-   590 001DD 1003          			MOV		A,STATUS
-   591 001DE 6C1F          			XOR		A,@0x1F		; for nono reset
-   592                     			;;XOR		A,@0x17
-   593 001DF 40CE          			CALL	INST_XOR_JUDGE
-   594 001E0 2203          			BC		Z
-   595 001E1 2603          			BC		N
-   596 001E2 1050          			MOV		A,0x50
-   597 001E3 6C00          			XOR		A,@0x00		; Check Result ?
-   598 001E4 3A03          			JBS		Z			; Check Z = 1?
-   599 001E5 506C          			JMP	INS_FAIL
-   600 001E6 3603          			JBC		N			; Check N = 0?
-   601 001E7 506C          			JMP	INS_FAIL
-   602 001E8 6000          			MOV		A,@0x00
-   603 001E9 0103          			MOV		STATUS,A
-   604 001EA 6080          			MOV		A,@0x80
-   605 001EB 0150          			MOV		0x50,A		; [0x50] = 0x80
-   606 001EC 6001          			MOV		A,@0x01
-   607 001ED 0550          			SUB		0x50,A		; [0x50] = [0x50] - 0x01
-   608 001EE 1003          			MOV		A,STATUS
-   609 001EF 6C39          			XOR		A,@0x39	;; for non reset
-   610                     			;;XOR		A,@0x31
-   611 001F0 40CE          			CALL	INST_XOR_JUDGE
-   612 001F1 2203          			BC		Z
-   613 001F2 2603          			BC		N
-   614 001F3 1050          			MOV		A,0x50
-   615 001F4 6C7F          			XOR		A,@0x7F		; Check Result ?
-   616 001F5 40CE          			CALL	INST_XOR_JUDGE
-   617 001F6               		INST_SUB_A_K:		;-------Instruction Test => SUB A,k
-   618 001F6 6030          			MOV		A,@0x30
-   619 001F7 015A          			MOV		INST,A
-   620 001F8 40CB          			CALL	STATUS_CLEAR
-   621 001F9 60FF          			MOV		A,@0xFF		; 0xFF-0xFF
-   622 001FA 74FF          			SUB		A,@0xFF		; A = 0xFF - 0xFF
-   623 001FB 3803          			JBS		C			; Check C = 1?
-   624 001FC 506C          			JMP	INS_FAIL
-   625 001FD 3903          			JBS		DC			; Check DC = 1?
-   626 001FE 506C          			JMP	INS_FAIL
-   627 001FF 3A03          			JBS		Z			; Check Z = 1?
-   628 00200 506C          			JMP	INS_FAIL
-   629 00201 3503          			JBC		OV			; Check OV = 0?
-   630 00202 506C          			JMP	INS_FAIL
-   631 00203 3603          			JBC		N			; Check N = 0?
-   632 00204 506C          			JMP	INS_FAIL
-   633 00205 6C00          			XOR		A,@0x00		; Check Result ?
-   634 00206 40CE          			CALL	INST_XOR_JUDGE
-   635 00207 40CB          			CALL	STATUS_CLEAR
-   636 00208 607F          			MOV		A,@0x7F		; 0x00-0x7F
-   637 00209 7400          			SUB		A,@0x00		; A = 0x00 - 0x7F
-   638 0020A 3003          			JBC		C			; Check C = 0?
-   639 0020B 506C          			JMP	INS_FAIL
-   640 0020C 3103          			JBC		DC			; Check DC = 0?
-   641 0020D 506C          			JMP	INS_FAIL
-   642 0020E 3203          			JBC		Z			; Check Z = 0?
-   643 0020F 506C          			JMP	INS_FAIL
-   644 00210 3503          			JBC		OV			; Check OV = 0?
-   645 00211 506C          			JMP	INS_FAIL
-   646 00212 3E03          			JBS		N			; Check N = 1?
-   647 00213 506C          			JMP	INS_FAIL
-   648 00214 6C81          			XOR		A,@0x81		; Check Result ?
-   649 00215 40CE          			CALL	INST_XOR_JUDGE
-   650 00216 40CB          			CALL	STATUS_CLEAR
-   651 00217 6001          			MOV		A,@0x01		; 0x80-0x01
-   652 00218 7480          			SUB		A,@0x80		; A = 0x80 - 0x01
-   653 00219 3803          			JBS		C			; Check C = 1?
-   654 0021A 506C          			JMP	INS_FAIL
-   655 0021B 3103          			JBC		DC			; Check DC = 0?
-   656 0021C 506C          			JMP	INS_FAIL
-   657 0021D 3203          			JBC		Z			; Check Z = 0?
-   658 0021E 506C          			JMP	INS_FAIL
-   659 0021F 3D03          			JBS		OV			; Check OV = 1?
-   660 00220 506C          			JMP	INS_FAIL
-   661 00221 3603          			JBC		N			; Check N = 0?
-   662 00222 506C          			JMP	INS_FAIL
-   663 00223 6C7F          			XOR		A,@0x7F		; Check Result ?
-   664 00224 40CE          			CALL	INST_XOR_JUDGE
-   665 00225               		INST_SUBB_A_R:		;-------Instruction Test => SUBB A,R
-   666 00225 6031          			MOV		A,@0x31
-   667 00226 015A          			MOV		INST,A
-   668 00227 40CB          			CALL	STATUS_CLEAR
-   669 00228 2003          			BC		C			; B = 1
-   670 00229 6000          			MOV		A,@0x00		;0x00-0xF
-   671 0022A 0150          			MOV		0x50,A		; [0x50] = 0x00
-   672 0022B 60FF          			MOV		A,@0xFF		; A = 0x01
-   673 0022C 7850          			SUBB	A,0x50		; A = [0x50] - A - B
-   674 0022D 3003          			JBC		C			; Check C = 0?
-   675 0022E 506C          			JMP	INS_FAIL
-   676 0022F 3103          			JBC		DC			; Check DC = 0?
-   677 00230 506C          			JMP	INS_FAIL
-   678 00231 3A03          			JBS		Z			; Check Z = 1?
-   679 00232 506C          			JMP	INS_FAIL
-   680 00233 3503          			JBC		OV			; Check OV = 0?
-   681 00234 506C          			JMP	INS_FAIL
-   682 00235 3603          			JBC		N			; Check N = 0?
-   683 00236 506C          			JMP	INS_FAIL
-   684 00237 6C00          			XOR		A,@0x00		; Check Result ?
-   685 00238 40CE          			CALL	INST_XOR_JUDGE	
-   686 00239 40CB          			CALL	STATUS_CLEAR
-   687 0023A 2003          			BC		C			; B = 1
-   688 0023B 6000          			MOV		A,@0x00		; 0x00-0x7F
-   689 0023C 0150          			MOV		0x50,A		; [0x50] = 0x00
-   690 0023D 607F          			MOV		A,@0x7F		; A = 0x01
-   691 0023E 7850          			SUBB	A,0x50		; A = [0x50] - A - B
-   692 0023F 3003          			JBC		C			; Check C = 0?
-   693 00240 506C          			JMP	INS_FAIL
-   694 00241 3103          			JBC		DC			; Check DC = 0?
-   695 00242 506C          			JMP	INS_FAIL
-   696 00243 3203          			JBC		Z			; Check Z = 0?
-   697 00244 506C          			JMP	INS_FAIL
-   698 00245 3503          			JBC		OV			; Check OV = 0?
-   699 00246 506C          			JMP	INS_FAIL
-   700 00247 3E03          			JBS		N			; Check N = 1?
-   701 00248 506C          			JMP	INS_FAIL
-   702 00249 6C80          			XOR		A,@0x80		; Check Result ?
-   703 0024A 40CE          			CALL	INST_XOR_JUDGE
-   704 0024B 40CB          			CALL	STATUS_CLEAR
-   705 0024C 2003          			BC		C			; B = 1
-   706 0024D 6080          			MOV		A,@0x80		; 0x80-0x01
-   707 0024E 0150          			MOV		0x50,A		; [0x50] = 0x80
-   708 0024F 6001          			MOV		A,@0x01		; A = 0x01
-   709 00250 7850          			SUBB	A,0x50		; A = [0x50] - A - B
-   710 00251 3803          			JBS		C			; Check C = 1?
-   711 00252 506C          			JMP	INS_FAIL
-   712 00253 3103          			JBC		DC			; Check DC = 0?
-   713 00254 506C          			JMP	INS_FAIL
-   714 00255 3203          			JBC		Z			; Check Z = 0?
-   715 00256 506C          			JMP	INS_FAIL
-   716 00257 3D03          			JBS		OV			; Check OV = 1?
-   717 00258 506C          			JMP	INS_FAIL
-   718 00259 3603          			JBC		N			; Check N = 0?
-   719 0025A 506C          			JMP	INS_FAIL
-   720 0025B 6C7E          			XOR		A,@0x7E		; Check Result ?
-   721 0025C 40CE          			CALL	INST_XOR_JUDGE
-   722 0025D               		INST_SUBB_R_A:			;-------Instruction Test => SUBB R,A
-   723 0025D 6032          			MOV		A,@0x32
-   724 0025E 015A          			MOV		INST,A
-   725 0025F 40CB          			CALL	STATUS_CLEAR
-   726 00260 2003          			BC		C			; B = 1
-   727 00261 6000          			MOV		A,@0x00		; 0x00-0xFF
-   728 00262 0150          			MOV		0x50,A		; [0x50] = 0x00
-   729 00263 60FF          			MOV		A,@0xFF
-   730 00264 7950          			SUBB	0x50,A		; [0x50] = 0x00 - 0xFF - B
-   731 00265 1003          			MOV		A,STATUS
-   732 00266 6C1C          			XOR		A,@0x1C		; Check Status ?
-   733                     			;;XOR		A,@0x14		; Check Status ?
-   734 00267 40CE          			CALL	INST_XOR_JUDGE
-   735 00268 1050          			MOV		A,0x50
-   736 00269 6C00          			XOR		A,@0x00		; Check Result ?
-   737 0026A 40CE          			CALL	INST_XOR_JUDGE
-   738 0026B 40CB          			CALL	STATUS_CLEAR
-   739 0026C 2003          			BC		C			; B = 1
-   740 0026D 6000          			MOV		A,@0x00		; 0x00-0x7F
-   741 0026E 0150          			MOV		0x50,A		; [0x50] = 0x00
-   742 0026F 607F          			MOV		A,@0x7F
-   743 00270 7950          			SUBB	0x50,A		; [0x50] = 0x00 - 0x7F - B
-   744 00271 1003          			MOV		A,STATUS
-   745 00272 6C58          			XOR		A,@0x58		; Check Status ?
-   746                     			;;XOR		A,@0x50		; Check Status ?
-   747 00273 40CE          			CALL	INST_XOR_JUDGE
-   748 00274 1050          			MOV		A,0x50
-   749 00275 6C80          			XOR		A,@0x80		; Check Result ?
-   750 00276 40CE          			CALL	INST_XOR_JUDGE
-   751 00277 40CB          			CALL	STATUS_CLEAR
-   752 00278 2003          			BC		C			; B = 1
-   753 00279 6080          			MOV		A,@0x80		; ,0x80-0x01
-   754 0027A 0150          			MOV		0x50,A		; [0x50] = 0x80
-   755 0027B 6001          			MOV		A,@0x01
-   756 0027C 7950          			SUBB	0x50,A		; [0x50] = 0x80 - 0x01 - B
-   757 0027D 1003          			MOV		A,STATUS
-   758 0027E 6C39          			XOR		A,@0x39		; Check Status ?
-   759                     			;;XOR		A,@0x31		; Check Status ?
-   760 0027F 40CE          			CALL	INST_XOR_JUDGE
-   761 00280 1050          			MOV		A,0x50
-   762 00281 6C7E          			XOR		A,@0x7E		; Check Result ?
-   763 00282 40CE          			CALL	INST_XOR_JUDGE
-   764                     
-   765 00283               		INST_DECA:			;-------Instruction Test => DECA R
-   766 00283 600C          			MOV		A,@0x0C
-   767 00284 015A          			MOV		INST,A
-   768 00285 6000          			MOV		A,@0x00
-   769 00286 0103          			MOV		STATUS,A
-   770 00287 6020          			MOV		A,@0x20		; 0x20-1
-   771 00288 0150          			MOV		0x50,A		; [0x50] = 0x20
-   772 00289 0650          			DECA	0x50		; A = [0x50] - 1
-   773 0028A 3803          			JBS		C			; Check C = 1?	; Result is Positive
-   774 0028B 506C          			JMP	INS_FAIL
-   775 0028C 3103          			JBC		DC			; Check DC = 0?
-   776 0028D 506C          			JMP	INS_FAIL
-   777 0028E 3203          			JBC		Z			; Check Z = 0?
-   778 0028F 506C          			JMP	INS_FAIL
-   779 00290 3503          			JBC		OV			; Check OV = 0?
-   780 00291 506C          			JMP	INS_FAIL
-   781 00292 3603          			JBC		N			; Check N = 0?
-   782 00293 506C          			JMP	INS_FAIL
-   783 00294 6C1F          			XOR		A,@0x1F		; Check Result ?
-   784 00295 3A03          			JBS		Z			; Check Z = 1?
-   785 00296 506C          			JMP	INS_FAIL
-   786 00297 3603          			JBC		N			; Check N = 0?
-   787 00298 506C          			JMP	INS_FAIL
-   788 00299 6000          			MOV		A,@0x00
-   789 0029A 0103          			MOV		STATUS,A
-   790 0029B 6001          			MOV		A,@0x01		; 0x01-1
-   791 0029C 0150          			MOV		0x50,A		; [0x50] = 0x01
-   792 0029D 0650          			DECA	0x50		; A = [0x50] - 1
-   793 0029E 3803          			JBS		C			; Check C = 1?	; Result is Positive
-   794 0029F 506C          			JMP	INS_FAIL
-   795 002A0 3903          			JBS		DC			; Check DC = 1?
-   796 002A1 506C          			JMP	INS_FAIL
-   797 002A2 3A03          			JBS		Z			; Check Z = 1?
-   798 002A3 506C          			JMP	INS_FAIL
-   799 002A4 3503          			JBC		OV			; Check OV = 0?
-   800 002A5 506C          			JMP	INS_FAIL
-   801 002A6 3603          			JBC		N			; Check N = 0?
-   802 002A7 506C          			JMP	INS_FAIL
-   803 002A8 2203          			BC		Z
-   804 002A9 6C00          			XOR		A,@0x00		; Check Result ?
-   805 002AA 3A03          			JBS		Z			; Check Z = 1?
-   806 002AB 506C          			JMP	INS_FAIL
-   807 002AC 3603          			JBC		N			; Check N = 0?
-   808 002AD 506C          			JMP	INS_FAIL
-   809 002AE 6000          			MOV		A,@0x00
-   810 002AF 0103          			MOV		STATUS,A
-   811 002B0 6000          			MOV		A,@0x00		; 0x00-1
-   812 002B1 0150          			MOV		0x50,A		; [0x50] = 0x00
-   813 002B2 0650          			DECA	0x50		; A = [0x50] - 1
-   814 002B3 3003          			JBC		C			; Check C = 0?
-   815 002B4 506C          			JMP	INS_FAIL
-   816 002B5 3103          			JBC		DC			; Check DC = 0?
-   817 002B6 506C          			JMP	INS_FAIL
-   818 002B7 3203          			JBC		Z			; Check Z = 0?
-   819 002B8 506C          			JMP	INS_FAIL
-   820 002B9 3503          			JBC		OV			; Check OV = 0?
-   821 002BA 506C          			JMP	INS_FAIL
-   822 002BB 3E03          			JBS		N			; Check N = 1?
-   823 002BC 506C          			JMP	INS_FAIL
-   824 002BD 2203          			BC		Z
-   825 002BE 2603          			BC		N
-   826 002BF 6CFF          			XOR		A,@0xFF		; Check Result ?
-   827 002C0 3A03          			JBS		Z			; Check Z = 1?
-   828 002C1 506C          			JMP	INS_FAIL
-   829 002C2 3603          			JBC		N			; Check N = 0?
-   830 002C3 506C          			JMP	INS_FAIL
-   831 002C4 6000          			MOV		A,@0x00
-   832 002C5 0103          			MOV		STATUS,A
-   833 002C6 6080          			MOV		A,@0x80		; 0x80-1
-   834 002C7 0150          			MOV		0x50,A		; [0x50] = 0x80
-   835 002C8 0650          			DECA	0x50		; A = [0x50] - 1
-   836 002C9 3803          			JBS		C			; Check C = 1?
-   837 002CA 506C          			JMP	INS_FAIL
-   838 002CB 3103          			JBC		DC			; Check DC = 0?
-   839 002CC 506C          			JMP	INS_FAIL
-   840 002CD 3203          			JBC		Z			; Check Z = 0?
-   841 002CE 506C          			JMP	INS_FAIL
-   842 002CF 3D03          			JBS		OV			; Check OV = 1?
-   843 002D0 506C          			JMP	INS_FAIL
-   844 002D1 3603          			JBC		N			; Check N = 0?
-   845 002D2 506C          			JMP	INS_FAIL
-   846 002D3 2203          			BC		Z
-   847 002D4 2603          			BC		N
-   848 002D5 6C7F          			XOR		A,@0x7F		; Check Result ?
-   849 002D6 3A03          			JBS		Z			; Check Z = 1?
-   850 002D7 506C          			JMP	INS_FAIL
-   851 002D8 3603          			JBC		N			; Check N = 0?
-   852 002D9 506C          			JMP	INS_FAIL
+   408 0012E               		INST_CLA:			;-------Instruction Test => CLA
+   409 0012E 6008          			MOV		A,@0x08
+   410 0012F 015A          			MOV		INST,A
+   411 00130 605A          			MOV		A,@0x5A
+   412 00131 6C5A          			XOR		A,@0x5A		; Check Result ?
+   413 00132 3A03          			JBS		Z			; Check Z = 1?
+   414 00133 506C          			JMP	INS_FAIL
+   415 00134 3603          			JBC		N			; Check N = 0?
+   416 00135 506C          			JMP	INS_FAIL
+   417 00136 605A          			MOV		A,@0x5A
+   418 00137 0200          			CLRA
+   419 00138 3A03          			JBS		Z			; Check Z = 1?
+   420 00139 506C          			JMP	INS_FAIL
+   421 0013A 2203          			BC		Z
+   422 0013B 6C00          			XOR		A,@0x00		; Check Result ?
+   423 0013C 3A03          			JBS		Z			; Check Z = 1?
+   424 0013D 506C          			JMP	INS_FAIL
+   425 0013E 3603          			JBC		N			; Check N = 0?
+   426 0013F 506C          			JMP	INS_FAIL
+   427 00140               		INST_CLR:			;-------Instruction Test => CLR
+   428 00140 6009          			MOV		A,@0x09
+   429 00141 015A          			MOV		INST,A
+   430 00142 60AA          			MOV		A,@0xAA
+   431 00143 0150          			MOV		0x50,A
+   432 00144 1050          			MOV		A,0x50
+   433 00145 6CAA          			XOR		A,@0xAA		; Check Result ?
+   434 00146 3A03          			JBS		Z			; Check Z = 1?
+   435 00147 506C          			JMP	INS_FAIL
+   436 00148 3603          			JBC		N			; Check N = 0?
+   437 00149 506C          			JMP	INS_FAIL
+   438 0014A 0350          			CLR		0x50
+   439 0014B 3A03          			JBS		Z			; Check Z = 1?
+   440 0014C 506C          			JMP	INS_FAIL
+   441 0014D 2203          			BC		Z
+   442 0014E 1050          			MOV		A,0x50
+   443 0014F 6C00          			XOR		A,@0x00		; Check Result ?
+   444 00150 3A03          			JBS		Z			; Check Z = 1?
+   445 00151 506C          			JMP	INS_FAIL
+   446 00152 3603          			JBC		N			; Check N = 0?
+   447 00153 506C          			JMP	INS_FAIL
+   448 00154               		INST_SUB_A_R:		;-------Instruction Test => SUB A,R
+   449 00154 600A          			MOV		A,@0x0A
+   450 00155 015A          			MOV		INST,A
+   451 00156 6000          			MOV		A,@0x00
+   452 00157 0103          			MOV		STATUS,A
+   453 00158 6002          			MOV		A,@0x02		; SUB(2-1)=1
+   454 00159 0150          			MOV		0x50,A		; [0x50] = 0x02
+   455 0015A 6001          			MOV		A,@0x01
+   456 0015B 0450          			SUB		A,0x50		; A = [0x50] - A
+   457 0015C 3803          			JBS		C			; Check C = 1? 	; Resulet is Positive
+   458 0015D 506C          			JMP	INS_FAIL
+   459 0015E 3903          			JBS		DC			; Check DC = 1?	; Low-Byte is Positve
+   460 0015F 506C          			JMP	INS_FAIL
+   461 00160 3203          			JBC		Z			; Check Z = 0?
+   462 00161 506C          			JMP	INS_FAIL
+   463 00162 3503          			JBC		OV			; Check OV = 0?
+   464 00163 506C          			JMP	INS_FAIL
+   465 00164 3603          			JBC		N			; Check N = 0?
+   466 00165 506C          			JMP	INS_FAIL
+   467 00166 2203          			BC		Z
+   468 00167 6C01          			XOR		A,@0x01		; Check Result ?
+   469 00168 3A03          			JBS		Z			; Check Z = 1?
+   470 00169 506C          			JMP	INS_FAIL
+   471 0016A 3603          			JBC		N			; Check N = 0?
+   472 0016B 506C          			JMP	INS_FAIL
+   473 0016C 6000          			MOV		A,@0x00
+   474 0016D 0103          			MOV		STATUS,A
+   475 0016E 6002          			MOV		A,@0x02		; SUB(2-2)=0
+   476 0016F 0150          			MOV		0x50,A		; [0x50] = 0x02
+   477 00170 6002          			MOV		A,@0x02
+   478 00171 0450          			SUB		A,0x50		; A = [0x50] - A
+   479 00172 3803          			JBS		C			; Check C = 1?	; Result is Positive
+   480 00173 506C          			JMP	INS_FAIL
+   481 00174 3903          			JBS		DC			; Check DC = 1?	; Low-Byte is Positve
+   482 00175 506C          			JMP	INS_FAIL
+   483 00176 3A03          			JBS		Z			; Check Z = 1?	; Result is Zero
+   484 00177 506C          			JMP	INS_FAIL
+   485 00178 3503          			JBC		OV			; Check OV = 0?
+   486 00179 506C          			JMP	INS_FAIL
+   487 0017A 3603          			JBC		N			; Check N = 0?
+   488 0017B 506C          			JMP	INS_FAIL
+   489 0017C 2203          			BC		Z
+   490 0017D 6C00          			XOR		A,@0x00		; Check Result ?
+   491 0017E 3A03          			JBS		Z			; Check Z = 1?
+   492 0017F 506C          			JMP	INS_FAIL
+   493 00180 3603          			JBC		N			; Check N = 0?
+   494 00181 506C          			JMP	INS_FAIL
+   495 00182 6000          			MOV		A,@0x00
+   496 00183 0103          			MOV		STATUS,A
+   497 00184 60FF          			MOV		A,@0xFF		; SUB(-1-127) = -128(0x80)
+   498 00185 0150          			MOV		0x50,A		; [0x50] = 0xFF
+   499 00186 607F          			MOV		A,@0x7F
+   500 00187 0450          			SUB		A,0x50		; A = [0x50] - A
+   501 00188 3803          			JBS		C			; Check C = 1?
+   502 00189 506C          			JMP	INS_FAIL
+   503 0018A 3903          			JBS		DC			; Check DC = 1?
+   504 0018B 506C          			JMP	INS_FAIL
+   505 0018C 3203          			JBC		Z			; Check Z = 0?
+   506 0018D 506C          			JMP	INS_FAIL
+   507 0018E 3503          			JBC		OV			; Check OV = 0?
+   508 0018F 506C          			JMP	INS_FAIL
+   509 00190 3E03          			JBS		N			; Check N = 1?
+   510 00191 506C          			JMP	INS_FAIL
+   511 00192 2203          			BC		Z
+   512 00193 2603          			BC		N
+   513 00194 6C80          			XOR		A,@0x80		; Check Result ?
+   514 00195 3A03          			JBS		Z			; Check Z = 1?
+   515 00196 506C          			JMP	INS_FAIL
+   516 00197 3603          			JBC		N			; Check N = 0?
+   517 00198 506C          			JMP	INS_FAIL
+   518 00199 6000          			MOV		A,@0x00
+   519 0019A 0103          			MOV		STATUS,A
+   520 0019B 6080          			MOV		A,@0x80		; SUB(-128-127) = 1(0x01)
+   521 0019C 0150          			MOV		0x50,A		; [0x50] = 0x80
+   522 0019D 607F          			MOV		A,@0x7F
+   523 0019E 0450          			SUB		A,0x50		; A = [0x50] - A
+   524 0019F 3803          			JBS		C			; Check C = 1?
+   525 001A0 506C          			JMP	INS_FAIL
+   526 001A1 3103          			JBC		DC			; Check DC = 0?
+   527 001A2 506C          			JMP	INS_FAIL
+   528 001A3 3203          			JBC		Z			; Check Z = 0?
+   529 001A4 506C          			JMP	INS_FAIL
+   530 001A5 3D03          			JBS		OV			; Check OV = 1?
+   531 001A6 506C          			JMP	INS_FAIL
+   532 001A7 3603          			JBC		N			; Check N = 0?
+   533 001A8 506C          			JMP	INS_FAIL
+   534 001A9 2203          			BC		Z
+   535 001AA 2603          			BC		N
+   536 001AB 6C01          			XOR		A,@0x01		; Check Result ?
+   537 001AC 3A03          			JBS		Z			; Check Z = 1?
+   538 001AD 506C          			JMP	INS_FAIL
+   539 001AE 3603          			JBC		N			; Check N = 0?
+   540 001AF 506C          			JMP	INS_FAIL
+   541 001B0 6000          			MOV		A,@0x00
+   542 001B1 0103          			MOV		STATUS,A
+   543 001B2 6001          			MOV		A,@0x01		; SUB(1-3) = -2(0xFE)
+   544 001B3 0150          			MOV		0x50,A		; [0x50] = 0x01
+   545 001B4 6003          			MOV		A,@0x03
+   546 001B5 0450          			SUB		A,0x50		; A = [0x50] - A
+   547 001B6 3003          			JBC		C			; Check C = 0?
+   548 001B7 506C          			JMP	INS_FAIL
+   549 001B8 3103          			JBC		DC			; Check DC = 0?
+   550 001B9 506C          			JMP	INS_FAIL
+   551 001BA 3203          			JBC		Z			; Check Z = 0?
+   552 001BB 506C          			JMP	INS_FAIL
+   553 001BC 3503          			JBC		OV			; Check OV = 0?
+   554 001BD 506C          			JMP	INS_FAIL
+   555 001BE 3E03          			JBS		N			; Check N = 1?
+   556 001BF 506C          			JMP	INS_FAIL
+   557 001C0 2203          			BC		Z
+   558 001C1 2603          			BC		N
+   559 001C2 6CFE          			XOR		A,@0xFE		; Check Result ?
+   560 001C3 3A03          			JBS		Z			; Check Z = 1?
+   561 001C4 506C          			JMP	INS_FAIL
+   562 001C5 3603          			JBC		N			; Check N = 0?
+   563 001C6 506C          			JMP	INS_FAIL
+   564 001C7               		INST_SUB_R_A:		;-------Instruction Test => SUB R,A
+   565 001C7 600B          			MOV		A,@0x0B
+   566 001C8 015A          			MOV		INST,A
+   567 001C9 6000          			MOV		A,@0x00
+   568 001CA 0103          			MOV		STATUS,A
+   569 001CB 6002          			MOV		A,@0x02
+   570 001CC 0150          			MOV		0x50,A		; [0x50] = 0x02
+   571 001CD 6001          			MOV		A,@0x01
+   572 001CE 0550          			SUB		0x50,A		; [0x50] = [0x50] - 0x01
+   573 001CF 1003          			MOV		A,STATUS
+   574 001D0 6C1B          			XOR		A,@0x1B		; for non reset
+   575                     			;;XOR		A,@0x13
+   576 001D1 40CE          			CALL	INST_XOR_JUDGE
+   577 001D2 2203          			BC		Z
+   578 001D3 2603          			BC		N
+   579 001D4 1050          			MOV		A,0x50
+   580 001D5 6C01          			XOR		A,@0x01		; Check Result ?
+   581 001D6 40CE          			CALL	INST_XOR_JUDGE
+   582 001D7 6000          			MOV		A,@0x00
+   583 001D8 0103          			MOV		STATUS,A
+   584 001D9 6002          			MOV		A,@0x02
+   585 001DA 0150          			MOV		0x50,A		; [0x50] = 0x02
+   586 001DB 6002          			MOV		A,@0x02
+   587 001DC 0550          			SUB		0x50,A		; [0x50] = [0x50] - 0x02
+   588 001DD 1003          			MOV		A,STATUS
+   589 001DE 6C1F          			XOR		A,@0x1F		; for nono reset
+   590                     			;;XOR		A,@0x17
+   591 001DF 40CE          			CALL	INST_XOR_JUDGE
+   592 001E0 2203          			BC		Z
+   593 001E1 2603          			BC		N
+   594 001E2 1050          			MOV		A,0x50
+   595 001E3 6C00          			XOR		A,@0x00		; Check Result ?
+   596 001E4 3A03          			JBS		Z			; Check Z = 1?
+   597 001E5 506C          			JMP	INS_FAIL
+   598 001E6 3603          			JBC		N			; Check N = 0?
+   599 001E7 506C          			JMP	INS_FAIL
+   600 001E8 6000          			MOV		A,@0x00
+   601 001E9 0103          			MOV		STATUS,A
+   602 001EA 6080          			MOV		A,@0x80
+   603 001EB 0150          			MOV		0x50,A		; [0x50] = 0x80
+   604 001EC 6001          			MOV		A,@0x01
+   605 001ED 0550          			SUB		0x50,A		; [0x50] = [0x50] - 0x01
+   606 001EE 1003          			MOV		A,STATUS
+   607 001EF 6C39          			XOR		A,@0x39	;; for non reset
+   608                     			;;XOR		A,@0x31
+   609 001F0 40CE          			CALL	INST_XOR_JUDGE
+   610 001F1 2203          			BC		Z
+   611 001F2 2603          			BC		N
+   612 001F3 1050          			MOV		A,0x50
+   613 001F4 6C7F          			XOR		A,@0x7F		; Check Result ?
+   614 001F5 40CE          			CALL	INST_XOR_JUDGE
+   615 001F6               		INST_SUB_A_K:		;-------Instruction Test => SUB A,k
+   616 001F6 6030          			MOV		A,@0x30
+   617 001F7 015A          			MOV		INST,A
+   618 001F8 40CB          			CALL	STATUS_CLEAR
+   619 001F9 60FF          			MOV		A,@0xFF		; 0xFF-0xFF
+   620 001FA 74FF          			SUB		A,@0xFF		; A = 0xFF - 0xFF
+   621 001FB 3803          			JBS		C			; Check C = 1?
+   622 001FC 506C          			JMP	INS_FAIL
+   623 001FD 3903          			JBS		DC			; Check DC = 1?
+   624 001FE 506C          			JMP	INS_FAIL
+   625 001FF 3A03          			JBS		Z			; Check Z = 1?
+   626 00200 506C          			JMP	INS_FAIL
+   627 00201 3503          			JBC		OV			; Check OV = 0?
+   628 00202 506C          			JMP	INS_FAIL
+   629 00203 3603          			JBC		N			; Check N = 0?
+   630 00204 506C          			JMP	INS_FAIL
+   631 00205 6C00          			XOR		A,@0x00		; Check Result ?
+   632 00206 40CE          			CALL	INST_XOR_JUDGE
+   633 00207 40CB          			CALL	STATUS_CLEAR
+   634 00208 607F          			MOV		A,@0x7F		; 0x00-0x7F
+   635 00209 7400          			SUB		A,@0x00		; A = 0x00 - 0x7F
+   636 0020A 3003          			JBC		C			; Check C = 0?
+   637 0020B 506C          			JMP	INS_FAIL
+   638 0020C 3103          			JBC		DC			; Check DC = 0?
+   639 0020D 506C          			JMP	INS_FAIL
+   640 0020E 3203          			JBC		Z			; Check Z = 0?
+   641 0020F 506C          			JMP	INS_FAIL
+   642 00210 3503          			JBC		OV			; Check OV = 0?
+   643 00211 506C          			JMP	INS_FAIL
+   644 00212 3E03          			JBS		N			; Check N = 1?
+   645 00213 506C          			JMP	INS_FAIL
+   646 00214 6C81          			XOR		A,@0x81		; Check Result ?
+   647 00215 40CE          			CALL	INST_XOR_JUDGE
+   648 00216 40CB          			CALL	STATUS_CLEAR
+   649 00217 6001          			MOV		A,@0x01		; 0x80-0x01
+   650 00218 7480          			SUB		A,@0x80		; A = 0x80 - 0x01
+   651 00219 3803          			JBS		C			; Check C = 1?
+   652 0021A 506C          			JMP	INS_FAIL
+   653 0021B 3103          			JBC		DC			; Check DC = 0?
+   654 0021C 506C          			JMP	INS_FAIL
+   655 0021D 3203          			JBC		Z			; Check Z = 0?
+   656 0021E 506C          			JMP	INS_FAIL
+   657 0021F 3D03          			JBS		OV			; Check OV = 1?
+   658 00220 506C          			JMP	INS_FAIL
+   659 00221 3603          			JBC		N			; Check N = 0?
+   660 00222 506C          			JMP	INS_FAIL
+   661 00223 6C7F          			XOR		A,@0x7F		; Check Result ?
+   662 00224 40CE          			CALL	INST_XOR_JUDGE
+   663 00225               		INST_SUBB_A_R:		;-------Instruction Test => SUBB A,R
+   664 00225 6031          			MOV		A,@0x31
+   665 00226 015A          			MOV		INST,A
+   666 00227 40CB          			CALL	STATUS_CLEAR
+   667 00228 2003          			BC		C			; B = 1
+   668 00229 6000          			MOV		A,@0x00		;0x00-0xF
+   669 0022A 0150          			MOV		0x50,A		; [0x50] = 0x00
+   670 0022B 60FF          			MOV		A,@0xFF		; A = 0x01
+   671 0022C 7850          			SUBB	A,0x50		; A = [0x50] - A - B
+   672 0022D 3003          			JBC		C			; Check C = 0?
+   673 0022E 506C          			JMP	INS_FAIL
+   674 0022F 3103          			JBC		DC			; Check DC = 0?
+   675 00230 506C          			JMP	INS_FAIL
+   676 00231 3A03          			JBS		Z			; Check Z = 1?
+   677 00232 506C          			JMP	INS_FAIL
+   678 00233 3503          			JBC		OV			; Check OV = 0?
+   679 00234 506C          			JMP	INS_FAIL
+   680 00235 3603          			JBC		N			; Check N = 0?
+   681 00236 506C          			JMP	INS_FAIL
+   682 00237 6C00          			XOR		A,@0x00		; Check Result ?
+   683 00238 40CE          			CALL	INST_XOR_JUDGE	
+   684 00239 40CB          			CALL	STATUS_CLEAR
+   685 0023A 2003          			BC		C			; B = 1
+   686 0023B 6000          			MOV		A,@0x00		; 0x00-0x7F
+   687 0023C 0150          			MOV		0x50,A		; [0x50] = 0x00
+   688 0023D 607F          			MOV		A,@0x7F		; A = 0x01
+   689 0023E 7850          			SUBB	A,0x50		; A = [0x50] - A - B
+   690 0023F 3003          			JBC		C			; Check C = 0?
+   691 00240 506C          			JMP	INS_FAIL
+   692 00241 3103          			JBC		DC			; Check DC = 0?
+   693 00242 506C          			JMP	INS_FAIL
+   694 00243 3203          			JBC		Z			; Check Z = 0?
+   695 00244 506C          			JMP	INS_FAIL
+   696 00245 3503          			JBC		OV			; Check OV = 0?
+   697 00246 506C          			JMP	INS_FAIL
+   698 00247 3E03          			JBS		N			; Check N = 1?
+   699 00248 506C          			JMP	INS_FAIL
+   700 00249 6C80          			XOR		A,@0x80		; Check Result ?
+   701 0024A 40CE          			CALL	INST_XOR_JUDGE
+   702 0024B 40CB          			CALL	STATUS_CLEAR
+   703 0024C 2003          			BC		C			; B = 1
+   704 0024D 6080          			MOV		A,@0x80		; 0x80-0x01
+   705 0024E 0150          			MOV		0x50,A		; [0x50] = 0x80
+   706 0024F 6001          			MOV		A,@0x01		; A = 0x01
+   707 00250 7850          			SUBB	A,0x50		; A = [0x50] - A - B
+   708 00251 3803          			JBS		C			; Check C = 1?
+   709 00252 506C          			JMP	INS_FAIL
+   710 00253 3103          			JBC		DC			; Check DC = 0?
+   711 00254 506C          			JMP	INS_FAIL
+   712 00255 3203          			JBC		Z			; Check Z = 0?
+   713 00256 506C          			JMP	INS_FAIL
+   714 00257 3D03          			JBS		OV			; Check OV = 1?
+   715 00258 506C          			JMP	INS_FAIL
+   716 00259 3603          			JBC		N			; Check N = 0?
+   717 0025A 506C          			JMP	INS_FAIL
+   718 0025B 6C7E          			XOR		A,@0x7E		; Check Result ?
+   719 0025C 40CE          			CALL	INST_XOR_JUDGE
+   720 0025D               		INST_SUBB_R_A:			;-------Instruction Test => SUBB R,A
+   721 0025D 6032          			MOV		A,@0x32
+   722 0025E 015A          			MOV		INST,A
+   723 0025F 40CB          			CALL	STATUS_CLEAR
+   724 00260 2003          			BC		C			; B = 1
+   725 00261 6000          			MOV		A,@0x00		; 0x00-0xFF
+   726 00262 0150          			MOV		0x50,A		; [0x50] = 0x00
+   727 00263 60FF          			MOV		A,@0xFF
+   728 00264 7950          			SUBB	0x50,A		; [0x50] = 0x00 - 0xFF - B
+   729 00265 1003          			MOV		A,STATUS
+   730 00266 6C1C          			XOR		A,@0x1C		; Check Status ?
+   731                     			;;XOR		A,@0x14		; Check Status ?
+   732 00267 40CE          			CALL	INST_XOR_JUDGE
+   733 00268 1050          			MOV		A,0x50
+   734 00269 6C00          			XOR		A,@0x00		; Check Result ?
+   735 0026A 40CE          			CALL	INST_XOR_JUDGE
+   736 0026B 40CB          			CALL	STATUS_CLEAR
+   737 0026C 2003          			BC		C			; B = 1
+   738 0026D 6000          			MOV		A,@0x00		; 0x00-0x7F
+   739 0026E 0150          			MOV		0x50,A		; [0x50] = 0x00
+   740 0026F 607F          			MOV		A,@0x7F
+   741 00270 7950          			SUBB	0x50,A		; [0x50] = 0x00 - 0x7F - B
+   742 00271 1003          			MOV		A,STATUS
+   743 00272 6C58          			XOR		A,@0x58		; Check Status ?
+   744                     			;;XOR		A,@0x50		; Check Status ?
+   745 00273 40CE          			CALL	INST_XOR_JUDGE
+   746 00274 1050          			MOV		A,0x50
+   747 00275 6C80          			XOR		A,@0x80		; Check Result ?
+   748 00276 40CE          			CALL	INST_XOR_JUDGE
+   749 00277 40CB          			CALL	STATUS_CLEAR
+   750 00278 2003          			BC		C			; B = 1
+   751 00279 6080          			MOV		A,@0x80		; ,0x80-0x01
+   752 0027A 0150          			MOV		0x50,A		; [0x50] = 0x80
+   753 0027B 6001          			MOV		A,@0x01
+   754 0027C 7950          			SUBB	0x50,A		; [0x50] = 0x80 - 0x01 - B
+   755 0027D 1003          			MOV		A,STATUS
+   756 0027E 6C39          			XOR		A,@0x39		; Check Status ?
+   757                     			;;XOR		A,@0x31		; Check Status ?
+   758 0027F 40CE          			CALL	INST_XOR_JUDGE
+   759 00280 1050          			MOV		A,0x50
+   760 00281 6C7E          			XOR		A,@0x7E		; Check Result ?
+   761 00282 40CE          			CALL	INST_XOR_JUDGE
+   762                     
+   763 00283               		INST_DECA:			;-------Instruction Test => DECA R
+   764 00283 600C          			MOV		A,@0x0C
+   765 00284 015A          			MOV		INST,A
+   766 00285 6000          			MOV		A,@0x00
+   767 00286 0103          			MOV		STATUS,A
+   768 00287 6020          			MOV		A,@0x20		; 0x20-1
+   769 00288 0150          			MOV		0x50,A		; [0x50] = 0x20
+   770 00289 0650          			DECA	0x50		; A = [0x50] - 1
+   771 0028A 3803          			JBS		C			; Check C = 1?	; Result is Positive
+   772 0028B 506C          			JMP	INS_FAIL
+   773 0028C 3103          			JBC		DC			; Check DC = 0?
+   774 0028D 506C          			JMP	INS_FAIL
+   775 0028E 3203          			JBC		Z			; Check Z = 0?
+   776 0028F 506C          			JMP	INS_FAIL
+   777 00290 3503          			JBC		OV			; Check OV = 0?
+   778 00291 506C          			JMP	INS_FAIL
+   779 00292 3603          			JBC		N			; Check N = 0?
+   780 00293 506C          			JMP	INS_FAIL
+   781 00294 6C1F          			XOR		A,@0x1F		; Check Result ?
+   782 00295 3A03          			JBS		Z			; Check Z = 1?
+   783 00296 506C          			JMP	INS_FAIL
+   784 00297 3603          			JBC		N			; Check N = 0?
+   785 00298 506C          			JMP	INS_FAIL
+   786 00299 6000          			MOV		A,@0x00
+   787 0029A 0103          			MOV		STATUS,A
+   788 0029B 6001          			MOV		A,@0x01		; 0x01-1
+   789 0029C 0150          			MOV		0x50,A		; [0x50] = 0x01
+   790 0029D 0650          			DECA	0x50		; A = [0x50] - 1
+   791 0029E 3803          			JBS		C			; Check C = 1?	; Result is Positive
+   792 0029F 506C          			JMP	INS_FAIL
+   793 002A0 3903          			JBS		DC			; Check DC = 1?
+   794 002A1 506C          			JMP	INS_FAIL
+   795 002A2 3A03          			JBS		Z			; Check Z = 1?
+   796 002A3 506C          			JMP	INS_FAIL
+   797 002A4 3503          			JBC		OV			; Check OV = 0?
+   798 002A5 506C          			JMP	INS_FAIL
+   799 002A6 3603          			JBC		N			; Check N = 0?
+   800 002A7 506C          			JMP	INS_FAIL
+   801 002A8 2203          			BC		Z
+   802 002A9 6C00          			XOR		A,@0x00		; Check Result ?
+   803 002AA 3A03          			JBS		Z			; Check Z = 1?
+   804 002AB 506C          			JMP	INS_FAIL
+   805 002AC 3603          			JBC		N			; Check N = 0?
+   806 002AD 506C          			JMP	INS_FAIL
+   807 002AE 6000          			MOV		A,@0x00
+   808 002AF 0103          			MOV		STATUS,A
+   809 002B0 6000          			MOV		A,@0x00		; 0x00-1
+   810 002B1 0150          			MOV		0x50,A		; [0x50] = 0x00
+   811 002B2 0650          			DECA	0x50		; A = [0x50] - 1
+   812 002B3 3003          			JBC		C			; Check C = 0?
+   813 002B4 506C          			JMP	INS_FAIL
+   814 002B5 3103          			JBC		DC			; Check DC = 0?
+   815 002B6 506C          			JMP	INS_FAIL
+   816 002B7 3203          			JBC		Z			; Check Z = 0?
+   817 002B8 506C          			JMP	INS_FAIL
+   818 002B9 3503          			JBC		OV			; Check OV = 0?
+   819 002BA 506C          			JMP	INS_FAIL
+   820 002BB 3E03          			JBS		N			; Check N = 1?
+   821 002BC 506C          			JMP	INS_FAIL
+   822 002BD 2203          			BC		Z
+   823 002BE 2603          			BC		N
+   824 002BF 6CFF          			XOR		A,@0xFF		; Check Result ?
+   825 002C0 3A03          			JBS		Z			; Check Z = 1?
+   826 002C1 506C          			JMP	INS_FAIL
+   827 002C2 3603          			JBC		N			; Check N = 0?
+   828 002C3 506C          			JMP	INS_FAIL
+   829 002C4 6000          			MOV		A,@0x00
+   830 002C5 0103          			MOV		STATUS,A
+   831 002C6 6080          			MOV		A,@0x80		; 0x80-1
+   832 002C7 0150          			MOV		0x50,A		; [0x50] = 0x80
+   833 002C8 0650          			DECA	0x50		; A = [0x50] - 1
+   834 002C9 3803          			JBS		C			; Check C = 1?
+   835 002CA 506C          			JMP	INS_FAIL
+   836 002CB 3103          			JBC		DC			; Check DC = 0?
+   837 002CC 506C          			JMP	INS_FAIL
+   838 002CD 3203          			JBC		Z			; Check Z = 0?
+   839 002CE 506C          			JMP	INS_FAIL
+   840 002CF 3D03          			JBS		OV			; Check OV = 1?
+   841 002D0 506C          			JMP	INS_FAIL
+   842 002D1 3603          			JBC		N			; Check N = 0?
+   843 002D2 506C          			JMP	INS_FAIL
+   844 002D3 2203          			BC		Z
+   845 002D4 2603          			BC		N
+   846 002D5 6C7F          			XOR		A,@0x7F		; Check Result ?
+   847 002D6 3A03          			JBS		Z			; Check Z = 1?
+   848 002D7 506C          			JMP	INS_FAIL
+   849 002D8 3603          			JBC		N			; Check N = 0?
+   850 002D9 506C          			JMP	INS_FAIL
+   851                     
+   852                     
    853                     
-   854                     
-   855                     
-   856 002DA               		INST_DEC:			;-------Instruction Test => DEC R
-   857 002DA 600D          			MOV		A,@0x0D
-   858 002DB 015A          			MOV		INST,A
-   859 002DC 6000          			MOV		A,@0x00
-   860 002DD 0103          			MOV		STATUS,A
-   861 002DE 6020          			MOV		A,@0x20		; 0x20-1
-   862 002DF 0150          			MOV		0x50,A		; [0x50] = 0x20
-   863 002E0 0750          			DEC		0x50		; [0x50] = [0x50] - 0x01
-   864 002E1 1003          			MOV		A,STATUS
-   865 002E2 6C19          			XOR		A,@0x19		; Check Status ? for non rest
-   866                     			;;XOR		A,@0x11		; Check Status ?
-   867 002E3 3A03          			JBS		Z			; Check Z = 1?
-   868 002E4 506C          			JMP	INS_FAIL
-   869 002E5 3603          			JBC		N			; Check N = 0?
-   870 002E6 506C          			JMP	INS_FAIL
-   871 002E7 2203          			BC		Z
-   872 002E8 1050          			MOV		A,0x50
-   873 002E9 6C1F          			XOR		A,@0x1F		; Check Result ?
-   874 002EA 3A03          			JBS		Z			; Check Z = 1?
-   875 002EB 506C          			JMP	INS_FAIL
-   876 002EC 3603          			JBC		N			; Check N = 0?
-   877 002ED 506C          			JMP	INS_FAIL
-   878 002EE 6000          			MOV		A,@0x00
-   879 002EF 0103          			MOV		STATUS,A
-   880 002F0 6001          			MOV		A,@0x01		; 0x01-1
-   881 002F1 0150          			MOV		0x50,A		; [0x50] = 0x01
-   882 002F2 0750          			DEC		0x50		; [0x50] = [0x50] - 0x01
-   883 002F3 1003          			MOV		A,STATUS
-   884 002F4 6C1F          			XOR		A,@0x1F		; Check Status ? for non reset
-   885                     			;;XOR		A,@0x17		; Check Status ?
-   886 002F5 3A03          			JBS		Z			; Check Z = 1?
-   887 002F6 506C          			JMP	INS_FAIL
-   888 002F7 3603          			JBC		N			; Check N = 0?
-   889 002F8 506C          			JMP	INS_FAIL
-   890 002F9 2203          			BC		Z
-   891 002FA 1050          			MOV		A,0x50
-   892 002FB 6C00          			XOR		A,@0x00		; Check Result ?
-   893 002FC 3A03          			JBS		Z			; Check Z = 1?
-   894 002FD 506C          			JMP	INS_FAIL
-   895 002FE 3603          			JBC		N			; Check N = 0?
-   896 002FF 506C          			JMP	INS_FAIL
-   897 00300 6000          			MOV		A,@0x00
-   898 00301 0103          			MOV		STATUS,A
-   899 00302 6000          			MOV		A,@0x00		; 0x00-1
-   900 00303 0150          			MOV		0x50,A		; [0x50] = 0x00
-   901 00304 0750          			DEC		0x50		; [0x50] = [0x50] - 0x01
-   902 00305 1003          			MOV		A,STATUS
-   903 00306 6C58          			XOR		A,@0x58		; Check Status ? for non reset
-   904                     			;;XOR		A,@0x50		; Check Status ?
-   905 00307 3A03          			JBS		Z			; Check Z = 1?
-   906 00308 506C          			JMP	INS_FAIL
-   907 00309 3603          			JBC		N			; Check N = 0?
-   908 0030A 506C          			JMP	INS_FAIL
-   909 0030B 2203          			BC		Z
-   910 0030C 1050          			MOV		A,0x50
-   911 0030D 6CFF          			XOR		A,@0xFF		; Check Result ?
-   912 0030E 3A03          			JBS		Z			; Check Z = 1?
-   913 0030F 506C          			JMP	INS_FAIL
-   914 00310 3603          			JBC		N			; Check N = 0?
-   915 00311 506C          			JMP	INS_FAIL
-   916 00312 6000          			MOV		A,@0x00
-   917 00313 0103          			MOV		STATUS,A
-   918 00314 6080          			MOV		A,@0x80		; 0x80-1
-   919 00315 0150          			MOV		0x50,A		; [0x50] = 0x80
-   920 00316 0750          			DEC		0x50		; [0x50] = [0x50] - 0x01
-   921 00317 1003          			MOV		A,STATUS
-   922 00318 6C39          			XOR		A,@0x39		; Check Status ? for non reset
-   923                     			;;XOR		A,@0x31		; Check Status ?
-   924 00319 3A03          			JBS		Z			; Check Z = 1?
-   925 0031A 506C          			JMP	INS_FAIL
-   926 0031B 3603          			JBC		N			; Check N = 0?
-   927 0031C 506C          			JMP	INS_FAIL
-   928 0031D 2203          			BC		Z
-   929 0031E 1050          			MOV		A,0x50
-   930 0031F 6C7F          			XOR		A,@0x7F		; Check Result ?
-   931 00320 3A03          			JBS		Z			; Check Z = 1?
-   932 00321 506C          			JMP	INS_FAIL
-   933 00322 3603          			JBC		N			; Check N = 0?
-   934 00323 506C          			JMP	INS_FAIL
-   935                     
-   936 00324               		INST_ADD_A_R:		;-------Instruction Test => ADD A,R
-   937 00324 6012          			MOV		A,@0x12
-   938 00325 015A          			MOV		INST,A
-   939 00326 40CB          			CALL	STATUS_CLEAR	; 0x80+0x7F
-   940 00327 6080          			MOV		A,@0x80
-   941 00328 0150          			MOV		0x50,A		; [0x50] = 0x80
-   942 00329 607F          			MOV		A,@0x7F		; 
-   943 0032A 0E50          			ADD		A,0x50		; A = 0x7F + 0x80
-   944 0032B 3003          			JBC		C			; Check C = 0?
-   945 0032C 506C          			JMP	INS_FAIL
-   946 0032D 3103          			JBC		DC			; Check DC = 0?
-   947 0032E 506C          			JMP	INS_FAIL
-   948 0032F 3203          			JBC		Z			; Check Z = 0?
-   949 00330 506C          			JMP	INS_FAIL
-   950 00331 3503          			JBC		OV			; Check OV = 0?
-   951 00332 506C          			JMP	INS_FAIL
-   952 00333 3E03          			JBS		N			; Check N = 1?	; Result is Negative
-   953 00334 506C          			JMP	INS_FAIL
-   954 00335 2203          			BC		Z
-   955 00336 2603          			BC		N
-   956 00337 6CFF          			XOR		A,@0xFF		; Check Result ?
-   957 00338 3A03          			JBS		Z			; Check Z = 1?
-   958 00339 506C          			JMP	INS_FAIL
-   959 0033A 3603          			JBC		N			; Check N = 0?
-   960 0033B 506C          			JMP	INS_FAIL
-   961 0033C 40CB          			CALL	STATUS_CLEAR	; 0xFF+0x01
-   962 0033D 60FF          			MOV		A,@0xFF
-   963 0033E 0150          			MOV		0x50,A		; [0x50] = 0xFF
-   964 0033F 6001          			MOV		A,@0x01		; 
-   965 00340 0E50          			ADD		A,0x50		; A = 0x01 + 0xFF
-   966 00341 3803          			JBS		C			; Check C = 1?
-   967 00342 506C          			JMP	INS_FAIL
-   968 00343 3903          			JBS		DC			; Check DC = 1?
-   969 00344 506C          			JMP	INS_FAIL
-   970 00345 3A03          			JBS		Z			; Check Z = 1?
-   971 00346 506C          			JMP	INS_FAIL
-   972 00347 3503          			JBC		OV			; Check OV = 0?
-   973 00348 506C          			JMP	INS_FAIL
-   974 00349 3603          			JBC		N			; Check N = 0?
-   975 0034A 506C          			JMP	INS_FAIL
-   976 0034B 2203          			BC		Z
-   977 0034C 2603          			BC		N
-   978 0034D 6C00          			XOR		A,@0x00		; Check Result ?
-   979 0034E 3A03          			JBS		Z			; Check Z = 1?
-   980 0034F 506C          			JMP	INS_FAIL
-   981 00350 3603          			JBC		N			; Check N = 0?
-   982 00351 506C          			JMP	INS_FAIL
-   983 00352 40CB          			CALL	STATUS_CLEAR	; 0x7F+0x01
-   984 00353 607F          			MOV		A,@0x7F
-   985 00354 0150          			MOV		0x50,A		; [0x50] = 0x7F
-   986 00355 6001          			MOV		A,@0x01		; 
-   987 00356 0E50          			ADD		A,0x50		; A = 0x01 + 0x7F
-   988 00357 3003          			JBC		C			; Check C = 0?
-   989 00358 506C          			JMP	INS_FAIL
-   990 00359 3903          			JBS		DC			; Check DC = 1?
-   991 0035A 506C          			JMP	INS_FAIL
-   992 0035B 3203          			JBC		Z			; Check Z = 0?
-   993 0035C 506C          			JMP	INS_FAIL
-   994 0035D 3D03          			JBS		OV			; Check OV = 1?
-   995 0035E 506C          			JMP	INS_FAIL
-   996 0035F 3E03          			JBS		N			; Check N = 1?
-   997 00360 506C          			JMP	INS_FAIL
-   998 00361 2203          			BC		Z
-   999 00362 2603          			BC		N
-  1000 00363 6C80          			XOR		A,@0x80		; Check Result ?
-  1001 00364 3A03          			JBS		Z			; Check Z = 1?
-  1002 00365 506C          			JMP	INS_FAIL
-  1003 00366 3603          			JBC		N			; Check N = 0?
-  1004 00367 506C          			JMP	INS_FAIL
-  1005 00368               		INST_ADD_R_A:		;-------Instruction Test => ADD R,A
-  1006 00368 6013          			MOV		A,@0x13
-  1007 00369 015A          			MOV		INST,A
-  1008 0036A 40CB          			CALL	STATUS_CLEAR	; 0x80+0x7F
-  1009 0036B 6080          			MOV		A,@0x80
-  1010 0036C 0150          			MOV		0x50,A		; [0x50] = 0x80
-  1011 0036D 607F          			MOV		A,@0x7F		; A = 0x7F
-  1012 0036E 0F50          			ADD		0x50,A		; [0x50] = 0x80 + 0x7F
-  1013 0036F 1003          			MOV		A,STATUS
-  1014 00370 6C58          			XOR		A,@0x58		; Check Status ? for non reset
-  1015                     			;;XOR		A,@0x50		; Check Status ?
-  1016 00371 3A03          			JBS		Z			; Check Z = 1?
-  1017 00372 506C          			JMP	INS_FAIL
-  1018 00373 3603          			JBC		N			; Check N = 0?
-  1019 00374 506C          			JMP	INS_FAIL
-  1020 00375 1050          			MOV		A,0x50
-  1021 00376 6CFF          			XOR		A,@0xFF		; Check Result ?
-  1022 00377 3A03          			JBS		Z			; Check Z = 1?
-  1023 00378 506C          			JMP	INS_FAIL
-  1024 00379 3603          			JBC		N			; Check N = 0?
-  1025 0037A 506C          			JMP	INS_FAIL
-  1026 0037B 40CB          			CALL	STATUS_CLEAR	; 0xFF+0x01
-  1027 0037C 60FF          			MOV		A,@0xFF
-  1028 0037D 0150          			MOV		0x50,A		; [0x50] = 0xFF
-  1029 0037E 6001          			MOV		A,@0x01		; A = 0x01
-  1030 0037F 0F50          			ADD		0x50,A		; [0x50] = 0xFF + 0x01
-  1031 00380 1003          			MOV		A,STATUS
-  1032 00381 6C1F          			XOR		A,@0x1F		; Check Status ? for non reset
-  1033                     			;;XOR		A,@0x17		; Check Status ?
-  1034 00382 3A03          			JBS		Z			; Check Z = 1?
-  1035 00383 506C          			JMP	INS_FAIL
-  1036 00384 3603          			JBC		N			; Check N = 0?
-  1037 00385 506C          			JMP	INS_FAIL
-  1038 00386 1050          			MOV		A,0x50
-  1039 00387 6C00          			XOR		A,@0x00		; Check Result ?
-  1040 00388 3A03          			JBS		Z			; Check Z = 1?
-  1041 00389 506C          			JMP	INS_FAIL
-  1042 0038A 3603          			JBC		N			; Check N = 0?
-  1043 0038B 506C          			JMP	INS_FAIL
-  1044 0038C 40CB          			CALL	STATUS_CLEAR	;0x7F+0x01
-  1045 0038D 607F          			MOV		A,@0x7F
-  1046 0038E 0150          			MOV		0x50,A		; [0x50] = 0x7F
-  1047 0038F 6001          			MOV		A,@0x01		; A = 0x01
-  1048 00390 0F50          			ADD		0x50,A		; [0x50] = 0x7F + 0x01
-  1049 00391 1003          			MOV		A,STATUS
-  1050 00392 6C7A          			XOR		A,@0x7A		; Check Status ? for non reset
-  1051                     			;;XOR		A,@0x72		; Check Status ?
-  1052 00393 3A03          			JBS		Z			; Check Z = 1?
-  1053 00394 506C          			JMP	INS_FAIL
-  1054 00395 3603          			JBC		N			; Check N = 0?
-  1055 00396 506C          			JMP	INS_FAIL
-  1056 00397 1050          			MOV		A,0x50
-  1057 00398 6C80          			XOR		A,@0x80		; Check Result ?
-  1058 00399 3A03          			JBS		Z			; Check Z = 1?
-  1059 0039A 506C          			JMP	INS_FAIL
-  1060 0039B 3603          			JBC		N			; Check N = 0?
-  1061 0039C 506C          			JMP	INS_FAIL
-  1062 0039D               		INST_ADD_A_K:		;-------Instruction Test => ADD A,k
-  1063 0039D 6034          			MOV		A,@0x34
-  1064 0039E 015A          			MOV		INST,A
-  1065 0039F 40CB          			CALL	STATUS_CLEAR
-  1066 003A0 607F          			MOV		A,@0x7F		;0x7F+0x01
-  1067 003A1 7C01          			ADD		A,@0x01		; A = 0x01 + A
-  1068 003A2 3003          			JBC		C			; Check C = 0?
-  1069 003A3 506C          			JMP	INS_FAIL
-  1070 003A4 3903          			JBS		DC			; Check DC = 1?
-  1071 003A5 506C          			JMP	INS_FAIL
-  1072 003A6 3203          			JBC		Z			; Check Z = 0?
-  1073 003A7 506C          			JMP	INS_FAIL
-  1074 003A8 3D03          			JBS		OV			; Check OV = 1?
-  1075 003A9 506C          			JMP	INS_FAIL
-  1076 003AA 3E03          			JBS		N			; Check N = 1?
-  1077 003AB 506C          			JMP	INS_FAIL
-  1078 003AC 6C80          			XOR		A,@0x80		; Check Result ?
-  1079 003AD 40CE          			CALL	INST_XOR_JUDGE
-  1080 003AE 40CB          			CALL	STATUS_CLEAR
-  1081 003AF 60FF          			MOV		A,@0xFF		;0xFF+0x01
-  1082 003B0 7C01          			ADD		A,@0x01		; A = 0x01 + A
-  1083 003B1 3803          			JBS		C			; Check C = 1?
-  1084 003B2 506C          			JMP	INS_FAIL
-  1085 003B3 3903          			JBS		DC			; Check DC = 1?
-  1086 003B4 506C          			JMP	INS_FAIL
-  1087 003B5 3A03          			JBS		Z			; Check Z = 1?
-  1088 003B6 506C          			JMP	INS_FAIL
-  1089 003B7 3503          			JBC		OV			; Check OV = 0?
-  1090 003B8 506C          			JMP	INS_FAIL
-  1091 003B9 3603          			JBC		N			; Check N = 0?
-  1092 003BA 506C          			JMP	INS_FAIL
-  1093 003BB 6C00          			XOR		A,@0x00		; Check Result ?
-  1094 003BC 40CE          			CALL	INST_XOR_JUDGE
-  1095 003BD 40CB          			CALL	STATUS_CLEAR
-  1096 003BE 607F          			MOV		A,@0x7F		; 0x80+0x7F
-  1097 003BF 7C80          			ADD		A,@0x80		; A = 0x80 + A
-  1098 003C0 3003          			JBC		C			; Check C = 0?
-  1099 003C1 506C          			JMP	INS_FAIL
-  1100 003C2 3103          			JBC		DC			; Check DC = 0?
-  1101 003C3 506C          			JMP	INS_FAIL
-  1102 003C4 3203          			JBC		Z			; Check Z = 0?
-  1103 003C5 506C          			JMP	INS_FAIL
-  1104 003C6 3503          			JBC		OV			; Check OV = 0?
-  1105 003C7 506C          			JMP	INS_FAIL
-  1106 003C8 3E03          			JBS		N			; Check N = 1?
-  1107 003C9 506C          			JMP	INS_FAIL
-  1108 003CA 6CFF          			XOR		A,@0xFF		; Check Result ?
-  1109 003CB 40CE          			CALL	INST_XOR_JUDGE
-  1110 003CC               		INST_ADC_A_R:		;-------Instruction Test => ADC A,R
-  1111 003CC 6036          			MOV		A,@0x36
-  1112 003CD 015A          			MOV		INST,A
-  1113 003CE 40CB          			CALL	STATUS_CLEAR
-  1114 003CF 2803          			BS		C			; 0x7F+0x00
-  1115 003D0 607F          			MOV		A,@0x7F		
-  1116 003D1 0150          			MOV		0x50,A		; [0x50] = 0x7F
-  1117 003D2 6000          			MOV		A,@0x00		; A = 0x00
-  1118 003D3 7E50          			ADC		A,0x50		; A = A + [0x50] + C
-  1119 003D4 3003          			JBC		C			; Check C = 0?
-  1120 003D5 506C          			JMP	INS_FAIL
-  1121 003D6 3903          			JBS		DC			; Check DC = 1?
-  1122 003D7 506C          			JMP	INS_FAIL
-  1123 003D8 3203          			JBC		Z			; Check Z = 0?
-  1124 003D9 506C          			JMP	INS_FAIL
-  1125 003DA 3D03          			JBS		OV			; Check OV = 1?
-  1126 003DB 506C          			JMP	INS_FAIL
-  1127 003DC 3E03          			JBS		N			; Check N = 1?
-  1128 003DD 506C          			JMP	INS_FAIL
-  1129 003DE 6C80          			XOR		A,@0x80		; Check Result ?
-  1130 003DF 40CE          			CALL	INST_XOR_JUDGE
-  1131 003E0 40CB          			CALL	STATUS_CLEAR
-  1132 003E1 2803          			BS		C			; 0x80+0x7F
-  1133 003E2 6080          			MOV		A,@0x80
-  1134 003E3 0150          			MOV		0x50,A		; [0x50] = 0x80
-  1135 003E4 607F          			MOV		A,@0x7F		; A = 0x7F
-  1136 003E5 7E50          			ADC		A,0x50		; A = A + [0x50] + C
-  1137 003E6 3803          			JBS		C			; Check C = 1?
-  1138 003E7 506C          			JMP	INS_FAIL
-  1139 003E8 3903          			JBS		DC			; Check DC = 1?
-  1140 003E9 506C          			JMP	INS_FAIL
-  1141 003EA 3A03          			JBS		Z			; Check Z = 1?
-  1142 003EB 506C          			JMP	INS_FAIL
-  1143 003EC 3503          			JBC		OV			; Check OV = 0?
-  1144 003ED 506C          			JMP	INS_FAIL
-  1145 003EE 3603          			JBC		N			; Check N = 0?
-  1146 003EF 506C          			JMP	INS_FAIL
-  1147 003F0 6C00          			XOR		A,@0x00		; Check Result ?
-  1148 003F1 40CE          			CALL	INST_XOR_JUDGE
-  1149 003F2               		INST_ADC_R_A:		;-------Instruction Test => ADC R,A
-  1150 003F2 6037          			MOV		A,@0x37
-  1151 003F3 015A          			MOV		INST,A
-  1152 003F4 40CB          			CALL	STATUS_CLEAR
-  1153 003F5 2803          			BS		C			;0x7F+0x00
-  1154 003F6 607F          			MOV		A,@0x7F
-  1155 003F7 0150          			MOV		0x50,A		; [0x50] = 0x7F
-  1156 003F8 6000          			MOV		A,@0x00		; A = 0x00
-  1157 003F9 2203          			BC		Z
-  1158 003FA 7F50          			ADC		0x50,A		; TMP1 = A + [0x50] + C
-  1159 003FB 1003          			MOV		A,STATUS
-  1160 003FC 6C7A          			XOR		A,@0x7A		; Check Status ?
-  1161                     			;;XOR		A,@0x72		; Check Status ?
-  1162 003FD 40CE          			CALL	INST_XOR_JUDGE
-  1163 003FE 1050          			MOV		A,0x50
-  1164 003FF 6C80          			XOR		A,@0x80		; Check Result ?
-  1165 00400 40CE          			CALL	INST_XOR_JUDGE
-  1166 00401 40CB          			CALL	STATUS_CLEAR
-  1167 00402 2803          			BS		C			;0x80+0x7F
-  1168 00403 6080          			MOV		A,@0x80
-  1169 00404 0150          			MOV		0x50,A		; [0x50] = 0x80
-  1170 00405 607F          			MOV		A,@0x7F		; A = 0x7F
-  1171 00406 2203          			BC		Z
-  1172 00407 7F50          			ADC		0x50,A		; TMP1 = A + [0x50] + C
-  1173 00408 1003          			MOV		A,STATUS
-  1174 00409 6C1F          			XOR		A,@0x1F		; Check Status ?
-  1175                     			;;XOR		A,@0x17		; Check Status ?
-  1176 0040A 40CE          			CALL	INST_XOR_JUDGE
-  1177 0040B 1050          			MOV		A,0x50
-  1178 0040C 6C00          			XOR		A,@0x00		; Check Result ?
-  1179 0040D 40CE          			CALL	INST_XOR_JUDGE
-  1180                     
-  1181 0040E               		INST_INCA:			;-------Instruction Test => INCA R
-  1182 0040E 6017          			MOV		A,@0x17
-  1183 0040F 015A          			MOV		INST,A
-  1184 00410 40CB          			CALL	STATUS_CLEAR	; 0x7F+0x01
-  1185 00411 607F          			MOV		A,@0x7F
-  1186 00412 0150          			MOV		0x50,A		; [0x50] = 0x7F
-  1187 00413 1450          			INCA	0x50		; A = [0x50] +1		
-  1188 00414 3003          			JBC		C			; Check C = 0?
-  1189 00415 506C          			JMP	INS_FAIL
-  1190 00416 3903          			JBS		DC			; Check DC = 1?
-  1191 00417 506C          			JMP	INS_FAIL
-  1192 00418 3203          			JBC		Z			; Check Z = 0?
-  1193 00419 506C          			JMP	INS_FAIL
-  1194 0041A 3D03          			JBS		OV			; Check OV = 1?
-  1195 0041B 506C          			JMP	INS_FAIL
-  1196 0041C 3E03          			JBS		N			; Check N = 1?
-  1197 0041D 506C          			JMP	INS_FAIL
-  1198 0041E 2203          			BC		Z
-  1199 0041F 2603          			BC		N
-  1200 00420 6C80          			XOR		A,@0x80		; Check Result ?
-  1201 00421 3A03          			JBS		Z			; Check Z = 1?
-  1202 00422 506C          			JMP	INS_FAIL
-  1203 00423 3603          			JBC		N			; Check N = 0?
-  1204 00424 506C          			JMP	INS_FAIL
-  1205 00425 40CB          			CALL	STATUS_CLEAR	; 0xFF+0x01
-  1206 00426 60FF          			MOV		A,@0xFF
-  1207 00427 0150          			MOV		0x50,A		; [0x50] = 0xFF
-  1208 00428 1450          			INCA	0x50		; A = [0x50] +1		
-  1209 00429 3803          			JBS		C			; Check C = 1?
-  1210 0042A 506C          			JMP	INS_FAIL
-  1211 0042B 3903          			JBS		DC			; Check DC = 1?
-  1212 0042C 506C          			JMP	INS_FAIL
-  1213 0042D 3A03          			JBS		Z			; Check Z = 1?
-  1214 0042E 506C          			JMP	INS_FAIL
-  1215 0042F 3503          			JBC		OV			; Check OV = 0?
-  1216 00430 506C          			JMP	INS_FAIL
-  1217 00431 3603          			JBC		N			; Check N = 0?
-  1218 00432 506C          			JMP	INS_FAIL
-  1219 00433 2203          			BC		Z
-  1220 00434 2603          			BC		N
-  1221 00435 6C00          			XOR		A,@0x00		; Check Result ?
-  1222 00436 3A03          			JBS		Z			; Check Z = 1?
-  1223 00437 506C          			JMP	INS_FAIL
-  1224 00438 3603          			JBC		N			; Check N = 0?
-  1225 00439 506C          			JMP	INS_FAIL
-  1226                     
-  1227 0043A               		INST_INC:			;-------Instruction Test => INC R
-  1228 0043A 6018          			MOV		A,@0x18
-  1229 0043B 015A          			MOV		INST,A
-  1230 0043C 40CB          			CALL 	STATUS_CLEAR	; 0x7F+0x01
-  1231 0043D 607F          			MOV		A,@0x7F
-  1232 0043E 0150          			MOV		0x50,A		; [0x50] = 0x7F
-  1233 0043F 1550          			INC		0x50		; [0x50] = [0x50] + 0x01
-  1234 00440 1003          			MOV		A,STATUS
-  1235 00441 6C7A          			XOR		A,@0x7A		; Check Status ?
-  1236                     			;;XOR		A,@0x72		; Check Status ?
-  1237 00442 3A03          			JBS		Z			; Check Z = 1?
-  1238 00443 506C          			JMP	INS_FAIL
-  1239 00444 3603          			JBC		N			; Check N = 0?
-  1240 00445 506C          			JMP	INS_FAIL
-  1241 00446 1050          			MOV		A,0x50
-  1242 00447 6C80          			XOR		A,@0x80		; Check Result ?
-  1243 00448 3A03          			JBS		Z			; Check Z = 1?
-  1244 00449 506C          			JMP	INS_FAIL
-  1245 0044A 3603          			JBC		N			; Check N = 0?
-  1246 0044B 506C          			JMP	INS_FAIL
-  1247 0044C 40CB          			CALL	STATUS_CLEAR	; 0xFF+0x01
-  1248 0044D 60FF          			MOV		A,@0xFF
-  1249 0044E 0150          			MOV		0x50,A		; [0x50] = 0x7F
-  1250 0044F 1550          			INC		0x50		; [0x50] = [0x50] + 0x01
-  1251 00450 1003          			MOV		A,STATUS
-  1252 00451 6C1F          			XOR		A,@0x1F		; Check Status ?
-  1253                     			;;XOR		A,@0x17		; Check Status ?
-  1254 00452 3A03          			JBS		Z			; Check Z = 1?
-  1255 00453 506C          			JMP	INS_FAIL
-  1256 00454 3603          			JBC		N			; Check N = 0?
-  1257 00455 506C          			JMP	INS_FAIL
-  1258 00456 1050          			MOV		A,0x50
-  1259 00457 6C00          			XOR		A,@0x00		; Check Result ?
-  1260 00458 3A03          			JBS		Z			; Check Z = 1?
-  1261 00459 506C          			JMP	INS_FAIL
-  1262 0045A 3603          			JBC		N			; Check N = 0?
-  1263 0045B 506C          			JMP	INS_FAIL
-  1264                     
-  1265 0045C               		INST_NEG_R:			;-------Instruction Test => NEG R
-  1266 0045C 6035          			MOV		A,@0x35
-  1267 0045D 015A          			MOV		INST,A
-  1268 0045E 40CB          			CALL	STATUS_CLEAR
-  1269 0045F 6000          			MOV		A,@0x00		; 0x00
-  1270 00460 0150          			MOV		0x50,A		; [0x50] = 0x00
-  1271 00461 7D50          			NEG		0x50
-  1272 00462 1003          			MOV		A,STATUS
-  1273 00463 6C1F          			XOR		A,@0x1F		; Check Status ?
-  1274                     			;;XOR		A,@0x17		; Check Status ?
-  1275 00464 40CE          			CALL	INST_XOR_JUDGE
-  1276 00465 1050          			MOV		A,0x50
-  1277 00466 6C00          			XOR		A,@0x00		; Check Result ?
-  1278 00467 40CE          			CALL	INST_XOR_JUDGE
-  1279 00468 40CB          			CALL	STATUS_CLEAR
-  1280 00469 6001          			MOV		A,@0x01		; 0x01
-  1281 0046A 0150          			MOV		0x50,A		; [0x50] = 0x01
-  1282 0046B 7D50          			NEG		0x50
-  1283 0046C 1003          			MOV		A,STATUS
-  1284 0046D 6C58          			XOR		A,@0x58		; Check Status ?
-  1285                     			;;XOR		A,@0x50		; Check Status ?
-  1286 0046E 40CE          			CALL	INST_XOR_JUDGE
-  1287 0046F 1050          			MOV		A,0x50
-  1288 00470 6CFF          			XOR		A,@0xFF		; Check Result ?
-  1289 00471 4664          			CALL	INST_XCH
-  1290 00472 40CB          			CALL	STATUS_CLEAR
-  1291 00473 6080          			MOV		A,@0x80		; 0x80
-  1292 00474 0150          			MOV		0x50,A		; [0x50] = 0x80
-  1293 00475 7D50          			NEG		0x50
-  1294 00476 1003          			MOV		A,STATUS
-  1295 00477 6C7A          			XOR		A,@0x7A		; Check Status ?
-  1296                     			;;XOR		A,@0x72		; Check Status ?
-  1297 00478 40CE          			CALL	INST_XOR_JUDGE
-  1298 00479 1050          			MOV		A,0x50
-  1299 0047A 6C80          			XOR		A,@0x80		; Check Result ?
-  1300 0047B 40CE          			CALL	INST_XOR_JUDGE
-  1301                     
-  1302 0047C 0012          		RET
-  1303 0047D               	TEST_INST_LOGIC_I:
-  1304 0047D               		INST_BTG:			;-------Instruction Test => BTG R,b	
-  1305 0047D 6006          			MOV		A,@0x06
-  1306 0047E 015A          			MOV		INST,A
-  1307 0047F 40CB          			CALL	STATUS_CLEAR
-  1308 00480 60FF          			MOV		A,@0xFF
-  1309 00481 0104          			MOV		RSR,A		; Start Address
-  1310 00482 0084          			BTG		RSR
-  1311 00483 1004          			MOV		A,RSR
-  1312 00484 6CFE          			XOR		A,@0xFE		; Check Result ?
-  1313 00485 40CE          			CALL	INST_XOR_JUDGE
-  1314 00486               		INST_OR_A_R:		;-------Instruction Test => OR A,R
-  1315 00486 600E          			MOV		A,@0x0E
-  1316 00487 015A          			MOV		INST,A
-  1317 00488 6000          			MOV		A,@0x00
-  1318 00489 0103          			MOV		STATUS,A
-  1319 0048A 6000          			MOV		A,@0x00
-  1320 0048B 0150          			MOV		0x50,A		; [0x50] = 0x00
-  1321 0048C 6000          			MOV		A,@0x00
-  1322 0048D 2203          			BC		Z
-  1323 0048E 0850          			OR		A,0x50		; A = A | [0x50]
-  1324 0048F 3003          			JBC		C			; Check C = 0?
-  1325 00490 506C          			JMP	INS_FAIL
-  1326 00491 3103          			JBC		DC			; Check DC = 0?
-  1327 00492 506C          			JMP	INS_FAIL
-  1328 00493 3A03          			JBS		Z			; Check Z = 1?
-  1329 00494 506C          			JMP	INS_FAIL
-  1330 00495 3503          			JBC		OV			; Check OV = 0?
-  1331 00496 506C          			JMP	INS_FAIL
-  1332 00497 3603          			JBC		N			; Check N = 0?
-  1333 00498 506C          			JMP	INS_FAIL
-  1334 00499 2203          			BC		Z
-  1335 0049A 6C00          			XOR		A,@0x00		; Check Result ?
-  1336 0049B 3A03          			JBS		Z			; Check Z = 1?
-  1337 0049C 506C          			JMP	INS_FAIL
-  1338 0049D 3603          			JBC		N			; Check N = 0?
-  1339 0049E 506C          			JMP	INS_FAIL
-  1340 0049F 6000          			MOV		A,@0x00
-  1341 004A0 0103          			MOV		STATUS,A
-  1342 004A1 6055          			MOV		A,@0x55
-  1343 004A2 0150          			MOV		0x50,A		; [0x50] = 0x55
-  1344 004A3 60AA          			MOV		A,@0xAA
-  1345 004A4 2203          			BC		Z
-  1346 004A5 0850          			OR		A,0x50		; A = A | [0x50]
-  1347 004A6 3003          			JBC		C			; Check C = 0?
-  1348 004A7 506C          			JMP	INS_FAIL
-  1349 004A8 3103          			JBC		DC			; Check DC = 0?
-  1350 004A9 506C          			JMP	INS_FAIL
-  1351 004AA 3203          			JBC		Z			; Check Z = 0?
-  1352 004AB 506C          			JMP	INS_FAIL
-  1353 004AC 3503          			JBC		OV			; Check OV = 0?
-  1354 004AD 506C          			JMP	INS_FAIL
-  1355 004AE 3E03          			JBS		N			; Check N = 1?
-  1356 004AF 506C          			JMP	INS_FAIL
-  1357 004B0 2203          			BC		Z
-  1358 004B1 6CFF          			XOR		A,@0xFF		; Check Result ?
-  1359 004B2 3A03          			JBS		Z			; Check Z = 1?
-  1360 004B3 506C          			JMP	INS_FAIL
-  1361 004B4 3603          			JBC		N			; Check N = 0?
-  1362 004B5 506C          			JMP	INS_FAIL
-  1363                     
-  1364 004B6               		INST_OR_R_A:		;-------Instruction Test => OR R,A
-  1365 004B6 600F          			MOV		A,@0x0F
-  1366 004B7 015A          			MOV		INST,A
-  1367 004B8 6000          			MOV		A,@0x00
-  1368 004B9 0103          			MOV		STATUS,A
-  1369 004BA 6000          			MOV		A,@0x00
-  1370 004BB 0150          			MOV		0x50,A		; [0x50] = 0x00
-  1371 004BC 6000          			MOV		A,@0x00		; A = 0x00
-  1372 004BD 2203          			BC		Z
-  1373 004BE 0950          			OR		0x50,A		; [0x50] = A | [0x50]
-  1374 004BF 1003          			MOV		A,STATUS
-  1375 004C0 6C1C          			XOR		A,@0x1C		; Check Status ? for non reset
-  1376                     			;;XOR		A,@0x14		; Check Status ?
-  1377 004C1 3A03          			JBS		Z			; Check Z = 1?
-  1378 004C2 506C          			JMP	INS_FAIL
-  1379 004C3 3603          			JBC		N			; Check N = 0?
-  1380 004C4 506C          			JMP	INS_FAIL
-  1381 004C5 1050          			MOV		A,0x50		; A = Result[0x50]
-  1382 004C6 2203          			BC		Z
-  1383 004C7 2603          			BC		N
-  1384 004C8 6C00          			XOR		A,@0x00		; Check Result ?
-  1385 004C9 3A03          			JBS		Z			; Check Z = 1?
-  1386 004CA 506C          			JMP	INS_FAIL
-  1387 004CB 3603          			JBC		N			; Check N = 0?
-  1388 004CC 506C          			JMP	INS_FAIL
-  1389 004CD 6000          			MOV		A,@0x00
-  1390 004CE 0103          			MOV		STATUS,A
-  1391 004CF 6055          			MOV		A,@0x55
-  1392 004D0 0150          			MOV		0x50,A		; [0x50] = 0x55
-  1393 004D1 60AA          			MOV		A,@0xAA		; A = 0xAA
-  1394 004D2 0950          			OR		0x50,A		; [0x50] = 0xAA | 0x55
-  1395 004D3 1003          			MOV		A,STATUS
-  1396 004D4 6C58          			XOR		A,@0x58		; Check Status ? for non reset
-  1397                     			;;XOR		A,@0x50		; Check Status ?
-  1398 004D5 3A03          			JBS		Z			; Check Z = 1?
-  1399 004D6 506C          			JMP	INS_FAIL
-  1400 004D7 3603          			JBC		N			; Check N = 0?
-  1401 004D8 506C          			JMP	INS_FAIL
-  1402 004D9 1050          			MOV		A,0x50
-  1403 004DA 2203          			BC		Z
-  1404 004DB 2603          			BC		N
-  1405 004DC 6CFF          			XOR		A,@0xFF		; Check Result ?
-  1406 004DD 3A03          			JBS		Z			; Check Z = 1?
-  1407 004DE 506C          			JMP	INS_FAIL
-  1408 004DF 3603          			JBC		N			; Check N = 0?
-  1409 004E0 506C          			JMP	INS_FAIL
-  1410                     
-  1411 004E1               		INST_AND_A_R:		;-------Instruction Test => AND A,R
-  1412 004E1 6010          			MOV		A,@0x10
-  1413 004E2 015A          			MOV		INST,A
-  1414 004E3 40CB          			CALL	STATUS_CLEAR
-  1415 004E4 6055          			MOV		A,@0x55
-  1416 004E5 0150          			MOV		0x50,A		; [0x50] = 0x55
-  1417 004E6 60AA          			MOV		A,@0xAA
-  1418 004E7 0A50          			AND		A,0x50		; A = 0xAA & 0x55
-  1419 004E8 3003          			JBC		C			; Check C = 0?
-  1420 004E9 506C          			JMP	INS_FAIL
-  1421 004EA 3103          			JBC		DC			; Check DC = 0?
-  1422 004EB 506C          			JMP	INS_FAIL
-  1423 004EC 3A03          			JBS		Z			; Check Z = 1?
-  1424 004ED 506C          			JMP	INS_FAIL
-  1425 004EE 3503          			JBC		OV			; Check OV = 0?
-  1426 004EF 506C          			JMP	INS_FAIL
-  1427 004F0 3603          			JBC		N			; Check N = 0?
-  1428 004F1 506C          			JMP	INS_FAIL
-  1429 004F2 6C00          			XOR		A,@0x00		; Check Result ?
-  1430 004F3 3A03          			JBS		Z			; Check Z = 1?
-  1431 004F4 506C          			JMP	INS_FAIL
-  1432 004F5 3603          			JBC		N			; Check N = 0?
-  1433 004F6 506C          			JMP	INS_FAIL
-  1434 004F7 40CB          			CALL	STATUS_CLEAR
-  1435 004F8 60F5          			MOV		A,@0xF5
-  1436 004F9 0150          			MOV		0x50,A		; [0x50] = 0xF5
-  1437 004FA 60FA          			MOV		A,@0xFA
-  1438 004FB 0A50          			AND		A,0x50		; A = 0xFA & 0xF5
-  1439 004FC 3003          			JBC		C			; Check C = 0?
-  1440 004FD 506C          			JMP	INS_FAIL
-  1441 004FE 3103          			JBC		DC			; Check DC = 0?
-  1442 004FF 506C          			JMP	INS_FAIL
-  1443 00500 3203          			JBC		Z			; Check Z = 0?
-  1444 00501 506C          			JMP	INS_FAIL
-  1445 00502 3503          			JBC		OV			; Check OV = 0?
-  1446 00503 506C          			JMP	INS_FAIL
-  1447 00504 3E03          			JBS		N			; Check N = 1?
-  1448 00505 506C          			JMP	INS_FAIL
-  1449 00506 6CF0          			XOR		A,@0xF0		; Check Result ?
-  1450 00507 3A03          			JBS		Z			; Check Z = 1?
-  1451 00508 506C          			JMP	INS_FAIL
-  1452 00509 3603          			JBC		N			; Check N = 0?
-  1453 0050A 506C          			JMP	INS_FAIL
-  1454 0050B               		INST_AND_R_A:		;-------Instruction Test => AND R,A
-  1455 0050B 6011          			MOV		A,@0x11
-  1456 0050C 015A          			MOV		INST,A
-  1457 0050D 40CB          			CALL	STATUS_CLEAR
-  1458 0050E 6055          			MOV		A,@0x55
-  1459 0050F 0150          			MOV		0x50,A		; [0x50] = 0x55
-  1460 00510 60AA          			MOV		A,@0xAA
-  1461 00511 0B50          			AND		0x50,A		; [0x50] = 0xAA & 0x55
-  1462 00512 1003          			MOV		A,STATUS
-  1463 00513 6C1C          			XOR		A,@0x1C		; Check Status ? for non reset
-  1464                     			;;XOR		A,@0x14		; Check Status ?
-  1465 00514 3A03          			JBS		Z			; Check Z = 1?
-  1466 00515 506C          			JMP	INS_FAIL
-  1467 00516 3603          			JBC		N			; Check N = 0?
-  1468 00517 506C          			JMP	INS_FAIL
-  1469 00518 2203          			BC		Z
-  1470 00519 1050          			MOV		A,0x50
-  1471 0051A 2203          			BC		Z
-  1472 0051B 6C00          			XOR		A,@0x00		; Check Result ?
-  1473 0051C 3A03          			JBS		Z			; Check Z = 1?
-  1474 0051D 506C          			JMP	INS_FAIL
-  1475 0051E 3603          			JBC		N			; Check N = 0?
-  1476 0051F 506C          			JMP	INS_FAIL
-  1477 00520 40CB          			CALL	STATUS_CLEAR
-  1478 00521 60F5          			MOV		A,@0xF5
-  1479 00522 0150          			MOV		0x50,A		; [0x50] = 0xF5
-  1480 00523 60FA          			MOV		A,@0xFA
-  1481 00524 0B50          			AND		0x50,A		; [0x50] = 0xFA & 0xF5
-  1482 00525 1003          			MOV		A,STATUS
-  1483 00526 6C58          			XOR		A,@0x58		; Check Status ? for non reset
-  1484                     			;;XOR		A,@0x50		; Check Status ?
-  1485 00527 3A03          			JBS		Z			; Check Z = 1?
-  1486 00528 506C          			JMP	INS_FAIL
-  1487 00529 3603          			JBC		N			; Check N = 0?
-  1488 0052A 506C          			JMP	INS_FAIL
-  1489 0052B 2203          			BC		Z
-  1490 0052C 1050          			MOV		A,0x50
-  1491 0052D 2203          			BC		Z
-  1492 0052E 6CF0          			XOR		A,@0xF0		; Check Result ?
-  1493 0052F 3A03          			JBS		Z			; Check Z = 1?
-  1494 00530 506C          			JMP	INS_FAIL
-  1495 00531 3603          			JBC		N			; Check N = 0?
-  1496 00532 506C          			JMP	INS_FAIL
-  1497 00533               		INST_AND_A_K:		;-------Instruction Test => AND A,k
-  1498 00533 6029          			MOV		A,@0x29
-  1499 00534 015A          			MOV		INST,A
-  1500 00535 40CB          			CALL	STATUS_CLEAR
-  1501 00536 60AA          			MOV		A,@0xAA
-  1502 00537 6855          			AND		A,@0x55		; A = 0xAA & 0x55
-  1503 00538 3003          			JBC		C			; Check C = 0?
-  1504 00539 506C          			JMP	INS_FAIL
-  1505 0053A 3103          			JBC		DC			; Check DC = 0?
-  1506 0053B 506C          			JMP	INS_FAIL
-  1507 0053C 3A03          			JBS		Z			; Check Z = 1?
-  1508 0053D 506C          			JMP	INS_FAIL
-  1509 0053E 3503          			JBC		OV			; Check OV = 0?
-  1510 0053F 506C          			JMP	INS_FAIL
-  1511 00540 3603          			JBC		N			; Check N = 0?
-  1512 00541 506C          			JMP	INS_FAIL
-  1513 00542 6C00          			XOR		A,@0x00		; Check Result ?
-  1514 00543 3A03          			JBS		Z			; Check Z = 1?
-  1515 00544 506C          			JMP	INS_FAIL
-  1516 00545 3603          			JBC		N			; Check N = 0?
-  1517 00546 506C          			JMP	INS_FAIL
-  1518 00547 40CB          			CALL	STATUS_CLEAR
-  1519 00548 60AA          			MOV		A,@0xAA
-  1520 00549 68FF          			AND		A,@0xFF		; A = A & 0xFF
-  1521 0054A 3003          			JBC		C			; Check C = 0?
-  1522 0054B 506C          			JMP	INS_FAIL
-  1523 0054C 3103          			JBC		DC			; Check DC = 0?
-  1524 0054D 506C          			JMP	INS_FAIL
-  1525 0054E 3203          			JBC		Z			; Check Z = 0?
-  1526 0054F 506C          			JMP	INS_FAIL
-  1527 00550 3503          			JBC		OV			; Check OV = 0?
-  1528 00551 506C          			JMP	INS_FAIL
-  1529 00552 3E03          			JBS		N			; Check N = 1?
-  1530 00553 506C          			JMP	INS_FAIL
-  1531 00554 6CAA          			XOR		A,@0xAA		; Check Result ?
-  1532 00555 40CE          			CALL	INST_XOR_JUDGE
-  1533                     
-  1534 00556               		INST_COMA:			;-------Instruction Test => COMA R
-  1535 00556 6015          			MOV		A,@0x15
-  1536 00557 015A          			MOV		INST,A
-  1537 00558 40CB          			CALL	STATUS_CLEAR
-  1538 00559 60FF          			MOV		A,@0xFF
-  1539 0055A 0150          			MOV		0x50,A		; [0x50] = 0xFF
-  1540 0055B 1250          			COMA	0x50		; A = /R
-  1541 0055C 3003          			JBC		C			; Check C = 0?
-  1542 0055D 506C          			JMP	INS_FAIL
-  1543 0055E 3103          			JBC		DC			; Check DC = 0?
-  1544 0055F 506C          			JMP	INS_FAIL
-  1545 00560 3A03          			JBS		Z			; Check Z = 1?
-  1546 00561 506C          			JMP	INS_FAIL
-  1547 00562 3503          			JBC		OV			; Check OV = 0?
-  1548 00563 506C          			JMP	INS_FAIL
-  1549 00564 3603          			JBC		N			; Check N = 0?
-  1550 00565 506C          			JMP	INS_FAIL
-  1551 00566 6C00          			XOR		A,@0x00		; Check Result ?
-  1552 00567 3A03          			JBS		Z			; Check Z = 1?
-  1553 00568 506C          			JMP	INS_FAIL
-  1554 00569 3603          			JBC		N			; Check N = 0?
-  1555 0056A 506C          			JMP	INS_FAIL	
-  1556 0056B 40CB          			CALL	STATUS_CLEAR
-  1557 0056C 6005          			MOV		A,@0x05
-  1558 0056D 0150          			MOV		0x50,A		; [0x50] = 0x05
-  1559 0056E 1250          			COMA	0x50		; A = /R
-  1560 0056F 3003          			JBC		C			; Check C = 0?
-  1561 00570 506C          			JMP	INS_FAIL
-  1562 00571 3103          			JBC		DC			; Check DC = 0?
-  1563 00572 506C          			JMP	INS_FAIL
-  1564 00573 3203          			JBC		Z			; Check Z = 0?
-  1565 00574 506C          			JMP	INS_FAIL
-  1566 00575 3503          			JBC		OV			; Check OV = 0?
-  1567 00576 506C          			JMP	INS_FAIL
-  1568 00577 3E03          			JBS		N			; Check N = 1?
-  1569 00578 506C          			JMP	INS_FAIL
-  1570 00579 6CFA          			XOR		A,@0xFA		; Check Result ?
-  1571 0057A 3A03          			JBS		Z			; Check Z = 1?
-  1572 0057B 506C          			JMP	INS_FAIL
-  1573 0057C 3603          			JBC		N			; Check N = 0?
-  1574 0057D 506C          			JMP	INS_FAIL
-  1575 0057E               		INST_COM:			;-------Instruction Test => COM R
-  1576 0057E 6016          			MOV		A,@0x16
-  1577 0057F 015A          			MOV		INST,A
-  1578 00580 40CB          			CALL	STATUS_CLEAR
-  1579 00581 60FF          			MOV		A,@0xFF
-  1580 00582 0150          			MOV		0x50,A		; [0x50] = 0xFF
-  1581 00583 1350          			COM		0x50		; [0x50] = /[0x50]
-  1582 00584 1003          			MOV		A,STATUS
-  1583 00585 6C1C          			XOR		A,@0x1C		; Check Status ?
-  1584                     			;;XOR		A,@0x14		; Check Status ?
-  1585 00586 3A03          			JBS		Z			; Check Z = 1?
-  1586 00587 506C          			JMP	INS_FAIL
-  1587 00588 3603          			JBC		N			; Check N = 0?
-  1588 00589 506C          			JMP	INS_FAIL
-  1589 0058A 2203          			BC		Z
-  1590 0058B 2603          			BC		N
-  1591 0058C 1050          			MOV		A,0x50
-  1592 0058D 6C00          			XOR		A,@0x00		; Check Result ?
-  1593 0058E 3A03          			JBS		Z			; Check Z = 1?
-  1594 0058F 506C          			JMP	INS_FAIL
-  1595 00590 3603          			JBC		N			; Check N = 0?
-  1596 00591 506C          			JMP	INS_FAIL
-  1597 00592 40CB          			CALL	STATUS_CLEAR
-  1598 00593 6000          			MOV		A,@0x00
-  1599 00594 0150          			MOV		0x50,A		; [0x50] = 0xFF
-  1600 00595 1350          			COM		0x50		; [0x50] = /[0x50]
-  1601 00596 1003          			MOV		A,STATUS
-  1602 00597 6C58          			XOR		A,@0x58		; Check Status ?
-  1603                     			;;XOR		A,@0x50		; Check Status ?
-  1604 00598 3A03          			JBS		Z			; Check Z = 1?
-  1605 00599 506C          			JMP	INS_FAIL
-  1606 0059A 3603          			JBC		N			; Check N = 0?
-  1607 0059B 506C          			JMP	INS_FAIL
-  1608 0059C 2203          			BC		Z
-  1609 0059D 2603          			BC		N
-  1610 0059E 1050          			MOV		A,0x50
-  1611 0059F 6CFF          			XOR		A,@0xFF		; Check Result ?
-  1612 005A0 3A03          			JBS		Z			; Check Z = 1?
-  1613 005A1 506C          			JMP	INS_FAIL
-  1614 005A2 3603          			JBC		N			; Check N = 0?
-  1615 005A3 506C          			JMP	INS_FAIL
-  1616 005A4               		INST_OR_A_K:		;-------Instruction Test => OR A,k
-  1617 005A4 6026          			MOV		A,@0x26
-  1618 005A5 015A          			MOV		INST,A
-  1619 005A6 40CB          			CALL	STATUS_CLEAR
-  1620 005A7 60A5          			MOV		A,@0xA5
-  1621 005A8 645A          			OR		A,@0x5A		; A = 0xA5 | 0x5A
-  1622 005A9 6CFF          			XOR		A,@0xFF		; Check Result ?
-  1623 005AA 40CE          			CALL	INST_XOR_JUDGE
-  1624 005AB 0012          		RET
-  1625                     
-  1626 005AC               	TEST_INST_LOGIC_II:
-  1627 005AC               		INST_RR_R:			;-------Instruction Test => RR R
-  1628 005AC 602B          			MOV		A,@0x2B
-  1629 005AD 015A          			MOV		INST,A
-  1630 005AE 40CB          			CALL	STATUS_CLEAR
-  1631 005AF 6055          			MOV		A,@0x55
-  1632 005B0 0150          			MOV		0x50,A		; [0x50] = 0x55
-  1633 005B1 6F50          			RR		0x50		; [0x50] = [0x50] >> 1
-  1634 005B2 1003          			MOV		A,STATUS
-  1635 005B3 6C58          			XOR		A,@0x58		; Check Status ?
-  1636                     			;;XOR		A,@0x50		; Check Status ?
-  1637 005B4 40CE          			CALL	INST_XOR_JUDGE
-  1638 005B5 1050          			MOV		A,0x50
-  1639 005B6 6CAA          			XOR		A,@0xAA		; Check Result ?
-  1640 005B7 40CE          			CALL	INST_XOR_JUDGE
-  1641                     
-  1642 005B8               		INST_RRA_R:			;-------Instruction Test => RRA R
-  1643 005B8 602A          			MOV		A,@0x2A
-  1644 005B9 015A          			MOV		INST,A
-  1645 005BA 40CB          			CALL 	STATUS_CLEAR
-  1646 005BB 6055          			MOV		A,@0x55
-  1647 005BC 0150          			MOV		0x50,A		; [0x50] = 0x55
-  1648 005BD 6E50          			RRA		0x50		; A = [0x50] >> 1
-  1649 005BE 3003          			JBC		C			; Check C = 0?
-  1650 005BF 506C          			JMP	INS_FAIL
-  1651 005C0 3103          			JBC		DC			; Check DC = 0?
-  1652 005C1 506C          			JMP	INS_FAIL
-  1653 005C2 3203          			JBC		Z			; Check Z = 0?
-  1654 005C3 506C          			JMP	INS_FAIL
-  1655 005C4 3503          			JBC		OV			; Check OV = 0?
-  1656 005C5 506C          			JMP	INS_FAIL
-  1657 005C6 3E03          			JBS		N			; Check N = 1?
-  1658 005C7 506C          			JMP	INS_FAIL
-  1659 005C8 6CAA          			XOR		A,@0xAA		; Check Result ?
-  1660 005C9 40CE          			CALL	INST_XOR_JUDGE
-  1661                     
-  1662 005CA               		INST_RRCA_R:		;-------Instruction Test => RRCA R
-  1663 005CA 601B          			MOV		A,@0x1B
-  1664 005CB 015A          			MOV		INST,A
-  1665 005CC 40CB          			CALL	STATUS_CLEAR
-  1666 005CD 2803          			BS		C
-  1667 005CE 60AA          			MOV		A,@0xAA
-  1668 005CF 0150          			MOV		0x50,A		; [0x50] = 0xAA
-  1669 005D0 1850          			RRCA	0x50		; A = [0x50] >> 1
-  1670 005D1 3003          			JBC		C			; Check C = 0?
-  1671 005D2 506C          			JMP	INS_FAIL
-  1672 005D3 3103          			JBC		DC			; Check DC = 0?
-  1673 005D4 506C          			JMP	INS_FAIL
-  1674 005D5 3203          			JBC		Z			; Check Z = 0?
-  1675 005D6 506C          			JMP	INS_FAIL
-  1676 005D7 3503          			JBC		OV			; Check OV = 0?
-  1677 005D8 506C          			JMP	INS_FAIL
-  1678 005D9 3E03          			JBS		N			; Check N = 1?
-  1679 005DA 506C          			JMP	INS_FAIL
-  1680 005DB 6CD5          			XOR		A,@0xD5		; Check Result ?
-  1681 005DC 40CE          			CALL	INST_XOR_JUDGE
-  1682 005DD 40CB          			CALL	STATUS_CLEAR
-  1683 005DE 6055          			MOV		A,@0x55
-  1684 005DF 0150          			MOV		0x50,A		; [0x50] = 0x55
-  1685 005E0 1850          			RRCA	0x50		; A = [0x50] >> 1
-  1686 005E1 3803          			JBS		C			; Check C = 1?
-  1687 005E2 506C          			JMP	INS_FAIL
-  1688 005E3 3103          			JBC		DC			; Check DC = 0?
-  1689 005E4 506C          			JMP	INS_FAIL
-  1690 005E5 3203          			JBC		Z			; Check Z = 0?
-  1691 005E6 506C          			JMP	INS_FAIL
-  1692 005E7 3503          			JBC		OV			; Check OV = 0?
-  1693 005E8 506C          			JMP	INS_FAIL
-  1694 005E9 3603          			JBC		N			; Check N = 0?
-  1695 005EA 506C          			JMP	INS_FAIL
-  1696 005EB 6C2A          			XOR		A,@0x2A		; Check Result ?
-  1697 005EC 40CE          			CALL	INST_XOR_JUDGE
-  1698 005ED               		INST_RRC_R:			;-------Instruction Test => RRC R
-  1699 005ED 601C          			MOV		A,@0x1C
-  1700 005EE 015A          			MOV		INST,A
-  1701 005EF 40CB          			CALL	STATUS_CLEAR
-  1702 005F0 2803          			BS		C
-  1703 005F1 60AA          			MOV		A,@0xAA
-  1704 005F2 0150          			MOV		0x50,A		; [0x50] = 0xAA
-  1705 005F3 2203          			BC		Z
-  1706 005F4 1950          			RRC		0x50		; [0x50] = [0x50] >> 1
-  1707 005F5 1003          			MOV		A,STATUS
-  1708 005F6 6C58          			XOR		A,@0x58		; Check Status ?
-  1709                     			;;XOR		A,@0x50		; Check Status ?
-  1710 005F7 40CE          			CALL	INST_XOR_JUDGE
-  1711 005F8 1050          			MOV		A,0x50
-  1712 005F9 6CD5          			XOR		A,@0xD5		; Check Result ?
-  1713 005FA 40CE          			CALL	INST_XOR_JUDGE
-  1714 005FB 40CB          			CALL	STATUS_CLEAR
-  1715 005FC 6055          			MOV		A,@0x55
-  1716 005FD 0150          			MOV		0x50,A		; [0x50] = 0x55
-  1717 005FE 2203          			BC		Z
-  1718 005FF 1950          			RRC		0x50		; [0x50] = [0x50] >> 1
-  1719 00600 1003          			MOV		A,STATUS
-  1720 00601 6C19          			XOR		A,@0x19		; Check Status ?
-  1721                     			;;XOR		A,@0x11		; Check Status ?
-  1722 00602 3A03          			JBS		Z			; Check Z = 1?
-  1723 00603 506C          			JMP	INS_FAIL
-  1724 00604 3603          			JBC		N			; Check N = 0?
-  1725 00605 506C          			JMP	INS_FAIL
-  1726 00606 1050          			MOV		A,0x50
-  1727 00607 6C2A          			XOR		A,@0x2A		; Check Result ?
-  1728 00608 40CE          			CALL	INST_XOR_JUDGE
-  1729 00609               		INST_RLCA_R:		;-------Instruction Test => RLCA R
-  1730 00609 601D          			MOV		A,@0x1D
-  1731 0060A 015A          			MOV		INST,A
-  1732 0060B 40CB          			CALL STATUS_CLEAR
-  1733 0060C 2803          			BS		C
-  1734 0060D 6055          			MOV		A,@0x55
-  1735 0060E 0150          			MOV		0x50,A		; [0x50] = 0x55
-  1736 0060F 1A50          			RLCA	0x50		; A = [0x50] << 1
-  1737 00610 3003          			JBC		C			; Check C = 0?
-  1738 00611 506C          			JMP	INS_FAIL
-  1739 00612 3103          			JBC		DC			; Check DC = 0?
-  1740 00613 506C          			JMP	INS_FAIL
-  1741 00614 3203          			JBC		Z			; Check Z = 0?
-  1742 00615 506C          			JMP	INS_FAIL
-  1743 00616 3503          			JBC		OV			; Check OV = 0?
-  1744 00617 506C          			JMP	INS_FAIL
-  1745 00618 3E03          			JBS		N			; Check N = 1?
-  1746 00619 506C          			JMP	INS_FAIL
-  1747 0061A 6CAB          			XOR		A,@0xAB		; Check Result ?
-  1748 0061B 40CE          			CALL	INST_XOR_JUDGE
-  1749 0061C 40CB          			CALL	STATUS_CLEAR
-  1750 0061D 60AA          			MOV		A,@0xAA
-  1751 0061E 0150          			MOV		0x50,A		; [0x50] = 0xAA
-  1752 0061F 1A50          			RLCA	0x50		; A = [0x50] << 1
-  1753 00620 3803          			JBS		C			; Check C = 1?
-  1754 00621 506C          			JMP	INS_FAIL
-  1755 00622 3103          			JBC		DC			; Check DC = 0?
-  1756 00623 506C          			JMP	INS_FAIL
-  1757 00624 3203          			JBC		Z			; Check Z = 0?
-  1758 00625 506C          			JMP	INS_FAIL
-  1759 00626 3503          			JBC		OV			; Check OV = 0?
-  1760 00627 506C          			JMP	INS_FAIL
-  1761 00628 3603          			JBC		N			; Check N = 0?
-  1762 00629 506C          			JMP	INS_FAIL
-  1763 0062A 6C54          			XOR		A,@0x54		; Check Result ?
-  1764 0062B 40CE          			CALL	INST_XOR_JUDGE
-  1765 0062C               		INST_RLC_R:			;-------Instruction Test => RLC R
-  1766 0062C 601E          			MOV		A,@0x1E
-  1767 0062D 015A          			MOV		INST,A
-  1768 0062E 40CB          			CALL	STATUS_CLEAR
-  1769 0062F 2803          			BS		C
-  1770 00630 6055          			MOV		A,@0x55
-  1771 00631 0150          			MOV		0x50,A		; [0x50] = 0x55
-  1772 00632 1B50          			RLC		0x50		; [0x50] = [0x50] << 1
-  1773 00633 1003          			MOV		A,STATUS
-  1774 00634 6C58          			XOR		A,@0x58		; Check Status ?
-  1775                     			;;XOR		A,@0x50		; Check Status ?
-  1776 00635 40CE          			CALL	INST_XOR_JUDGE
-  1777 00636 1050          			MOV		A,0x50
-  1778 00637 6CAB          			XOR		A,@0xAB		; Check Result ?
-  1779 00638 40CE          			CALL	INST_XOR_JUDGE
-  1780 00639 40CB          			CALL	STATUS_CLEAR
-  1781 0063A 60AA          			MOV		A,@0xAA
-  1782 0063B 0150          			MOV		0x50,A		; [0x50] = 0xAA
-  1783 0063C 1B50          			RLC		0x50		; [0x50] = [0x50] << 1
-  1784 0063D 1003          			MOV		A,STATUS
-  1785 0063E 6C19          			XOR		A,@0x19		; Check Status ?
-  1786                     			;;XOR		A,@0x11		; Check Status ?
-  1787 0063F 40CE          			CALL	INST_XOR_JUDGE
-  1788 00640 1050          			MOV		A,0x50
-  1789 00641 6C54          			XOR		A,@0x54		; Check Result ?
-  1790 00642 40CE          			CALL	INST_XOR_JUDGE
-  1791                     
-  1792 00643               		INST_RLA_A:			;-------Instruction Test => RLA R
-  1793 00643 602E          			MOV		A,@0x2E
-  1794 00644 015A          			MOV		INST,A
-  1795 00645 40CB          			CALL	STATUS_CLEAR
-  1796 00646 605A          			MOV		A,@0x5A
-  1797 00647 0150          			MOV		0x50,A		; [0x50] = 0x5A
-  1798 00648 7250          			RLA		0x50		; A = [0x50] << 1
-  1799 00649 3003          			JBC		C			; Check C = 0?
-  1800 0064A 506C          			JMP	INS_FAIL
-  1801 0064B 3103          			JBC		DC			; Check DC = 0?
-  1802 0064C 506C          			JMP	INS_FAIL
-  1803 0064D 3203          			JBC		Z			; Check Z = 0?
-  1804 0064E 506C          			JMP	INS_FAIL
-  1805 0064F 3503          			JBC		OV			; Check OV = 0?
-  1806 00650 506C          			JMP	INS_FAIL
-  1807 00651 3E03          			JBS		N			; Check N = 1?
-  1808 00652 506C          			JMP	INS_FAIL
-  1809 00653 6CB4          			XOR		A,@0xB4		; Check Result ?
-  1810 00654 40CE          			CALL	INST_XOR_JUDGE
-  1811                     
-  1812 00655               		INST_RL_R:			;-------Instruction Test => RL R
-  1813 00655 602F          			MOV		A,@0x2F
-  1814 00656 015A          			MOV		INST,A
-  1815 00657 40CB          			CALL	STATUS_CLEAR
-  1816 00658 605A          			MOV		A,@0x5A
-  1817 00659 0150          			MOV		0x50,A		; [0x50] = 0xA5
-  1818 0065A 7350          			RL		0x50		; [0x50] = [0x50] << 1
-  1819 0065B 1003          			MOV		A,STATUS
-  1820 0065C 6C58          			XOR		A,@0x58		; Check Status ?
-  1821                     			;;XOR		A,@0x50		; Check Status ?
-  1822 0065D 3A03          			JBS		Z			; Check Z = 1?
-  1823 0065E 506C          			JMP	INS_FAIL
-  1824 0065F 3603          			JBC		N			; Check N = 0?
-  1825 00660 506C          			JMP	INS_FAIL
-  1826 00661 1050          			MOV		A,0x50
-  1827 00662 6CB4          			XOR		A,@0xB4		; Check Result ?
-  1828 00663 40CE          			CALL	INST_XOR_JUDGE
-  1829 00664               		INST_XCH:			;-------Instruction Test => XCH R
-  1830 00664 602D          			MOV		A,@0x2D
-  1831 00665 015A          			MOV		INST,A
-  1832 00666 40CB          			CALL	STATUS_CLEAR
-  1833 00667 6055          			MOV		A,@0x55
-  1834 00668 0150          			MOV		0x50,A		; [0x50] = 0x55
-  1835 00669 60AA          			MOV		A,@0xAA
-  1836 0066A 7150          			XCH		0x50		; [0x50] <-> A
-  1837 0066B 6C55          			XOR		A,@0x55		; Check Result ?
-  1838 0066C 3A03          			JBS		Z			; Check Z = 1?
-  1839 0066D 506C          			JMP	INS_FAIL
-  1840 0066E 3603          			JBC		N			; Check N = 0?
-  1841 0066F 506C          			JMP	INS_FAIL
-  1842 00670 1050          			MOV		A,0x50
-  1843 00671 6CAA          			XOR		A,@0xAA		; Check Result ?
-  1844 00672 40CE          			CALL	INST_XOR_JUDGE
-  1845 00673 0012          		RET
-  1846 00674               	TEST_INST_TRANSFER:
-  1847 00674               		INST_MOV_R_A:		;-------Instruction Test => MOV R,A
-  1848 00674 6007          			MOV		A,@0x07
-  1849 00675 015A          			MOV		INST,A
-  1850 00676 40CB          			CALL	STATUS_CLEAR
-  1851 00677 60FF          			MOV		A,@0xFF
-  1852 00678 0150          			MOV		0x50,A
-  1853 00679 1003          			MOV		A,STATUS
-  1854 0067A 6C18          			XOR		A,@0x18		;At  OCDS
-  1855                     			;XOR		A,@0x98		; Check Status ? ;; For not reset
-  1856                     			;;XOR		A,@0x10		; Check Status ?
-  1857 0067B 40CE          			CALL	INST_XOR_JUDGE
-  1858 0067C 1050          			MOV		A,0x50
-  1859 0067D 6CFF          			XOR		A,@0xFF		; Check Result ?
-  1860 0067E 40CE          			CALL	INST_XOR_JUDGE
-  1861 0067F               		INST_MOV_R_R:		;-------Instruction Test => MOV R,R
-  1862 0067F 6014          			MOV		A,@0x14
-  1863 00680 015A          			MOV		INST,A
-  1864 00681 40CB          			CALL	STATUS_CLEAR
-  1865 00682 6000          			MOV		A,@0x00
-  1866 00683 0150          			MOV		0x50,A		; [0x50] = 0x00		
-  1867 00684 1150          			MOV		0x50,0x50	; [0x50] = [0x50]
-  1868 00685 1003          			MOV		A,STATUS
-  1869 00686 6C1C          			XOR		A,@0x1C		; Check Status ?
-  1870                     			;;XOR		A,@0x14		; Check Status ?
-  1871 00687 3A03          			JBS		Z			; Check Z = 1?
-  1872 00688 506C          			JMP	INS_FAIL
-  1873 00689 3603          			JBC		N			; Check N = 0?
-  1874 0068A 506C          			JMP	INS_FAIL
-  1875 0068B 1050          			MOV		A,0x50
-  1876 0068C 2203          			BC		Z
-  1877 0068D 6C00          			XOR		A,@0x00		; Check Result ?
-  1878 0068E 3A03          			JBS		Z			; Check Z = 1?
-  1879 0068F 506C          			JMP	INS_FAIL
-  1880 00690 3603          			JBC		N			; Check N = 0?
-  1881 00691 506C          			JMP	INS_FAIL
-  1882 00692 40CB          			CALL	STATUS_CLEAR
-  1883 00693 6000          			MOV		A,@0x00
-  1884 00694 0150          			MOV		0x50,A		; [0x50] = 0x00		
-  1885 00695 1150          			MOV		0x50,0x50	; [0x50] = [0x50]
-  1886 00696 2850          			BS		0x50,0
-  1887 00697 1050          			MOV		A,0x50
-  1888 00698 6C01          			XOR		A,@0x01		; Check Result ?
-  1889 00699 40CE          			CALL	INST_XOR_JUDGE
-  1890                     
-  1891 0069A               		INST_SWAPA_R:		;-------Instruction Test => SWAPA R
-  1892 0069A 601F          			MOV		A,@0x1F
-  1893 0069B 015A          			MOV		INST,A
-  1894 0069C 40CB          			CALL	STATUS_CLEAR
-  1895 0069D 605A          			MOV		A,@0x5A
-  1896 0069E 0150          			MOV		0x50,A		; [0x50] = 0x5A
-  1897 0069F 1C50          			SWAPA	0x50
-  1898 006A0 6CA5          			XOR		A,@0xA5		; Check Result ?
-  1899 006A1 40CE          			CALL	INST_XOR_JUDGE
-  1900 006A2               		INST_SWAP_R:		;-------Instruction Test => SWAP R
-  1901 006A2 6020          			MOV		A,@0x20
-  1902 006A3 015A          			MOV		INST,A
-  1903 006A4 40CB          			CALL	STATUS_CLEAR
-  1904 006A5 605A          			MOV		A,@0x5A
-  1905 006A6 0150          			MOV		0x50,A		; [0x50] = 0x5A
-  1906 006A7 1D50          			SWAP	0x50
-  1907 006A8 1050          			MOV		A,0x50
-  1908 006A9 6CA5          			XOR		A,@0xA5		; Check Result ?
-  1909 006AA 40CE          			CALL	INST_XOR_JUDGE
-  1910 006AB 0012          		RET
-  1911                     
-  1912 006AC               	TEST_INST_MANIPULATION:
-  1913 006AC 0012          		RET
-  1914                     
-  1915 006AD               	TEST_INST_BRANCH_I:
-  1916 006AD               		INST_DJZ_R:			;------- Instruction Test => DJZ R
-  1917 006AD 601A          			MOV		A,@0x1A
-  1918 006AE 015A          			MOV		INST,A
-  1919 006AF 40CB          			CALL	STATUS_CLEAR
-  1920 006B0 6001          			MOV		A,@0x01
-  1921 006B1 0150          			MOV		0x50,A		; [0x50] = 0x01
-  1922 006B2 1750          			DJZ		0x50		; [0x50] = [0x50] - 1,if z,skip
-  1923 006B3 506C          			JMP		INS_FAIL
-  1924 006B4 1050          			MOV		A,0x50
-  1925 006B5 6C00          			XOR		A,@0x00		; Check Result ?
-  1926 006B6 40CE          			CALL	INST_XOR_JUDGE	
-  1927 006B7 40CB          			CALL	STATUS_CLEAR
-  1928 006B8 6002          			MOV		A,@0x02
-  1929 006B9 0150          			MOV		0x50,A		; [0x50] = 0x02
-  1930 006BA 1750          			DJZ		0x50		; [0x50] = [0x50] - 1,if z,skip
-  1931 006BB 56BD          			JMP		$+2
-  1932 006BC 506C          			JMP		INS_FAIL
-  1933 006BD               		INST_DJZA_R:		;------- Instruction Test => DJZA R
-  1934 006BD 6019          			MOV		A,@0x19
-  1935 006BE 015A          			MOV		INST,A
-  1936 006BF 40CB          			CALL	STATUS_CLEAR
-  1937 006C0 6001          			MOV		A,@0x01
-  1938 006C1 0150          			MOV		0x50,A		; [0x50] = 0x01
-  1939 006C2 1650          			DJZA	0x50		; A = [0x50] - 0x01,if z,skip
-  1940 006C3 506C          			JMP	INS_FAIL
-  1941 006C4 6C00          			XOR		A,@0x00		; Check Result ?
-  1942 006C5 40CE          			CALL	INST_XOR_JUDGE
-  1943 006C6 40CB          			CALL	STATUS_CLEAR
-  1944 006C7 6002          			MOV		A,@0x02
-  1945 006C8 0150          			MOV		0x50,A		; [0x50] = 0x02
-  1946 006C9 1650          			DJZA	0x50		; A = [0x50] - 0x01,if z,skip
-  1947 006CA 56CC          			JMP		$+2
-  1948 006CB 506C          			JMP	INS_FAIL
-  1949 006CC               		INST_JZA_R:			;-------Instruction Test => JZA R
-  1950 006CC 6021          			MOV		A,@0x21
-  1951 006CD 015A          			MOV		INST,A
-  1952 006CE 40CB          			CALL	STATUS_CLEAR
-  1953 006CF 60FF          			MOV		A,@0xFF
-  1954 006D0 0150          			MOV		0x50,A
-  1955 006D1 1E50          			JZA		0x50		; A = [0x50] + 1,if 0 skip
-  1956 006D2 506C          			JMP		INS_FAIL
-  1957 006D3 6C00          			XOR		A,@0x00		; Check Result ?
-  1958 006D4 40CE          			CALL	INST_XOR_JUDGE
-  1959 006D5 40CB          			CALL	STATUS_CLEAR
-  1960 006D6 6080          			MOV		A,@0x80
-  1961 006D7 0150          			MOV		0x50,A
-  1962 006D8 1E50          			JZA		0x50		; A = [0x50] + 1,if 0 skip
-  1963 006D9 56DB          			JMP		$+2
-  1964 006DA 506C          			JMP		INS_FAIL
-  1965 006DB               		INST_JZ_R:			;-------Instruction Test => JZ R
-  1966 006DB 6022          			MOV		A,@0x22
-  1967 006DC 015A          			MOV		INST,A
-  1968 006DD 40CB          			CALL	STATUS_CLEAR
-  1969 006DE 60FF          			MOV		A,@0xFF
-  1970 006DF 0150          			MOV		0x50,A		; [0x50] = 0xFF
-  1971 006E0 1F50          			JZ		0x50		; [0x50] = [0x50] + 1,if 0 skip
-  1972 006E1 506C          			JMP		INS_FAIL
-  1973 006E2 1050          			MOV		A,0x50
-  1974 006E3 6C00          			XOR		A,@0x00		; Check Result ?
-  1975 006E4 40CE          			CALL	INST_XOR_JUDGE
-  1976 006E5 40CB          			CALL	STATUS_CLEAR
-  1977 006E6 6080          			MOV		A,@0x80
-  1978 006E7 0150          			MOV		0x50,A		; [0x50] = 0xFF
-  1979 006E8 1F50          			JZ		0x50		; [0x50] = [0x50] + 1,if 0 skip
-  1980 006E9 56EB          			JMP		$+2
-  1981 006EA 506C          			JMP		INS_FAIL
-  1982 006EB 0012          		RET
-  1983 006EC               	TEST_INST_BRANCH_II:
-  1984 006EC               		INST_JE_R:			;-------Instruction Test => JE R
-  1985 006EC 6023          			MOV		A,@0x23
-  1986 006ED 015A          			MOV		INST,A
-  1987 006EE 40CB          			CALL	STATUS_CLEAR
-  1988 006EF 605A          			MOV		A,@0x5A
-  1989 006F0 0150          			MOV		0x50,A		; [0x50] = 0x5A
-  1990 006F1 6150          			JE		0x50		; [0x50] = A?
-  1991 006F2 506C          			JMP		INS_FAIL
-  1992 006F3 605B          			MOV		A,@0x5B
-  1993 006F4 0150          			MOV		0x50,A		; [0x50] = 0x5B
-  1994 006F5 605C          			MOV		A,@0x5C
-  1995 006F6 6150          			JE		0x50		; [0x50] = A(0x5C)?
-  1996 006F7 56F9          			JMP		$+2
-  1997 006F8 506C          			JMP		INS_FAIL
-  1998 006F9               		INST_JGE_R:			;-------Instruction Test => JGE R
-  1999 006F9 6024          			MOV		A,@0x24
-  2000 006FA 015A          			MOV		INST,A
-  2001 006FB 40CB          			CALL	STATUS_CLEAR
-  2002 006FC 607F          			MOV		A,@0x7F
-  2003 006FD 0150          			MOV		0x50,A		; [0x50] = 0x7F
-  2004 006FE 6000          			MOV		A,@0x00
-  2005 006FF 6250          			JGE		0x50		; [0x50] > A ?
-  2006 00700 506C          			JMP		INS_FAIL
-  2007 00701 40CB          			CALL	STATUS_CLEAR
-  2008 00702 60FF          			MOV		A,@0xFF
-  2009 00703 0150          			MOV		0x50,A		; [0x50] = 0xFF
-  2010 00704 6080          			MOV		A,@0x80
-  2011 00705 6250          			JGE		0x50		; [0x50] > A ?
-  2012 00706 506C          			JMP		INS_FAIL
-  2013 00707 40CB          			CALL	STATUS_CLEAR
-  2014 00708 6000          			MOV		A,@0x00
-  2015 00709 0150          			MOV		0x50,A		; [0x50] = 0x00
-  2016 0070A 60FF          			MOV		A,@0xFF
-  2017 0070B 6250          			JGE		0x50		; [0x50] > A(0xFF) ?x
-  2018 0070C 570E          			JMP		$+2
-  2019 0070D 506C          			JMP		INS_FAIL
-  2020                     
-  2021 0070E               		INST_JLE_R:			;-------Instruction Test => JLE R
-  2022 0070E 6025          			MOV		A,@0x25
-  2023 0070F 015A          			MOV		INST,A
-  2024 00710 40CB          			CALL	STATUS_CLEAR
-  2025 00711 6000          			MOV		A,@0x00
-  2026 00712 0150          			MOV		0x50,A		; [0x50] = 0x00
-  2027 00713 607F          			MOV		A,@0x7F
-  2028 00714 6350          			JLE		0x50		; [0x50] < A ?
-  2029 00715 506C          			JMP		INS_FAIL
-  2030 00716 6000          			MOV		A,@0x00
-  2031 00717 0103          			MOV		STATUS,A
-  2032 00718 6080          			MOV		A,@0x80
-  2033 00719 0150          			MOV		0x50,A		; [0x50] = 0x80
-  2034 0071A 60FF          			MOV		A,@0xFF
-  2035 0071B 6350          			JLE		0x50		; [0x50] < A ?
-  2036 0071C 506C          			JMP		INS_FAIL
-  2037 0071D 40CB          			CALL	STATUS_CLEAR
-  2038 0071E 60FF          			MOV		A,@0xFF
-  2039 0071F 0150          			MOV		0x50,A		; [0x50] = 0xFF
-  2040 00720 6000          			MOV		A,@0x00
-  2041 00721 6350          			JLE		0x50		; [0x50] < A(0x00) ?x
-  2042 00722 5724          			JMP		$+2
-  2043 00723 506C          			JMP		INS_FAIL
-  2044 00724               		INST_JE_K:			;-------Instruction Test => JE k
-  2045 00724 6027          			MOV		A,@0x27
-  2046 00725 015A          			MOV		INST,A
-  2047 00726 40CB          			CALL	STATUS_CLEAR
-  2048 00727 607F          			MOV		A,@0x7F
-  2049 00728 657F          			JE		@0x7F
-  2050 00729 506C          			JMP	INS_FAIL
-  2051 0072A 0012          		RET
-  2052 0072B               	TEST_INST_BRANCH_III:
-  2053 0072B               		INST_CALL_K:		;-------Instruction Test => CALL k
-  2054 0072B 6002          			MOV	A,@0x02
-  2055 0072C 015A          			MOV	INST,A
-  2056 0072D 40CB          			CALL	STATUS_CLEAR
-  2057 0072E 6003          			MOV		A,@0x03
-  2058 0072F 0150          			MOV		0x50,A
-  2059 00730 47D0          			CALL	CALL_Test
-  2060 00731 1050          			MOV		A,0x50
-  2061 00732 6C04          			XOR		A,@0x04
-  2062 00733 40CE          			CALL	INST_XOR_JUDGE
-  2063                     
-  2064 00734               		INST_LCALL_K:		;-------Instruction Test => LCALL k
-  2065 00734 6003          			MOV		A,@0x03
-  2066 00735 015A          			MOV		INST,A
-  2067 00736 40CB          			CALL	STATUS_CLEAR
-  2068 00737 6003          			MOV		A,@0x03
-  2069 00738 0151          			MOV		0x51,A
-  2070 00739 4FFE          			CALL	LCALL_Test
-  2071 0073A 1051          			MOV		A,0x51
-  2072 0073B 6C04          			XOR		A,@0x04		; Check Result ?
-  2073 0073C 40CE          			CALL	INST_XOR_JUDGE
-  2074                     
-  2075 0073D               		INST_RETL_K:		;-------Instruction Test => RETL k
-  2076 0073D 602C          			MOV		A,@0x2C
-  2077 0073E 015A          			MOV		INST,A
-  2078 0073F 40CB          			CALL	STATUS_CLEAR
-  2079 00740 6000          			MOV		A,@0x00
-  2080 00741 4EF0          			CALL	INST_RETL_TABLE
-  2081 00742 6CA1          			XOR		A,@0xA1
-  2082 00743 40CE          			CALL	INST_XOR_JUDGE
-  2083 00744 6001          			MOV		A,@0x01
-  2084 00745 4EF0          			CALL	INST_RETL_TABLE
-  2085 00746 6CA2          			XOR		A,@0xA2
-  2086 00747 40CE          			CALL	INST_XOR_JUDGE
-  2087 00748 6002          			MOV		A,@0x02
-  2088 00749 4EF0          			CALL	INST_RETL_TABLE
-  2089 0074A 6CA4          			XOR		A,@0xA4
-  2090 0074B 40CE          			CALL	INST_XOR_JUDGE
-  2091 0074C 6003          			MOV		A,@0x03
-  2092 0074D 4EF0          			CALL	INST_RETL_TABLE
-  2093 0074E 6CA8          			XOR		A,@0xA8
-  2094 0074F 40CE          			CALL	INST_XOR_JUDGE
-  2095 00750 0012          		RET
-  2096 00751               	TEST_INST_CONTROL:
-  2097 00751               		INST_ENI:			;-------Instruction Test => ENI , IT?
-  2098 00751 6004          			MOV		A,@0x04
-  2099 00752 015A          			MOV		INST,A
-  2100 00753 0010          			ENI
-  2101 00754 3F03          			JBS		IT		; Check IT = 1?
-  2102 00755 506C          			JMP	INS_FAIL
-  2103 00756               		INST_DISI:			;-------Instruction Test => DISI , IT?
-  2104 00756 6005          			MOV		A,@0x05
-  2105 00757 015A          			MOV		INST,A
-  2106 00758 0011          			DISI
-  2107 00759 3703          			JBC		IT		; Check IT = 0?
-  2108 0075A 506C          			JMP	INS_FAIL
-  2109 0075B 0012          		RET
-  2110                     
-  2111 0075C               	TEST_SHORT_BRANCH:
-  2112                     		;ORG	0x800
-  2113 0075C 40CB          		CALL	STATUS_CLEAR
-  2114 0075D 2803          		BS	C
-  2115 0075E 6903          		SJC		@0x03
-  2116 0075F 5066          		JMP		JMP_FAIL
-  2117 00760 5066          		JMP		JMP_FAIL
-  2118 00761 5066          		JMP		JMP_FAIL
-  2119 00762 2003          		BC	C
-  2120 00763 6A03          		SJNC	bbb		;@0x03
-  2121 00764 5066          		JMP		JMP_FAIL
-  2122 00765 5066          		JMP		JMP_FAIL
-  2123 00766 5066          		JMP		JMP_FAIL
-  2124 00767               		bbb:		
-  2125 00767 2A03          			BS		Z
-  2126 00768 6B03          			SJZ		@0x03
-  2127 00769 5066          			JMP		JMP_FAIL
-  2128 0076A 5066          			JMP		JMP_FAIL
-  2129 0076B 5066          			JMP		JMP_FAIL
-  2130 0076C 0200          			CLRA
-  2131 0076D 6B03          			SJZ		@0x03
-  2132 0076E 5066          			JMP		JMP_FAIL
-  2133 0076F 5066          			JMP		JMP_FAIL
-  2134 00770 5066          			JMP		JMP_FAIL
-  2135 00771 5779          		JMP		IATEST1		;JMP back Test as below
-  2136 00772               		aaa:	
-  2137 00772 5786          			JMP	IATEST2		; -9
-  2138 00773 5066          			JMP	JMP_FAIL	; -8
-  2139 00774 5066          			JMP	JMP_FAIL	; -7
-  2140 00775 5066          			JMP	JMP_FAIL	; -6
-  2141 00776 5066          			JMP	JMP_FAIL	; -5
-  2142 00777 5066          			JMP	JMP_FAIL	; -4
-  2143 00778 5066          			JMP	JMP_FAIL	; -3
-  2144 00779               		IATEST1:	
-  2145 00779 2803          			BS		C		; -2
-  2146 0077A 69F7          			SJC		aaa		; -1
-  2147 0077B 69F7          			SJC		@0xF7	; -1
-  2148 0077C 5066          			JMP		JMP_FAIL
-  2149 0077D 5066          			JMP		JMP_FAIL
-  2150 0077E 5066          			JMP		JMP_FAIL
-  2151 0077F 5792          			JMP		IATEST3		; -9
-  2152 00780 5066          			JMP		JMP_FAIL	; -8
-  2153 00781 5066          			JMP		JMP_FAIL	; -7
-  2154 00782 5066          			JMP		JMP_FAIL	; -6
-  2155 00783 5066          			JMP		JMP_FAIL	; -5
-  2156 00784 5066          			JMP		JMP_FAIL	; -4
-  2157 00785 5066          			JMP		JMP_FAIL	; -3
-  2158 00786               		IATEST2:	
-  2159 00786 2003          			BC		C		; -2
-  2160 00787 6AF7          			SJNC		@0xF7	; -1
-  2161 00788 57A3          			JMP		_IPass
-  2162 00789 57A3          			JMP		_IPass
-  2163 0078A 57A3          			JMP		_IPass
-  2164 0078B 579E          			JMP		IATEST4		; -9
-  2165 0078C 5066          			JMP		JMP_FAIL	; -8
-  2166 0078D 5066          			JMP		JMP_FAIL	; -7
-  2167 0078E 5066          			JMP		JMP_FAIL	; -6
-  2168 0078F 5066          			JMP		JMP_FAIL	; -5
-  2169 00790 5066          			JMP		JMP_FAIL	; -4
-  2170 00791 5066          			JMP		JMP_FAIL	; -3
-  2171 00792               		IATEST3:	
-  2172 00792 2A03          			BS		Z		; -2
-  2173 00793 6BF7          			SJZ		@0xF7	; -1
-  2174 00794 5066          			JMP		JMP_FAIL
-  2175 00795 5066          			JMP		JMP_FAIL
-  2176 00796 5066          			JMP		JMP_FAIL
-  2177                     
-  2178 00797 57A3          			JMP		_IPass		; -9
-  2179 00798 5066          			JMP		JMP_FAIL	; -8
-  2180 00799 5066          			JMP		JMP_FAIL	; -7
-  2181 0079A 5066          			JMP		JMP_FAIL	; -6
-  2182 0079B 5066          			JMP		JMP_FAIL	; -5
-  2183 0079C 5066          			JMP		JMP_FAIL	; -4
-  2184 0079D 5066          			JMP		JMP_FAIL	; -3
-  2185 0079E               		IATEST4:	
-  2186 0079E 2203          			BC		Z		; -2
-  2187 0079F 6DF7          			SJNZ	@0xF7	; -1
-  2188 007A0 5066          			JMP		JMP_FAIL
-  2189 007A1 5066          			JMP		JMP_FAIL
-  2190 007A2 5066          			JMP		JMP_FAIL
-  2191 007A3               		_IPass:
-  2192 007A3 0000          				NOP
-  2193 007A4 0012          		RET
-  2194                     
-  2195 007A5               	TEST_READ_ROM:
-  2196 007A5               		INST_TBLRD_R:
-  2197 007A5 6028          			MOV		A,@0x28
-  2198 007A6 015A          			MOV		INST,A
-  2199 007A7 7A01          			SBANK	1
-  2200 007A8 60F1          			MOV		A,@0xF1		;ADDR(0x0EF1)
-  2201 007A9 0145          			MOV		TBPTL,A
-  2202 007AA 600E          			MOV		A,@0x0E
-  2203 007AB 0146          			MOV		TBPTH,A
-  2204 007AC 7A00          			SBANK	0
-  2205 007AD 6750          			TBRDA	0x50		; [0x50]+ A = [TABPTR] 
-  2206 007AE 6CA1          			XOR		A,@0xA1
-  2207 007AF 40CE          			CALL	INST_XOR_JUDGE
-  2208 007B0 1050          			MOV		A,0x50
-  2209 007B1 6C70          			XOR		A,@0x70
-  2210 007B2 40CE          			CALL	INST_XOR_JUDGE
-  2211                     
-  2212 007B3 7A01          			SBANK	1
-  2213                     			;MOV		A,@0xF1		;ADDR(0x0EF1)
-  2214                     			;MOV		TBPTL,A
-  2215                     			;MOV		A,@0x0E
-  2216                     			;MOV		TBPTH,A
-  2217 007B4 1545          			INC		TBPTL		;ADDR(0x0EF2)
-  2218 007B5 7A00          			SBANK	0
-  2219 007B6 6750          			TBRDA	0x50		; [0x50]+ A = [TABPTR] 
-  2220 007B7 6CA2          			XOR		A,@0xA2
-  2221 007B8 40CE          			CALL	INST_XOR_JUDGE
-  2222 007B9 1050          			MOV		A,0x50
-  2223 007BA 6C70          			XOR		A,@0x70
-  2224 007BB 40CE          			CALL	INST_XOR_JUDGE
-  2225 007BC               		INST_TBRD_R:		;-------Instruction Test => TBRD R
-  2226 007BC 6033          			MOV		A,@0x33
-  2227 007BD 015A          			MOV		INST,A
-  2228 007BE 7A01          			SBANK	1
-  2229 007BF 60F3          			MOV		A,@0xF3		;ADDR(0x0EF3)
-  2230 007C0 0145          			MOV		TBPTL,A
-  2231 007C1 600E          			MOV		A,@0x0E
-  2232 007C2 0146          			MOV		TBPTH,A
-  2233 007C3 7A00          			SBANK	0
-  2234 007C4 7B50          			TBRD	0x50
-  2235 007C5 1050          			MOV		A,0x50
-  2236 007C6 6CA4          			XOR		A,@0xA4
-  2237 007C7 40CE          			CALL	INST_XOR_JUDGE
-  2238                     
-  2239 007C8 7A01          			SBANK	1
-  2240                     			;MOV		A,@0xF3
-  2241                     			;MOV		TBPTL,A
-  2242                     			;MOV		A,@0x0E
-  2243                     			;MOV		TBPTH,A
-  2244 007C9 1545          			INC		TBPTL		;ADDR(0x0EF4)
-  2245 007CA 7A00          			SBANK	0
-  2246 007CB 7B50          			TBRD	0x50
-  2247 007CC 1050          			MOV		A,0x50
-  2248 007CD 6CA8          			XOR		A,@0xA8
-  2249 007CE 40CE          			CALL	INST_XOR_JUDGE
-  2250 007CF 0012          		RET
-  2251                     
-  2252                     
-  2253 007D0               	CALL_Test:
-  2254 007D0 1550          		INC		0x50
-  2255 007D1 0012          		RET
-  2256                     ;================== EEPROM Test Routine =====================
-  2257                     
-  2258                     ;================== Return Table ============================
-  2259                     ORG	0x0EF0	; ADDR(3824)
-  2260 00EF0               	INST_RETL_TABLE:
-  2261 00EF0 0F02          		ADD		PCL, A	;BackUp PC to STACK,then SEARCH TABLE By PC
-  2262 00EF1 70A1          		RETL	@0xA1
-  2263 00EF2 70A2          		RETL	@0xA2
-  2264 00EF3 70A4          		RETL	@0xA4
-  2265 00EF4 70A8          		RETL	@0xA8
-  2266 00EF5 701A          		RETL	@0x1A
-  2267 00EF6 702A          		RETL	@0x2A
-  2268 00EF7 704A          		RETL	@0x4A
-  2269 00EF8 708A          		RETL	@0x8A
-  2270                     
-  2271                     ;================== RAM Test Routine ========================
-  2272                     ORG	0x0F00	; ADDR(3840)
-  2273 00F00               	TEST_RAM_BANK_0_5:
-  2274 00F00 6080          		MOV		A,@0x80		; Write Start SRAM(0x55)
-  2275 00F01 0104          		MOV		RSR,A
-  2276 00F02 7A40          		GBANK	0
-  2277 00F03 6055          		MOV		A,@0x55
-  2278 00F04 0100          		MOV		IAR,A
-  2279 00F05 1504          		INC		RSR
-  2280 00F06 6000          		MOV		A,@0x00
-  2281 00F07 0D04          		XOR		RSR,A		; INC(0x80),UNTIL(0x00)
-  2282 00F08 3A03          		JBS		Z
-  2283 00F09 5F03          		JMP		$-6
-  2284 00F0A 6080          		MOV		A,@0x80		; Read Start SRAM(0x55)
-  2285 00F0B 0104          		MOV		RSR,A
-  2286 00F0C 7A40          		GBANK	0
-  2287 00F0D 6055          		MOV		A,@0x55
-  2288 00F0E 0D00          		XOR		IAR,A
-  2289 00F0F 3A03          		JBS		Z
-  2290 00F10 5069          		JMP		RAM_FAIL
-  2291 00F11 1504          		INC		RSR
-  2292 00F12 6000          		MOV		A,@0x00
-  2293 00F13 0D04          		XOR		RSR,A		; INC(0x80),UNTIL(0x00)
-  2294 00F14 3A03          		JBS		Z
-  2295 00F15 5F0D          		JMP		$-8
-  2296 00F16 0012          		RET
-  2297 00F17               	TEST_RAM_BANK_0_A:
-  2298 00F17 6080          		MOV		A,@0x80		; Write Start SRAM(0xAA)
-  2299 00F18 0104          		MOV		RSR,A
-  2300 00F19 7A40          		GBANK	0
-  2301 00F1A 60AA          		MOV		A,@0xAA		; SRAM(0xAA)
-  2302 00F1B 0100          		MOV		IAR,A
-  2303 00F1C 1504          		INC		RSR
-  2304 00F1D 6000          		MOV		A,@0x00
-  2305 00F1E 0D04          		XOR		RSR,A		; INC(0x80),UNTIL(0x00)
-  2306 00F1F 3A03          		JBS		Z
-  2307 00F20 5F1A          		JMP		$-6
-  2308 00F21 6080          		MOV		A,@0x80
-  2309 00F22 0104          		MOV		RSR,A
-  2310 00F23 7A40          		GBANK	0
-  2311 00F24 60AA          		MOV		A,@0xAA
-  2312 00F25 0D00          		XOR		IAR,A
-  2313 00F26 3A03          		JBS		Z
-  2314 00F27 5069          		JMP		RAM_FAIL
-  2315 00F28 1504          		INC		RSR
-  2316 00F29 6000          		MOV		A,@0x00
-  2317 00F2A 0D04          		XOR		RSR,A		; INC(0x80),UNTIL(0x00)
-  2318 00F2B 3A03          		JBS		Z
-  2319 00F2C 5F24          		JMP		$-8
-  2320 00F2D 0012          		RET
-  2321 00F2E               	TEST_RAM_BANK_1_3:
-  2322 00F2E 6080          		MOV		A,@0x80		; Write Start SRAM(0x33)
-  2323 00F2F 0104          		MOV		RSR,A
-  2324 00F30 7A41          		GBANK	1
-  2325 00F31 6033          		MOV		A,@0x33		; SRAM(0x33)
-  2326 00F32 0100          		MOV		IAR,A
-  2327 00F33 1504          		INC		RSR
-  2328 00F34 6000          		MOV		A,@0x00
-  2329 00F35 0D04          		XOR		RSR,A		; INC(0x80),UNTIL(0x00)
-  2330 00F36 3A03          		JBS		Z
-  2331 00F37 5F31          		JMP		$-6
-  2332 00F38 6080          		MOV		A,@0x80
-  2333 00F39 0104          		MOV		RSR,A
-  2334 00F3A 7A41          		GBANK	1
-  2335 00F3B 6033          		MOV		A,@0x33
-  2336 00F3C 0D00          		XOR		IAR,A
-  2337 00F3D 3A03          		JBS		Z
-  2338 00F3E 5069          		JMP		RAM_FAIL
-  2339 00F3F 1504          		INC		RSR
-  2340 00F40 6000          		MOV		A,@0x00
-  2341 00F41 0D04          		XOR		RSR,A		; INC(0x80),UNTIL(0x00)
-  2342 00F42 3A03          		JBS		Z
-  2343 00F43 5F3B          		JMP		$-8
-  2344 00F44 0012          		RET
-  2345 00F45               	TEST_RAM_BANK_1_C:
-  2346 00F45 6080          		MOV		A,@0x80		; Write Start SRAM(0xCC)
-  2347 00F46 0104          		MOV		RSR,A
-  2348 00F47 7A41          		GBANK	1
-  2349 00F48 60CC          		MOV		A,@0xCC		; SRAM(0xCC)
-  2350 00F49 0100          		MOV		IAR,A
-  2351 00F4A 1504          		INC		RSR
-  2352 00F4B 6000          		MOV		A,@0x00
-  2353 00F4C 0D04          		XOR		RSR,A		; INC(0x80),UNTIL(0x00)
-  2354 00F4D 3A03          		JBS		Z
-  2355 00F4E 5F48          		JMP		$-6
-  2356 00F4F 6080          		MOV		A,@0x80
-  2357 00F50 0104          		MOV		RSR,A
-  2358 00F51 7A41          		GBANK	1
-  2359 00F52 60CC          		MOV		A,@0xCC
-  2360 00F53 0D00          		XOR		IAR,A
-  2361 00F54 3A03          		JBS		Z
-  2362 00F55 5069          		JMP		RAM_FAIL
-  2363 00F56 1504          		INC		RSR
-  2364 00F57 6000          		MOV		A,@0x00
-  2365 00F58 0D04          		XOR		RSR,A		; INC(0x80),UNTIL(0x00)
-  2366 00F59 3A03          		JBS		Z
-  2367 00F5A 5F52          		JMP		$-8
-  2368 00F5B 0012          		RET
-  2369                     
-  2370                     ;================== Long Sub Routine ========================
-  2371                     ORG	0x0FFE	; >4K
-  2372 00FFE               	LCALL_Test:
-  2373 00FFE 1551          		INC		0x51
-  2374 00FFF 0012          		RET
+   854 002DA               		INST_DEC:			;-------Instruction Test => DEC R
+   855 002DA 600D          			MOV		A,@0x0D
+   856 002DB 015A          			MOV		INST,A
+   857 002DC 6000          			MOV		A,@0x00
+   858 002DD 0103          			MOV		STATUS,A
+   859 002DE 6020          			MOV		A,@0x20		; 0x20-1
+   860 002DF 0150          			MOV		0x50,A		; [0x50] = 0x20
+   861 002E0 0750          			DEC		0x50		; [0x50] = [0x50] - 0x01
+   862 002E1 1003          			MOV		A,STATUS
+   863 002E2 6C19          			XOR		A,@0x19		; Check Status ? for non rest
+   864                     			;;XOR		A,@0x11		; Check Status ?
+   865 002E3 3A03          			JBS		Z			; Check Z = 1?
+   866 002E4 506C          			JMP	INS_FAIL
+   867 002E5 3603          			JBC		N			; Check N = 0?
+   868 002E6 506C          			JMP	INS_FAIL
+   869 002E7 2203          			BC		Z
+   870 002E8 1050          			MOV		A,0x50
+   871 002E9 6C1F          			XOR		A,@0x1F		; Check Result ?
+   872 002EA 3A03          			JBS		Z			; Check Z = 1?
+   873 002EB 506C          			JMP	INS_FAIL
+   874 002EC 3603          			JBC		N			; Check N = 0?
+   875 002ED 506C          			JMP	INS_FAIL
+   876 002EE 6000          			MOV		A,@0x00
+   877 002EF 0103          			MOV		STATUS,A
+   878 002F0 6001          			MOV		A,@0x01		; 0x01-1
+   879 002F1 0150          			MOV		0x50,A		; [0x50] = 0x01
+   880 002F2 0750          			DEC		0x50		; [0x50] = [0x50] - 0x01
+   881 002F3 1003          			MOV		A,STATUS
+   882 002F4 6C1F          			XOR		A,@0x1F		; Check Status ? for non reset
+   883                     			;;XOR		A,@0x17		; Check Status ?
+   884 002F5 3A03          			JBS		Z			; Check Z = 1?
+   885 002F6 506C          			JMP	INS_FAIL
+   886 002F7 3603          			JBC		N			; Check N = 0?
+   887 002F8 506C          			JMP	INS_FAIL
+   888 002F9 2203          			BC		Z
+   889 002FA 1050          			MOV		A,0x50
+   890 002FB 6C00          			XOR		A,@0x00		; Check Result ?
+   891 002FC 3A03          			JBS		Z			; Check Z = 1?
+   892 002FD 506C          			JMP	INS_FAIL
+   893 002FE 3603          			JBC		N			; Check N = 0?
+   894 002FF 506C          			JMP	INS_FAIL
+   895 00300 6000          			MOV		A,@0x00
+   896 00301 0103          			MOV		STATUS,A
+   897 00302 6000          			MOV		A,@0x00		; 0x00-1
+   898 00303 0150          			MOV		0x50,A		; [0x50] = 0x00
+   899 00304 0750          			DEC		0x50		; [0x50] = [0x50] - 0x01
+   900 00305 1003          			MOV		A,STATUS
+   901 00306 6C58          			XOR		A,@0x58		; Check Status ? for non reset
+   902                     			;;XOR		A,@0x50		; Check Status ?
+   903 00307 3A03          			JBS		Z			; Check Z = 1?
+   904 00308 506C          			JMP	INS_FAIL
+   905 00309 3603          			JBC		N			; Check N = 0?
+   906 0030A 506C          			JMP	INS_FAIL
+   907 0030B 2203          			BC		Z
+   908 0030C 1050          			MOV		A,0x50
+   909 0030D 6CFF          			XOR		A,@0xFF		; Check Result ?
+   910 0030E 3A03          			JBS		Z			; Check Z = 1?
+   911 0030F 506C          			JMP	INS_FAIL
+   912 00310 3603          			JBC		N			; Check N = 0?
+   913 00311 506C          			JMP	INS_FAIL
+   914 00312 6000          			MOV		A,@0x00
+   915 00313 0103          			MOV		STATUS,A
+   916 00314 6080          			MOV		A,@0x80		; 0x80-1
+   917 00315 0150          			MOV		0x50,A		; [0x50] = 0x80
+   918 00316 0750          			DEC		0x50		; [0x50] = [0x50] - 0x01
+   919 00317 1003          			MOV		A,STATUS
+   920 00318 6C39          			XOR		A,@0x39		; Check Status ? for non reset
+   921                     			;;XOR		A,@0x31		; Check Status ?
+   922 00319 3A03          			JBS		Z			; Check Z = 1?
+   923 0031A 506C          			JMP	INS_FAIL
+   924 0031B 3603          			JBC		N			; Check N = 0?
+   925 0031C 506C          			JMP	INS_FAIL
+   926 0031D 2203          			BC		Z
+   927 0031E 1050          			MOV		A,0x50
+   928 0031F 6C7F          			XOR		A,@0x7F		; Check Result ?
+   929 00320 3A03          			JBS		Z			; Check Z = 1?
+   930 00321 506C          			JMP	INS_FAIL
+   931 00322 3603          			JBC		N			; Check N = 0?
+   932 00323 506C          			JMP	INS_FAIL
+   933                     
+   934 00324               		INST_ADD_A_R:		;-------Instruction Test => ADD A,R
+   935 00324 6012          			MOV		A,@0x12
+   936 00325 015A          			MOV		INST,A
+   937 00326 40CB          			CALL	STATUS_CLEAR	; 0x80+0x7F
+   938 00327 6080          			MOV		A,@0x80
+   939 00328 0150          			MOV		0x50,A		; [0x50] = 0x80
+   940 00329 607F          			MOV		A,@0x7F		; 
+   941 0032A 0E50          			ADD		A,0x50		; A = 0x7F + 0x80
+   942 0032B 3003          			JBC		C			; Check C = 0?
+   943 0032C 506C          			JMP	INS_FAIL
+   944 0032D 3103          			JBC		DC			; Check DC = 0?
+   945 0032E 506C          			JMP	INS_FAIL
+   946 0032F 3203          			JBC		Z			; Check Z = 0?
+   947 00330 506C          			JMP	INS_FAIL
+   948 00331 3503          			JBC		OV			; Check OV = 0?
+   949 00332 506C          			JMP	INS_FAIL
+   950 00333 3E03          			JBS		N			; Check N = 1?	; Result is Negative
+   951 00334 506C          			JMP	INS_FAIL
+   952 00335 2203          			BC		Z
+   953 00336 2603          			BC		N
+   954 00337 6CFF          			XOR		A,@0xFF		; Check Result ?
+   955 00338 3A03          			JBS		Z			; Check Z = 1?
+   956 00339 506C          			JMP	INS_FAIL
+   957 0033A 3603          			JBC		N			; Check N = 0?
+   958 0033B 506C          			JMP	INS_FAIL
+   959 0033C 40CB          			CALL	STATUS_CLEAR	; 0xFF+0x01
+   960 0033D 60FF          			MOV		A,@0xFF
+   961 0033E 0150          			MOV		0x50,A		; [0x50] = 0xFF
+   962 0033F 6001          			MOV		A,@0x01		; 
+   963 00340 0E50          			ADD		A,0x50		; A = 0x01 + 0xFF
+   964 00341 3803          			JBS		C			; Check C = 1?
+   965 00342 506C          			JMP	INS_FAIL
+   966 00343 3903          			JBS		DC			; Check DC = 1?
+   967 00344 506C          			JMP	INS_FAIL
+   968 00345 3A03          			JBS		Z			; Check Z = 1?
+   969 00346 506C          			JMP	INS_FAIL
+   970 00347 3503          			JBC		OV			; Check OV = 0?
+   971 00348 506C          			JMP	INS_FAIL
+   972 00349 3603          			JBC		N			; Check N = 0?
+   973 0034A 506C          			JMP	INS_FAIL
+   974 0034B 2203          			BC		Z
+   975 0034C 2603          			BC		N
+   976 0034D 6C00          			XOR		A,@0x00		; Check Result ?
+   977 0034E 3A03          			JBS		Z			; Check Z = 1?
+   978 0034F 506C          			JMP	INS_FAIL
+   979 00350 3603          			JBC		N			; Check N = 0?
+   980 00351 506C          			JMP	INS_FAIL
+   981 00352 40CB          			CALL	STATUS_CLEAR	; 0x7F+0x01
+   982 00353 607F          			MOV		A,@0x7F
+   983 00354 0150          			MOV		0x50,A		; [0x50] = 0x7F
+   984 00355 6001          			MOV		A,@0x01		; 
+   985 00356 0E50          			ADD		A,0x50		; A = 0x01 + 0x7F
+   986 00357 3003          			JBC		C			; Check C = 0?
+   987 00358 506C          			JMP	INS_FAIL
+   988 00359 3903          			JBS		DC			; Check DC = 1?
+   989 0035A 506C          			JMP	INS_FAIL
+   990 0035B 3203          			JBC		Z			; Check Z = 0?
+   991 0035C 506C          			JMP	INS_FAIL
+   992 0035D 3D03          			JBS		OV			; Check OV = 1?
+   993 0035E 506C          			JMP	INS_FAIL
+   994 0035F 3E03          			JBS		N			; Check N = 1?
+   995 00360 506C          			JMP	INS_FAIL
+   996 00361 2203          			BC		Z
+   997 00362 2603          			BC		N
+   998 00363 6C80          			XOR		A,@0x80		; Check Result ?
+   999 00364 3A03          			JBS		Z			; Check Z = 1?
+  1000 00365 506C          			JMP	INS_FAIL
+  1001 00366 3603          			JBC		N			; Check N = 0?
+  1002 00367 506C          			JMP	INS_FAIL
+  1003 00368               		INST_ADD_R_A:		;-------Instruction Test => ADD R,A
+  1004 00368 6013          			MOV		A,@0x13
+  1005 00369 015A          			MOV		INST,A
+  1006 0036A 40CB          			CALL	STATUS_CLEAR	; 0x80+0x7F
+  1007 0036B 6080          			MOV		A,@0x80
+  1008 0036C 0150          			MOV		0x50,A		; [0x50] = 0x80
+  1009 0036D 607F          			MOV		A,@0x7F		; A = 0x7F
+  1010 0036E 0F50          			ADD		0x50,A		; [0x50] = 0x80 + 0x7F
+  1011 0036F 1003          			MOV		A,STATUS
+  1012 00370 6C58          			XOR		A,@0x58		; Check Status ? for non reset
+  1013                     			;;XOR		A,@0x50		; Check Status ?
+  1014 00371 3A03          			JBS		Z			; Check Z = 1?
+  1015 00372 506C          			JMP	INS_FAIL
+  1016 00373 3603          			JBC		N			; Check N = 0?
+  1017 00374 506C          			JMP	INS_FAIL
+  1018 00375 1050          			MOV		A,0x50
+  1019 00376 6CFF          			XOR		A,@0xFF		; Check Result ?
+  1020 00377 3A03          			JBS		Z			; Check Z = 1?
+  1021 00378 506C          			JMP	INS_FAIL
+  1022 00379 3603          			JBC		N			; Check N = 0?
+  1023 0037A 506C          			JMP	INS_FAIL
+  1024 0037B 40CB          			CALL	STATUS_CLEAR	; 0xFF+0x01
+  1025 0037C 60FF          			MOV		A,@0xFF
+  1026 0037D 0150          			MOV		0x50,A		; [0x50] = 0xFF
+  1027 0037E 6001          			MOV		A,@0x01		; A = 0x01
+  1028 0037F 0F50          			ADD		0x50,A		; [0x50] = 0xFF + 0x01
+  1029 00380 1003          			MOV		A,STATUS
+  1030 00381 6C1F          			XOR		A,@0x1F		; Check Status ? for non reset
+  1031                     			;;XOR		A,@0x17		; Check Status ?
+  1032 00382 3A03          			JBS		Z			; Check Z = 1?
+  1033 00383 506C          			JMP	INS_FAIL
+  1034 00384 3603          			JBC		N			; Check N = 0?
+  1035 00385 506C          			JMP	INS_FAIL
+  1036 00386 1050          			MOV		A,0x50
+  1037 00387 6C00          			XOR		A,@0x00		; Check Result ?
+  1038 00388 3A03          			JBS		Z			; Check Z = 1?
+  1039 00389 506C          			JMP	INS_FAIL
+  1040 0038A 3603          			JBC		N			; Check N = 0?
+  1041 0038B 506C          			JMP	INS_FAIL
+  1042 0038C 40CB          			CALL	STATUS_CLEAR	;0x7F+0x01
+  1043 0038D 607F          			MOV		A,@0x7F
+  1044 0038E 0150          			MOV		0x50,A		; [0x50] = 0x7F
+  1045 0038F 6001          			MOV		A,@0x01		; A = 0x01
+  1046 00390 0F50          			ADD		0x50,A		; [0x50] = 0x7F + 0x01
+  1047 00391 1003          			MOV		A,STATUS
+  1048 00392 6C7A          			XOR		A,@0x7A		; Check Status ? for non reset
+  1049                     			;;XOR		A,@0x72		; Check Status ?
+  1050 00393 3A03          			JBS		Z			; Check Z = 1?
+  1051 00394 506C          			JMP	INS_FAIL
+  1052 00395 3603          			JBC		N			; Check N = 0?
+  1053 00396 506C          			JMP	INS_FAIL
+  1054 00397 1050          			MOV		A,0x50
+  1055 00398 6C80          			XOR		A,@0x80		; Check Result ?
+  1056 00399 3A03          			JBS		Z			; Check Z = 1?
+  1057 0039A 506C          			JMP	INS_FAIL
+  1058 0039B 3603          			JBC		N			; Check N = 0?
+  1059 0039C 506C          			JMP	INS_FAIL
+  1060 0039D               		INST_ADD_A_K:		;-------Instruction Test => ADD A,k
+  1061 0039D 6034          			MOV		A,@0x34
+  1062 0039E 015A          			MOV		INST,A
+  1063 0039F 40CB          			CALL	STATUS_CLEAR
+  1064 003A0 607F          			MOV		A,@0x7F		;0x7F+0x01
+  1065 003A1 7C01          			ADD		A,@0x01		; A = 0x01 + A
+  1066 003A2 3003          			JBC		C			; Check C = 0?
+  1067 003A3 506C          			JMP	INS_FAIL
+  1068 003A4 3903          			JBS		DC			; Check DC = 1?
+  1069 003A5 506C          			JMP	INS_FAIL
+  1070 003A6 3203          			JBC		Z			; Check Z = 0?
+  1071 003A7 506C          			JMP	INS_FAIL
+  1072 003A8 3D03          			JBS		OV			; Check OV = 1?
+  1073 003A9 506C          			JMP	INS_FAIL
+  1074 003AA 3E03          			JBS		N			; Check N = 1?
+  1075 003AB 506C          			JMP	INS_FAIL
+  1076 003AC 6C80          			XOR		A,@0x80		; Check Result ?
+  1077 003AD 40CE          			CALL	INST_XOR_JUDGE
+  1078 003AE 40CB          			CALL	STATUS_CLEAR
+  1079 003AF 60FF          			MOV		A,@0xFF		;0xFF+0x01
+  1080 003B0 7C01          			ADD		A,@0x01		; A = 0x01 + A
+  1081 003B1 3803          			JBS		C			; Check C = 1?
+  1082 003B2 506C          			JMP	INS_FAIL
+  1083 003B3 3903          			JBS		DC			; Check DC = 1?
+  1084 003B4 506C          			JMP	INS_FAIL
+  1085 003B5 3A03          			JBS		Z			; Check Z = 1?
+  1086 003B6 506C          			JMP	INS_FAIL
+  1087 003B7 3503          			JBC		OV			; Check OV = 0?
+  1088 003B8 506C          			JMP	INS_FAIL
+  1089 003B9 3603          			JBC		N			; Check N = 0?
+  1090 003BA 506C          			JMP	INS_FAIL
+  1091 003BB 6C00          			XOR		A,@0x00		; Check Result ?
+  1092 003BC 40CE          			CALL	INST_XOR_JUDGE
+  1093 003BD 40CB          			CALL	STATUS_CLEAR
+  1094 003BE 607F          			MOV		A,@0x7F		; 0x80+0x7F
+  1095 003BF 7C80          			ADD		A,@0x80		; A = 0x80 + A
+  1096 003C0 3003          			JBC		C			; Check C = 0?
+  1097 003C1 506C          			JMP	INS_FAIL
+  1098 003C2 3103          			JBC		DC			; Check DC = 0?
+  1099 003C3 506C          			JMP	INS_FAIL
+  1100 003C4 3203          			JBC		Z			; Check Z = 0?
+  1101 003C5 506C          			JMP	INS_FAIL
+  1102 003C6 3503          			JBC		OV			; Check OV = 0?
+  1103 003C7 506C          			JMP	INS_FAIL
+  1104 003C8 3E03          			JBS		N			; Check N = 1?
+  1105 003C9 506C          			JMP	INS_FAIL
+  1106 003CA 6CFF          			XOR		A,@0xFF		; Check Result ?
+  1107 003CB 40CE          			CALL	INST_XOR_JUDGE
+  1108 003CC               		INST_ADC_A_R:		;-------Instruction Test => ADC A,R
+  1109 003CC 6036          			MOV		A,@0x36
+  1110 003CD 015A          			MOV		INST,A
+  1111 003CE 40CB          			CALL	STATUS_CLEAR
+  1112 003CF 2803          			BS		C			; 0x7F+0x00
+  1113 003D0 607F          			MOV		A,@0x7F		
+  1114 003D1 0150          			MOV		0x50,A		; [0x50] = 0x7F
+  1115 003D2 6000          			MOV		A,@0x00		; A = 0x00
+  1116 003D3 7E50          			ADC		A,0x50		; A = A + [0x50] + C
+  1117 003D4 3003          			JBC		C			; Check C = 0?
+  1118 003D5 506C          			JMP	INS_FAIL
+  1119 003D6 3903          			JBS		DC			; Check DC = 1?
+  1120 003D7 506C          			JMP	INS_FAIL
+  1121 003D8 3203          			JBC		Z			; Check Z = 0?
+  1122 003D9 506C          			JMP	INS_FAIL
+  1123 003DA 3D03          			JBS		OV			; Check OV = 1?
+  1124 003DB 506C          			JMP	INS_FAIL
+  1125 003DC 3E03          			JBS		N			; Check N = 1?
+  1126 003DD 506C          			JMP	INS_FAIL
+  1127 003DE 6C80          			XOR		A,@0x80		; Check Result ?
+  1128 003DF 40CE          			CALL	INST_XOR_JUDGE
+  1129 003E0 40CB          			CALL	STATUS_CLEAR
+  1130 003E1 2803          			BS		C			; 0x80+0x7F
+  1131 003E2 6080          			MOV		A,@0x80
+  1132 003E3 0150          			MOV		0x50,A		; [0x50] = 0x80
+  1133 003E4 607F          			MOV		A,@0x7F		; A = 0x7F
+  1134 003E5 7E50          			ADC		A,0x50		; A = A + [0x50] + C
+  1135 003E6 3803          			JBS		C			; Check C = 1?
+  1136 003E7 506C          			JMP	INS_FAIL
+  1137 003E8 3903          			JBS		DC			; Check DC = 1?
+  1138 003E9 506C          			JMP	INS_FAIL
+  1139 003EA 3A03          			JBS		Z			; Check Z = 1?
+  1140 003EB 506C          			JMP	INS_FAIL
+  1141 003EC 3503          			JBC		OV			; Check OV = 0?
+  1142 003ED 506C          			JMP	INS_FAIL
+  1143 003EE 3603          			JBC		N			; Check N = 0?
+  1144 003EF 506C          			JMP	INS_FAIL
+  1145 003F0 6C00          			XOR		A,@0x00		; Check Result ?
+  1146 003F1 40CE          			CALL	INST_XOR_JUDGE
+  1147 003F2               		INST_ADC_R_A:		;-------Instruction Test => ADC R,A
+  1148 003F2 6037          			MOV		A,@0x37
+  1149 003F3 015A          			MOV		INST,A
+  1150 003F4 40CB          			CALL	STATUS_CLEAR
+  1151 003F5 2803          			BS		C			;0x7F+0x00
+  1152 003F6 607F          			MOV		A,@0x7F
+  1153 003F7 0150          			MOV		0x50,A		; [0x50] = 0x7F
+  1154 003F8 6000          			MOV		A,@0x00		; A = 0x00
+  1155 003F9 2203          			BC		Z
+  1156 003FA 7F50          			ADC		0x50,A		; TMP1 = A + [0x50] + C
+  1157 003FB 1003          			MOV		A,STATUS
+  1158 003FC 6C7A          			XOR		A,@0x7A		; Check Status ?
+  1159                     			;;XOR		A,@0x72		; Check Status ?
+  1160 003FD 40CE          			CALL	INST_XOR_JUDGE
+  1161 003FE 1050          			MOV		A,0x50
+  1162 003FF 6C80          			XOR		A,@0x80		; Check Result ?
+  1163 00400 40CE          			CALL	INST_XOR_JUDGE
+  1164 00401 40CB          			CALL	STATUS_CLEAR
+  1165 00402 2803          			BS		C			;0x80+0x7F
+  1166 00403 6080          			MOV		A,@0x80
+  1167 00404 0150          			MOV		0x50,A		; [0x50] = 0x80
+  1168 00405 607F          			MOV		A,@0x7F		; A = 0x7F
+  1169 00406 2203          			BC		Z
+  1170 00407 7F50          			ADC		0x50,A		; TMP1 = A + [0x50] + C
+  1171 00408 1003          			MOV		A,STATUS
+  1172 00409 6C1F          			XOR		A,@0x1F		; Check Status ?
+  1173                     			;;XOR		A,@0x17		; Check Status ?
+  1174 0040A 40CE          			CALL	INST_XOR_JUDGE
+  1175 0040B 1050          			MOV		A,0x50
+  1176 0040C 6C00          			XOR		A,@0x00		; Check Result ?
+  1177 0040D 40CE          			CALL	INST_XOR_JUDGE
+  1178                     
+  1179 0040E               		INST_INCA:			;-------Instruction Test => INCA R
+  1180 0040E 6017          			MOV		A,@0x17
+  1181 0040F 015A          			MOV		INST,A
+  1182 00410 40CB          			CALL	STATUS_CLEAR	; 0x7F+0x01
+  1183 00411 607F          			MOV		A,@0x7F
+  1184 00412 0150          			MOV		0x50,A		; [0x50] = 0x7F
+  1185 00413 1450          			INCA	0x50		; A = [0x50] +1		
+  1186 00414 3003          			JBC		C			; Check C = 0?
+  1187 00415 506C          			JMP	INS_FAIL
+  1188 00416 3903          			JBS		DC			; Check DC = 1?
+  1189 00417 506C          			JMP	INS_FAIL
+  1190 00418 3203          			JBC		Z			; Check Z = 0?
+  1191 00419 506C          			JMP	INS_FAIL
+  1192 0041A 3D03          			JBS		OV			; Check OV = 1?
+  1193 0041B 506C          			JMP	INS_FAIL
+  1194 0041C 3E03          			JBS		N			; Check N = 1?
+  1195 0041D 506C          			JMP	INS_FAIL
+  1196 0041E 2203          			BC		Z
+  1197 0041F 2603          			BC		N
+  1198 00420 6C80          			XOR		A,@0x80		; Check Result ?
+  1199 00421 3A03          			JBS		Z			; Check Z = 1?
+  1200 00422 506C          			JMP	INS_FAIL
+  1201 00423 3603          			JBC		N			; Check N = 0?
+  1202 00424 506C          			JMP	INS_FAIL
+  1203 00425 40CB          			CALL	STATUS_CLEAR	; 0xFF+0x01
+  1204 00426 60FF          			MOV		A,@0xFF
+  1205 00427 0150          			MOV		0x50,A		; [0x50] = 0xFF
+  1206 00428 1450          			INCA	0x50		; A = [0x50] +1		
+  1207 00429 3803          			JBS		C			; Check C = 1?
+  1208 0042A 506C          			JMP	INS_FAIL
+  1209 0042B 3903          			JBS		DC			; Check DC = 1?
+  1210 0042C 506C          			JMP	INS_FAIL
+  1211 0042D 3A03          			JBS		Z			; Check Z = 1?
+  1212 0042E 506C          			JMP	INS_FAIL
+  1213 0042F 3503          			JBC		OV			; Check OV = 0?
+  1214 00430 506C          			JMP	INS_FAIL
+  1215 00431 3603          			JBC		N			; Check N = 0?
+  1216 00432 506C          			JMP	INS_FAIL
+  1217 00433 2203          			BC		Z
+  1218 00434 2603          			BC		N
+  1219 00435 6C00          			XOR		A,@0x00		; Check Result ?
+  1220 00436 3A03          			JBS		Z			; Check Z = 1?
+  1221 00437 506C          			JMP	INS_FAIL
+  1222 00438 3603          			JBC		N			; Check N = 0?
+  1223 00439 506C          			JMP	INS_FAIL
+  1224                     
+  1225 0043A               		INST_INC:			;-------Instruction Test => INC R
+  1226 0043A 6018          			MOV		A,@0x18
+  1227 0043B 015A          			MOV		INST,A
+  1228 0043C 40CB          			CALL 	STATUS_CLEAR	; 0x7F+0x01
+  1229 0043D 607F          			MOV		A,@0x7F
+  1230 0043E 0150          			MOV		0x50,A		; [0x50] = 0x7F
+  1231 0043F 1550          			INC		0x50		; [0x50] = [0x50] + 0x01
+  1232 00440 1003          			MOV		A,STATUS
+  1233 00441 6C7A          			XOR		A,@0x7A		; Check Status ?
+  1234                     			;;XOR		A,@0x72		; Check Status ?
+  1235 00442 3A03          			JBS		Z			; Check Z = 1?
+  1236 00443 506C          			JMP	INS_FAIL
+  1237 00444 3603          			JBC		N			; Check N = 0?
+  1238 00445 506C          			JMP	INS_FAIL
+  1239 00446 1050          			MOV		A,0x50
+  1240 00447 6C80          			XOR		A,@0x80		; Check Result ?
+  1241 00448 3A03          			JBS		Z			; Check Z = 1?
+  1242 00449 506C          			JMP	INS_FAIL
+  1243 0044A 3603          			JBC		N			; Check N = 0?
+  1244 0044B 506C          			JMP	INS_FAIL
+  1245 0044C 40CB          			CALL	STATUS_CLEAR	; 0xFF+0x01
+  1246 0044D 60FF          			MOV		A,@0xFF
+  1247 0044E 0150          			MOV		0x50,A		; [0x50] = 0x7F
+  1248 0044F 1550          			INC		0x50		; [0x50] = [0x50] + 0x01
+  1249 00450 1003          			MOV		A,STATUS
+  1250 00451 6C1F          			XOR		A,@0x1F		; Check Status ?
+  1251                     			;;XOR		A,@0x17		; Check Status ?
+  1252 00452 3A03          			JBS		Z			; Check Z = 1?
+  1253 00453 506C          			JMP	INS_FAIL
+  1254 00454 3603          			JBC		N			; Check N = 0?
+  1255 00455 506C          			JMP	INS_FAIL
+  1256 00456 1050          			MOV		A,0x50
+  1257 00457 6C00          			XOR		A,@0x00		; Check Result ?
+  1258 00458 3A03          			JBS		Z			; Check Z = 1?
+  1259 00459 506C          			JMP	INS_FAIL
+  1260 0045A 3603          			JBC		N			; Check N = 0?
+  1261 0045B 506C          			JMP	INS_FAIL
+  1262                     
+  1263 0045C               		INST_NEG_R:			;-------Instruction Test => NEG R
+  1264 0045C 6035          			MOV		A,@0x35
+  1265 0045D 015A          			MOV		INST,A
+  1266 0045E 40CB          			CALL	STATUS_CLEAR
+  1267 0045F 6000          			MOV		A,@0x00		; 0x00
+  1268 00460 0150          			MOV		0x50,A		; [0x50] = 0x00
+  1269 00461 7D50          			NEG		0x50
+  1270 00462 1003          			MOV		A,STATUS
+  1271 00463 6C1F          			XOR		A,@0x1F		; Check Status ?
+  1272                     			;;XOR		A,@0x17		; Check Status ?
+  1273 00464 40CE          			CALL	INST_XOR_JUDGE
+  1274 00465 1050          			MOV		A,0x50
+  1275 00466 6C00          			XOR		A,@0x00		; Check Result ?
+  1276 00467 40CE          			CALL	INST_XOR_JUDGE
+  1277 00468 40CB          			CALL	STATUS_CLEAR
+  1278 00469 6001          			MOV		A,@0x01		; 0x01
+  1279 0046A 0150          			MOV		0x50,A		; [0x50] = 0x01
+  1280 0046B 7D50          			NEG		0x50
+  1281 0046C 1003          			MOV		A,STATUS
+  1282 0046D 6C58          			XOR		A,@0x58		; Check Status ?
+  1283                     			;;XOR		A,@0x50		; Check Status ?
+  1284 0046E 40CE          			CALL	INST_XOR_JUDGE
+  1285 0046F 1050          			MOV		A,0x50
+  1286 00470 6CFF          			XOR		A,@0xFF		; Check Result ?
+  1287 00471 4664          			CALL	INST_XCH
+  1288 00472 40CB          			CALL	STATUS_CLEAR
+  1289 00473 6080          			MOV		A,@0x80		; 0x80
+  1290 00474 0150          			MOV		0x50,A		; [0x50] = 0x80
+  1291 00475 7D50          			NEG		0x50
+  1292 00476 1003          			MOV		A,STATUS
+  1293 00477 6C7A          			XOR		A,@0x7A		; Check Status ?
+  1294                     			;;XOR		A,@0x72		; Check Status ?
+  1295 00478 40CE          			CALL	INST_XOR_JUDGE
+  1296 00479 1050          			MOV		A,0x50
+  1297 0047A 6C80          			XOR		A,@0x80		; Check Result ?
+  1298 0047B 40CE          			CALL	INST_XOR_JUDGE
+  1299                     
+  1300 0047C 0012          		RET
+  1301 0047D               	TEST_INST_LOGIC_I:
+  1302 0047D               		INST_BTG:			;-------Instruction Test => BTG R,b	
+  1303 0047D 6006          			MOV		A,@0x06
+  1304 0047E 015A          			MOV		INST,A
+  1305 0047F 40CB          			CALL	STATUS_CLEAR
+  1306 00480 60FF          			MOV		A,@0xFF
+  1307 00481 0104          			MOV		RSR,A		; Start Address
+  1308 00482 0084          			BTG		RSR
+  1309 00483 1004          			MOV		A,RSR
+  1310 00484 6CFE          			XOR		A,@0xFE		; Check Result ?
+  1311 00485 40CE          			CALL	INST_XOR_JUDGE
+  1312 00486               		INST_OR_A_R:		;-------Instruction Test => OR A,R
+  1313 00486 600E          			MOV		A,@0x0E
+  1314 00487 015A          			MOV		INST,A
+  1315 00488 6000          			MOV		A,@0x00
+  1316 00489 0103          			MOV		STATUS,A
+  1317 0048A 6000          			MOV		A,@0x00
+  1318 0048B 0150          			MOV		0x50,A		; [0x50] = 0x00
+  1319 0048C 6000          			MOV		A,@0x00
+  1320 0048D 2203          			BC		Z
+  1321 0048E 0850          			OR		A,0x50		; A = A | [0x50]
+  1322 0048F 3003          			JBC		C			; Check C = 0?
+  1323 00490 506C          			JMP	INS_FAIL
+  1324 00491 3103          			JBC		DC			; Check DC = 0?
+  1325 00492 506C          			JMP	INS_FAIL
+  1326 00493 3A03          			JBS		Z			; Check Z = 1?
+  1327 00494 506C          			JMP	INS_FAIL
+  1328 00495 3503          			JBC		OV			; Check OV = 0?
+  1329 00496 506C          			JMP	INS_FAIL
+  1330 00497 3603          			JBC		N			; Check N = 0?
+  1331 00498 506C          			JMP	INS_FAIL
+  1332 00499 2203          			BC		Z
+  1333 0049A 6C00          			XOR		A,@0x00		; Check Result ?
+  1334 0049B 3A03          			JBS		Z			; Check Z = 1?
+  1335 0049C 506C          			JMP	INS_FAIL
+  1336 0049D 3603          			JBC		N			; Check N = 0?
+  1337 0049E 506C          			JMP	INS_FAIL
+  1338 0049F 6000          			MOV		A,@0x00
+  1339 004A0 0103          			MOV		STATUS,A
+  1340 004A1 6055          			MOV		A,@0x55
+  1341 004A2 0150          			MOV		0x50,A		; [0x50] = 0x55
+  1342 004A3 60AA          			MOV		A,@0xAA
+  1343 004A4 2203          			BC		Z
+  1344 004A5 0850          			OR		A,0x50		; A = A | [0x50]
+  1345 004A6 3003          			JBC		C			; Check C = 0?
+  1346 004A7 506C          			JMP	INS_FAIL
+  1347 004A8 3103          			JBC		DC			; Check DC = 0?
+  1348 004A9 506C          			JMP	INS_FAIL
+  1349 004AA 3203          			JBC		Z			; Check Z = 0?
+  1350 004AB 506C          			JMP	INS_FAIL
+  1351 004AC 3503          			JBC		OV			; Check OV = 0?
+  1352 004AD 506C          			JMP	INS_FAIL
+  1353 004AE 3E03          			JBS		N			; Check N = 1?
+  1354 004AF 506C          			JMP	INS_FAIL
+  1355 004B0 2203          			BC		Z
+  1356 004B1 6CFF          			XOR		A,@0xFF		; Check Result ?
+  1357 004B2 3A03          			JBS		Z			; Check Z = 1?
+  1358 004B3 506C          			JMP	INS_FAIL
+  1359 004B4 3603          			JBC		N			; Check N = 0?
+  1360 004B5 506C          			JMP	INS_FAIL
+  1361                     
+  1362 004B6               		INST_OR_R_A:		;-------Instruction Test => OR R,A
+  1363 004B6 600F          			MOV		A,@0x0F
+  1364 004B7 015A          			MOV		INST,A
+  1365 004B8 6000          			MOV		A,@0x00
+  1366 004B9 0103          			MOV		STATUS,A
+  1367 004BA 6000          			MOV		A,@0x00
+  1368 004BB 0150          			MOV		0x50,A		; [0x50] = 0x00
+  1369 004BC 6000          			MOV		A,@0x00		; A = 0x00
+  1370 004BD 2203          			BC		Z
+  1371 004BE 0950          			OR		0x50,A		; [0x50] = A | [0x50]
+  1372 004BF 1003          			MOV		A,STATUS
+  1373 004C0 6C1C          			XOR		A,@0x1C		; Check Status ? for non reset
+  1374                     			;;XOR		A,@0x14		; Check Status ?
+  1375 004C1 3A03          			JBS		Z			; Check Z = 1?
+  1376 004C2 506C          			JMP	INS_FAIL
+  1377 004C3 3603          			JBC		N			; Check N = 0?
+  1378 004C4 506C          			JMP	INS_FAIL
+  1379 004C5 1050          			MOV		A,0x50		; A = Result[0x50]
+  1380 004C6 2203          			BC		Z
+  1381 004C7 2603          			BC		N
+  1382 004C8 6C00          			XOR		A,@0x00		; Check Result ?
+  1383 004C9 3A03          			JBS		Z			; Check Z = 1?
+  1384 004CA 506C          			JMP	INS_FAIL
+  1385 004CB 3603          			JBC		N			; Check N = 0?
+  1386 004CC 506C          			JMP	INS_FAIL
+  1387 004CD 6000          			MOV		A,@0x00
+  1388 004CE 0103          			MOV		STATUS,A
+  1389 004CF 6055          			MOV		A,@0x55
+  1390 004D0 0150          			MOV		0x50,A		; [0x50] = 0x55
+  1391 004D1 60AA          			MOV		A,@0xAA		; A = 0xAA
+  1392 004D2 0950          			OR		0x50,A		; [0x50] = 0xAA | 0x55
+  1393 004D3 1003          			MOV		A,STATUS
+  1394 004D4 6C58          			XOR		A,@0x58		; Check Status ? for non reset
+  1395                     			;;XOR		A,@0x50		; Check Status ?
+  1396 004D5 3A03          			JBS		Z			; Check Z = 1?
+  1397 004D6 506C          			JMP	INS_FAIL
+  1398 004D7 3603          			JBC		N			; Check N = 0?
+  1399 004D8 506C          			JMP	INS_FAIL
+  1400 004D9 1050          			MOV		A,0x50
+  1401 004DA 2203          			BC		Z
+  1402 004DB 2603          			BC		N
+  1403 004DC 6CFF          			XOR		A,@0xFF		; Check Result ?
+  1404 004DD 3A03          			JBS		Z			; Check Z = 1?
+  1405 004DE 506C          			JMP	INS_FAIL
+  1406 004DF 3603          			JBC		N			; Check N = 0?
+  1407 004E0 506C          			JMP	INS_FAIL
+  1408                     
+  1409 004E1               		INST_AND_A_R:		;-------Instruction Test => AND A,R
+  1410 004E1 6010          			MOV		A,@0x10
+  1411 004E2 015A          			MOV		INST,A
+  1412 004E3 40CB          			CALL	STATUS_CLEAR
+  1413 004E4 6055          			MOV		A,@0x55
+  1414 004E5 0150          			MOV		0x50,A		; [0x50] = 0x55
+  1415 004E6 60AA          			MOV		A,@0xAA
+  1416 004E7 0A50          			AND		A,0x50		; A = 0xAA & 0x55
+  1417 004E8 3003          			JBC		C			; Check C = 0?
+  1418 004E9 506C          			JMP	INS_FAIL
+  1419 004EA 3103          			JBC		DC			; Check DC = 0?
+  1420 004EB 506C          			JMP	INS_FAIL
+  1421 004EC 3A03          			JBS		Z			; Check Z = 1?
+  1422 004ED 506C          			JMP	INS_FAIL
+  1423 004EE 3503          			JBC		OV			; Check OV = 0?
+  1424 004EF 506C          			JMP	INS_FAIL
+  1425 004F0 3603          			JBC		N			; Check N = 0?
+  1426 004F1 506C          			JMP	INS_FAIL
+  1427 004F2 6C00          			XOR		A,@0x00		; Check Result ?
+  1428 004F3 3A03          			JBS		Z			; Check Z = 1?
+  1429 004F4 506C          			JMP	INS_FAIL
+  1430 004F5 3603          			JBC		N			; Check N = 0?
+  1431 004F6 506C          			JMP	INS_FAIL
+  1432 004F7 40CB          			CALL	STATUS_CLEAR
+  1433 004F8 60F5          			MOV		A,@0xF5
+  1434 004F9 0150          			MOV		0x50,A		; [0x50] = 0xF5
+  1435 004FA 60FA          			MOV		A,@0xFA
+  1436 004FB 0A50          			AND		A,0x50		; A = 0xFA & 0xF5
+  1437 004FC 3003          			JBC		C			; Check C = 0?
+  1438 004FD 506C          			JMP	INS_FAIL
+  1439 004FE 3103          			JBC		DC			; Check DC = 0?
+  1440 004FF 506C          			JMP	INS_FAIL
+  1441 00500 3203          			JBC		Z			; Check Z = 0?
+  1442 00501 506C          			JMP	INS_FAIL
+  1443 00502 3503          			JBC		OV			; Check OV = 0?
+  1444 00503 506C          			JMP	INS_FAIL
+  1445 00504 3E03          			JBS		N			; Check N = 1?
+  1446 00505 506C          			JMP	INS_FAIL
+  1447 00506 6CF0          			XOR		A,@0xF0		; Check Result ?
+  1448 00507 3A03          			JBS		Z			; Check Z = 1?
+  1449 00508 506C          			JMP	INS_FAIL
+  1450 00509 3603          			JBC		N			; Check N = 0?
+  1451 0050A 506C          			JMP	INS_FAIL
+  1452 0050B               		INST_AND_R_A:		;-------Instruction Test => AND R,A
+  1453 0050B 6011          			MOV		A,@0x11
+  1454 0050C 015A          			MOV		INST,A
+  1455 0050D 40CB          			CALL	STATUS_CLEAR
+  1456 0050E 6055          			MOV		A,@0x55
+  1457 0050F 0150          			MOV		0x50,A		; [0x50] = 0x55
+  1458 00510 60AA          			MOV		A,@0xAA
+  1459 00511 0B50          			AND		0x50,A		; [0x50] = 0xAA & 0x55
+  1460 00512 1003          			MOV		A,STATUS
+  1461 00513 6C1C          			XOR		A,@0x1C		; Check Status ? for non reset
+  1462                     			;;XOR		A,@0x14		; Check Status ?
+  1463 00514 3A03          			JBS		Z			; Check Z = 1?
+  1464 00515 506C          			JMP	INS_FAIL
+  1465 00516 3603          			JBC		N			; Check N = 0?
+  1466 00517 506C          			JMP	INS_FAIL
+  1467 00518 2203          			BC		Z
+  1468 00519 1050          			MOV		A,0x50
+  1469 0051A 2203          			BC		Z
+  1470 0051B 6C00          			XOR		A,@0x00		; Check Result ?
+  1471 0051C 3A03          			JBS		Z			; Check Z = 1?
+  1472 0051D 506C          			JMP	INS_FAIL
+  1473 0051E 3603          			JBC		N			; Check N = 0?
+  1474 0051F 506C          			JMP	INS_FAIL
+  1475 00520 40CB          			CALL	STATUS_CLEAR
+  1476 00521 60F5          			MOV		A,@0xF5
+  1477 00522 0150          			MOV		0x50,A		; [0x50] = 0xF5
+  1478 00523 60FA          			MOV		A,@0xFA
+  1479 00524 0B50          			AND		0x50,A		; [0x50] = 0xFA & 0xF5
+  1480 00525 1003          			MOV		A,STATUS
+  1481 00526 6C58          			XOR		A,@0x58		; Check Status ? for non reset
+  1482                     			;;XOR		A,@0x50		; Check Status ?
+  1483 00527 3A03          			JBS		Z			; Check Z = 1?
+  1484 00528 506C          			JMP	INS_FAIL
+  1485 00529 3603          			JBC		N			; Check N = 0?
+  1486 0052A 506C          			JMP	INS_FAIL
+  1487 0052B 2203          			BC		Z
+  1488 0052C 1050          			MOV		A,0x50
+  1489 0052D 2203          			BC		Z
+  1490 0052E 6CF0          			XOR		A,@0xF0		; Check Result ?
+  1491 0052F 3A03          			JBS		Z			; Check Z = 1?
+  1492 00530 506C          			JMP	INS_FAIL
+  1493 00531 3603          			JBC		N			; Check N = 0?
+  1494 00532 506C          			JMP	INS_FAIL
+  1495 00533               		INST_AND_A_K:		;-------Instruction Test => AND A,k
+  1496 00533 6029          			MOV		A,@0x29
+  1497 00534 015A          			MOV		INST,A
+  1498 00535 40CB          			CALL	STATUS_CLEAR
+  1499 00536 60AA          			MOV		A,@0xAA
+  1500 00537 6855          			AND		A,@0x55		; A = 0xAA & 0x55
+  1501 00538 3003          			JBC		C			; Check C = 0?
+  1502 00539 506C          			JMP	INS_FAIL
+  1503 0053A 3103          			JBC		DC			; Check DC = 0?
+  1504 0053B 506C          			JMP	INS_FAIL
+  1505 0053C 3A03          			JBS		Z			; Check Z = 1?
+  1506 0053D 506C          			JMP	INS_FAIL
+  1507 0053E 3503          			JBC		OV			; Check OV = 0?
+  1508 0053F 506C          			JMP	INS_FAIL
+  1509 00540 3603          			JBC		N			; Check N = 0?
+  1510 00541 506C          			JMP	INS_FAIL
+  1511 00542 6C00          			XOR		A,@0x00		; Check Result ?
+  1512 00543 3A03          			JBS		Z			; Check Z = 1?
+  1513 00544 506C          			JMP	INS_FAIL
+  1514 00545 3603          			JBC		N			; Check N = 0?
+  1515 00546 506C          			JMP	INS_FAIL
+  1516 00547 40CB          			CALL	STATUS_CLEAR
+  1517 00548 60AA          			MOV		A,@0xAA
+  1518 00549 68FF          			AND		A,@0xFF		; A = A & 0xFF
+  1519 0054A 3003          			JBC		C			; Check C = 0?
+  1520 0054B 506C          			JMP	INS_FAIL
+  1521 0054C 3103          			JBC		DC			; Check DC = 0?
+  1522 0054D 506C          			JMP	INS_FAIL
+  1523 0054E 3203          			JBC		Z			; Check Z = 0?
+  1524 0054F 506C          			JMP	INS_FAIL
+  1525 00550 3503          			JBC		OV			; Check OV = 0?
+  1526 00551 506C          			JMP	INS_FAIL
+  1527 00552 3E03          			JBS		N			; Check N = 1?
+  1528 00553 506C          			JMP	INS_FAIL
+  1529 00554 6CAA          			XOR		A,@0xAA		; Check Result ?
+  1530 00555 40CE          			CALL	INST_XOR_JUDGE
+  1531                     
+  1532 00556               		INST_COMA:			;-------Instruction Test => COMA R
+  1533 00556 6015          			MOV		A,@0x15
+  1534 00557 015A          			MOV		INST,A
+  1535 00558 40CB          			CALL	STATUS_CLEAR
+  1536 00559 60FF          			MOV		A,@0xFF
+  1537 0055A 0150          			MOV		0x50,A		; [0x50] = 0xFF
+  1538 0055B 1250          			COMA	0x50		; A = /R
+  1539 0055C 3003          			JBC		C			; Check C = 0?
+  1540 0055D 506C          			JMP	INS_FAIL
+  1541 0055E 3103          			JBC		DC			; Check DC = 0?
+  1542 0055F 506C          			JMP	INS_FAIL
+  1543 00560 3A03          			JBS		Z			; Check Z = 1?
+  1544 00561 506C          			JMP	INS_FAIL
+  1545 00562 3503          			JBC		OV			; Check OV = 0?
+  1546 00563 506C          			JMP	INS_FAIL
+  1547 00564 3603          			JBC		N			; Check N = 0?
+  1548 00565 506C          			JMP	INS_FAIL
+  1549 00566 6C00          			XOR		A,@0x00		; Check Result ?
+  1550 00567 3A03          			JBS		Z			; Check Z = 1?
+  1551 00568 506C          			JMP	INS_FAIL
+  1552 00569 3603          			JBC		N			; Check N = 0?
+  1553 0056A 506C          			JMP	INS_FAIL	
+  1554 0056B 40CB          			CALL	STATUS_CLEAR
+  1555 0056C 6005          			MOV		A,@0x05
+  1556 0056D 0150          			MOV		0x50,A		; [0x50] = 0x05
+  1557 0056E 1250          			COMA	0x50		; A = /R
+  1558 0056F 3003          			JBC		C			; Check C = 0?
+  1559 00570 506C          			JMP	INS_FAIL
+  1560 00571 3103          			JBC		DC			; Check DC = 0?
+  1561 00572 506C          			JMP	INS_FAIL
+  1562 00573 3203          			JBC		Z			; Check Z = 0?
+  1563 00574 506C          			JMP	INS_FAIL
+  1564 00575 3503          			JBC		OV			; Check OV = 0?
+  1565 00576 506C          			JMP	INS_FAIL
+  1566 00577 3E03          			JBS		N			; Check N = 1?
+  1567 00578 506C          			JMP	INS_FAIL
+  1568 00579 6CFA          			XOR		A,@0xFA		; Check Result ?
+  1569 0057A 3A03          			JBS		Z			; Check Z = 1?
+  1570 0057B 506C          			JMP	INS_FAIL
+  1571 0057C 3603          			JBC		N			; Check N = 0?
+  1572 0057D 506C          			JMP	INS_FAIL
+  1573 0057E               		INST_COM:			;-------Instruction Test => COM R
+  1574 0057E 6016          			MOV		A,@0x16
+  1575 0057F 015A          			MOV		INST,A
+  1576 00580 40CB          			CALL	STATUS_CLEAR
+  1577 00581 60FF          			MOV		A,@0xFF
+  1578 00582 0150          			MOV		0x50,A		; [0x50] = 0xFF
+  1579 00583 1350          			COM		0x50		; [0x50] = /[0x50]
+  1580 00584 1003          			MOV		A,STATUS
+  1581 00585 6C1C          			XOR		A,@0x1C		; Check Status ?
+  1582                     			;;XOR		A,@0x14		; Check Status ?
+  1583 00586 3A03          			JBS		Z			; Check Z = 1?
+  1584 00587 506C          			JMP	INS_FAIL
+  1585 00588 3603          			JBC		N			; Check N = 0?
+  1586 00589 506C          			JMP	INS_FAIL
+  1587 0058A 2203          			BC		Z
+  1588 0058B 2603          			BC		N
+  1589 0058C 1050          			MOV		A,0x50
+  1590 0058D 6C00          			XOR		A,@0x00		; Check Result ?
+  1591 0058E 3A03          			JBS		Z			; Check Z = 1?
+  1592 0058F 506C          			JMP	INS_FAIL
+  1593 00590 3603          			JBC		N			; Check N = 0?
+  1594 00591 506C          			JMP	INS_FAIL
+  1595 00592 40CB          			CALL	STATUS_CLEAR
+  1596 00593 6000          			MOV		A,@0x00
+  1597 00594 0150          			MOV		0x50,A		; [0x50] = 0xFF
+  1598 00595 1350          			COM		0x50		; [0x50] = /[0x50]
+  1599 00596 1003          			MOV		A,STATUS
+  1600 00597 6C58          			XOR		A,@0x58		; Check Status ?
+  1601                     			;;XOR		A,@0x50		; Check Status ?
+  1602 00598 3A03          			JBS		Z			; Check Z = 1?
+  1603 00599 506C          			JMP	INS_FAIL
+  1604 0059A 3603          			JBC		N			; Check N = 0?
+  1605 0059B 506C          			JMP	INS_FAIL
+  1606 0059C 2203          			BC		Z
+  1607 0059D 2603          			BC		N
+  1608 0059E 1050          			MOV		A,0x50
+  1609 0059F 6CFF          			XOR		A,@0xFF		; Check Result ?
+  1610 005A0 3A03          			JBS		Z			; Check Z = 1?
+  1611 005A1 506C          			JMP	INS_FAIL
+  1612 005A2 3603          			JBC		N			; Check N = 0?
+  1613 005A3 506C          			JMP	INS_FAIL
+  1614 005A4               		INST_OR_A_K:		;-------Instruction Test => OR A,k
+  1615 005A4 6026          			MOV		A,@0x26
+  1616 005A5 015A          			MOV		INST,A
+  1617 005A6 40CB          			CALL	STATUS_CLEAR
+  1618 005A7 60A5          			MOV		A,@0xA5
+  1619 005A8 645A          			OR		A,@0x5A		; A = 0xA5 | 0x5A
+  1620 005A9 6CFF          			XOR		A,@0xFF		; Check Result ?
+  1621 005AA 40CE          			CALL	INST_XOR_JUDGE
+  1622 005AB 0012          		RET
+  1623                     
+  1624 005AC               	TEST_INST_LOGIC_II:
+  1625 005AC               		INST_RR_R:			;-------Instruction Test => RR R
+  1626 005AC 602B          			MOV		A,@0x2B
+  1627 005AD 015A          			MOV		INST,A
+  1628 005AE 40CB          			CALL	STATUS_CLEAR
+  1629 005AF 6055          			MOV		A,@0x55
+  1630 005B0 0150          			MOV		0x50,A		; [0x50] = 0x55
+  1631 005B1 6F50          			RR		0x50		; [0x50] = [0x50] >> 1
+  1632 005B2 1003          			MOV		A,STATUS
+  1633 005B3 6C58          			XOR		A,@0x58		; Check Status ?
+  1634                     			;;XOR		A,@0x50		; Check Status ?
+  1635 005B4 40CE          			CALL	INST_XOR_JUDGE
+  1636 005B5 1050          			MOV		A,0x50
+  1637 005B6 6CAA          			XOR		A,@0xAA		; Check Result ?
+  1638 005B7 40CE          			CALL	INST_XOR_JUDGE
+  1639                     
+  1640 005B8               		INST_RRA_R:			;-------Instruction Test => RRA R
+  1641 005B8 602A          			MOV		A,@0x2A
+  1642 005B9 015A          			MOV		INST,A
+  1643 005BA 40CB          			CALL 	STATUS_CLEAR
+  1644 005BB 6055          			MOV		A,@0x55
+  1645 005BC 0150          			MOV		0x50,A		; [0x50] = 0x55
+  1646 005BD 6E50          			RRA		0x50		; A = [0x50] >> 1
+  1647 005BE 3003          			JBC		C			; Check C = 0?
+  1648 005BF 506C          			JMP	INS_FAIL
+  1649 005C0 3103          			JBC		DC			; Check DC = 0?
+  1650 005C1 506C          			JMP	INS_FAIL
+  1651 005C2 3203          			JBC		Z			; Check Z = 0?
+  1652 005C3 506C          			JMP	INS_FAIL
+  1653 005C4 3503          			JBC		OV			; Check OV = 0?
+  1654 005C5 506C          			JMP	INS_FAIL
+  1655 005C6 3E03          			JBS		N			; Check N = 1?
+  1656 005C7 506C          			JMP	INS_FAIL
+  1657 005C8 6CAA          			XOR		A,@0xAA		; Check Result ?
+  1658 005C9 40CE          			CALL	INST_XOR_JUDGE
+  1659                     
+  1660 005CA               		INST_RRCA_R:		;-------Instruction Test => RRCA R
+  1661 005CA 601B          			MOV		A,@0x1B
+  1662 005CB 015A          			MOV		INST,A
+  1663 005CC 40CB          			CALL	STATUS_CLEAR
+  1664 005CD 2803          			BS		C
+  1665 005CE 60AA          			MOV		A,@0xAA
+  1666 005CF 0150          			MOV		0x50,A		; [0x50] = 0xAA
+  1667 005D0 1850          			RRCA	0x50		; A = [0x50] >> 1
+  1668 005D1 3003          			JBC		C			; Check C = 0?
+  1669 005D2 506C          			JMP	INS_FAIL
+  1670 005D3 3103          			JBC		DC			; Check DC = 0?
+  1671 005D4 506C          			JMP	INS_FAIL
+  1672 005D5 3203          			JBC		Z			; Check Z = 0?
+  1673 005D6 506C          			JMP	INS_FAIL
+  1674 005D7 3503          			JBC		OV			; Check OV = 0?
+  1675 005D8 506C          			JMP	INS_FAIL
+  1676 005D9 3E03          			JBS		N			; Check N = 1?
+  1677 005DA 506C          			JMP	INS_FAIL
+  1678 005DB 6CD5          			XOR		A,@0xD5		; Check Result ?
+  1679 005DC 40CE          			CALL	INST_XOR_JUDGE
+  1680 005DD 40CB          			CALL	STATUS_CLEAR
+  1681 005DE 6055          			MOV		A,@0x55
+  1682 005DF 0150          			MOV		0x50,A		; [0x50] = 0x55
+  1683 005E0 1850          			RRCA	0x50		; A = [0x50] >> 1
+  1684 005E1 3803          			JBS		C			; Check C = 1?
+  1685 005E2 506C          			JMP	INS_FAIL
+  1686 005E3 3103          			JBC		DC			; Check DC = 0?
+  1687 005E4 506C          			JMP	INS_FAIL
+  1688 005E5 3203          			JBC		Z			; Check Z = 0?
+  1689 005E6 506C          			JMP	INS_FAIL
+  1690 005E7 3503          			JBC		OV			; Check OV = 0?
+  1691 005E8 506C          			JMP	INS_FAIL
+  1692 005E9 3603          			JBC		N			; Check N = 0?
+  1693 005EA 506C          			JMP	INS_FAIL
+  1694 005EB 6C2A          			XOR		A,@0x2A		; Check Result ?
+  1695 005EC 40CE          			CALL	INST_XOR_JUDGE
+  1696 005ED               		INST_RRC_R:			;-------Instruction Test => RRC R
+  1697 005ED 601C          			MOV		A,@0x1C
+  1698 005EE 015A          			MOV		INST,A
+  1699 005EF 40CB          			CALL	STATUS_CLEAR
+  1700 005F0 2803          			BS		C
+  1701 005F1 60AA          			MOV		A,@0xAA
+  1702 005F2 0150          			MOV		0x50,A		; [0x50] = 0xAA
+  1703 005F3 2203          			BC		Z
+  1704 005F4 1950          			RRC		0x50		; [0x50] = [0x50] >> 1
+  1705 005F5 1003          			MOV		A,STATUS
+  1706 005F6 6C58          			XOR		A,@0x58		; Check Status ?
+  1707                     			;;XOR		A,@0x50		; Check Status ?
+  1708 005F7 40CE          			CALL	INST_XOR_JUDGE
+  1709 005F8 1050          			MOV		A,0x50
+  1710 005F9 6CD5          			XOR		A,@0xD5		; Check Result ?
+  1711 005FA 40CE          			CALL	INST_XOR_JUDGE
+  1712 005FB 40CB          			CALL	STATUS_CLEAR
+  1713 005FC 6055          			MOV		A,@0x55
+  1714 005FD 0150          			MOV		0x50,A		; [0x50] = 0x55
+  1715 005FE 2203          			BC		Z
+  1716 005FF 1950          			RRC		0x50		; [0x50] = [0x50] >> 1
+  1717 00600 1003          			MOV		A,STATUS
+  1718 00601 6C19          			XOR		A,@0x19		; Check Status ?
+  1719                     			;;XOR		A,@0x11		; Check Status ?
+  1720 00602 3A03          			JBS		Z			; Check Z = 1?
+  1721 00603 506C          			JMP	INS_FAIL
+  1722 00604 3603          			JBC		N			; Check N = 0?
+  1723 00605 506C          			JMP	INS_FAIL
+  1724 00606 1050          			MOV		A,0x50
+  1725 00607 6C2A          			XOR		A,@0x2A		; Check Result ?
+  1726 00608 40CE          			CALL	INST_XOR_JUDGE
+  1727 00609               		INST_RLCA_R:		;-------Instruction Test => RLCA R
+  1728 00609 601D          			MOV		A,@0x1D
+  1729 0060A 015A          			MOV		INST,A
+  1730 0060B 40CB          			CALL STATUS_CLEAR
+  1731 0060C 2803          			BS		C
+  1732 0060D 6055          			MOV		A,@0x55
+  1733 0060E 0150          			MOV		0x50,A		; [0x50] = 0x55
+  1734 0060F 1A50          			RLCA	0x50		; A = [0x50] << 1
+  1735 00610 3003          			JBC		C			; Check C = 0?
+  1736 00611 506C          			JMP	INS_FAIL
+  1737 00612 3103          			JBC		DC			; Check DC = 0?
+  1738 00613 506C          			JMP	INS_FAIL
+  1739 00614 3203          			JBC		Z			; Check Z = 0?
+  1740 00615 506C          			JMP	INS_FAIL
+  1741 00616 3503          			JBC		OV			; Check OV = 0?
+  1742 00617 506C          			JMP	INS_FAIL
+  1743 00618 3E03          			JBS		N			; Check N = 1?
+  1744 00619 506C          			JMP	INS_FAIL
+  1745 0061A 6CAB          			XOR		A,@0xAB		; Check Result ?
+  1746 0061B 40CE          			CALL	INST_XOR_JUDGE
+  1747 0061C 40CB          			CALL	STATUS_CLEAR
+  1748 0061D 60AA          			MOV		A,@0xAA
+  1749 0061E 0150          			MOV		0x50,A		; [0x50] = 0xAA
+  1750 0061F 1A50          			RLCA	0x50		; A = [0x50] << 1
+  1751 00620 3803          			JBS		C			; Check C = 1?
+  1752 00621 506C          			JMP	INS_FAIL
+  1753 00622 3103          			JBC		DC			; Check DC = 0?
+  1754 00623 506C          			JMP	INS_FAIL
+  1755 00624 3203          			JBC		Z			; Check Z = 0?
+  1756 00625 506C          			JMP	INS_FAIL
+  1757 00626 3503          			JBC		OV			; Check OV = 0?
+  1758 00627 506C          			JMP	INS_FAIL
+  1759 00628 3603          			JBC		N			; Check N = 0?
+  1760 00629 506C          			JMP	INS_FAIL
+  1761 0062A 6C54          			XOR		A,@0x54		; Check Result ?
+  1762 0062B 40CE          			CALL	INST_XOR_JUDGE
+  1763 0062C               		INST_RLC_R:			;-------Instruction Test => RLC R
+  1764 0062C 601E          			MOV		A,@0x1E
+  1765 0062D 015A          			MOV		INST,A
+  1766 0062E 40CB          			CALL	STATUS_CLEAR
+  1767 0062F 2803          			BS		C
+  1768 00630 6055          			MOV		A,@0x55
+  1769 00631 0150          			MOV		0x50,A		; [0x50] = 0x55
+  1770 00632 1B50          			RLC		0x50		; [0x50] = [0x50] << 1
+  1771 00633 1003          			MOV		A,STATUS
+  1772 00634 6C58          			XOR		A,@0x58		; Check Status ?
+  1773                     			;;XOR		A,@0x50		; Check Status ?
+  1774 00635 40CE          			CALL	INST_XOR_JUDGE
+  1775 00636 1050          			MOV		A,0x50
+  1776 00637 6CAB          			XOR		A,@0xAB		; Check Result ?
+  1777 00638 40CE          			CALL	INST_XOR_JUDGE
+  1778 00639 40CB          			CALL	STATUS_CLEAR
+  1779 0063A 60AA          			MOV		A,@0xAA
+  1780 0063B 0150          			MOV		0x50,A		; [0x50] = 0xAA
+  1781 0063C 1B50          			RLC		0x50		; [0x50] = [0x50] << 1
+  1782 0063D 1003          			MOV		A,STATUS
+  1783 0063E 6C19          			XOR		A,@0x19		; Check Status ?
+  1784                     			;;XOR		A,@0x11		; Check Status ?
+  1785 0063F 40CE          			CALL	INST_XOR_JUDGE
+  1786 00640 1050          			MOV		A,0x50
+  1787 00641 6C54          			XOR		A,@0x54		; Check Result ?
+  1788 00642 40CE          			CALL	INST_XOR_JUDGE
+  1789                     
+  1790 00643               		INST_RLA_A:			;-------Instruction Test => RLA R
+  1791 00643 602E          			MOV		A,@0x2E
+  1792 00644 015A          			MOV		INST,A
+  1793 00645 40CB          			CALL	STATUS_CLEAR
+  1794 00646 605A          			MOV		A,@0x5A
+  1795 00647 0150          			MOV		0x50,A		; [0x50] = 0x5A
+  1796 00648 7250          			RLA		0x50		; A = [0x50] << 1
+  1797 00649 3003          			JBC		C			; Check C = 0?
+  1798 0064A 506C          			JMP	INS_FAIL
+  1799 0064B 3103          			JBC		DC			; Check DC = 0?
+  1800 0064C 506C          			JMP	INS_FAIL
+  1801 0064D 3203          			JBC		Z			; Check Z = 0?
+  1802 0064E 506C          			JMP	INS_FAIL
+  1803 0064F 3503          			JBC		OV			; Check OV = 0?
+  1804 00650 506C          			JMP	INS_FAIL
+  1805 00651 3E03          			JBS		N			; Check N = 1?
+  1806 00652 506C          			JMP	INS_FAIL
+  1807 00653 6CB4          			XOR		A,@0xB4		; Check Result ?
+  1808 00654 40CE          			CALL	INST_XOR_JUDGE
+  1809                     
+  1810 00655               		INST_RL_R:			;-------Instruction Test => RL R
+  1811 00655 602F          			MOV		A,@0x2F
+  1812 00656 015A          			MOV		INST,A
+  1813 00657 40CB          			CALL	STATUS_CLEAR
+  1814 00658 605A          			MOV		A,@0x5A
+  1815 00659 0150          			MOV		0x50,A		; [0x50] = 0xA5
+  1816 0065A 7350          			RL		0x50		; [0x50] = [0x50] << 1
+  1817 0065B 1003          			MOV		A,STATUS
+  1818 0065C 6C58          			XOR		A,@0x58		; Check Status ?
+  1819                     			;;XOR		A,@0x50		; Check Status ?
+  1820 0065D 3A03          			JBS		Z			; Check Z = 1?
+  1821 0065E 506C          			JMP	INS_FAIL
+  1822 0065F 3603          			JBC		N			; Check N = 0?
+  1823 00660 506C          			JMP	INS_FAIL
+  1824 00661 1050          			MOV		A,0x50
+  1825 00662 6CB4          			XOR		A,@0xB4		; Check Result ?
+  1826 00663 40CE          			CALL	INST_XOR_JUDGE
+  1827 00664               		INST_XCH:			;-------Instruction Test => XCH R
+  1828 00664 602D          			MOV		A,@0x2D
+  1829 00665 015A          			MOV		INST,A
+  1830 00666 40CB          			CALL	STATUS_CLEAR
+  1831 00667 6055          			MOV		A,@0x55
+  1832 00668 0150          			MOV		0x50,A		; [0x50] = 0x55
+  1833 00669 60AA          			MOV		A,@0xAA
+  1834 0066A 7150          			XCH		0x50		; [0x50] <-> A
+  1835 0066B 6C55          			XOR		A,@0x55		; Check Result ?
+  1836 0066C 3A03          			JBS		Z			; Check Z = 1?
+  1837 0066D 506C          			JMP	INS_FAIL
+  1838 0066E 3603          			JBC		N			; Check N = 0?
+  1839 0066F 506C          			JMP	INS_FAIL
+  1840 00670 1050          			MOV		A,0x50
+  1841 00671 6CAA          			XOR		A,@0xAA		; Check Result ?
+  1842 00672 40CE          			CALL	INST_XOR_JUDGE
+  1843 00673 0012          		RET
+  1844 00674               	TEST_INST_TRANSFER:
+  1845 00674               		INST_MOV_R_A:		;-------Instruction Test => MOV R,A
+  1846 00674 6007          			MOV		A,@0x07
+  1847 00675 015A          			MOV		INST,A
+  1848 00676 40CB          			CALL	STATUS_CLEAR
+  1849 00677 60FF          			MOV		A,@0xFF
+  1850 00678 0150          			MOV		0x50,A
+  1851 00679 1003          			MOV		A,STATUS
+  1852 0067A 6C18          			XOR		A,@0x18		;At  OCDS
+  1853                     			;XOR		A,@0x98		; Check Status ? ;; For not reset
+  1854                     			;;XOR		A,@0x10		; Check Status ?
+  1855 0067B 40CE          			CALL	INST_XOR_JUDGE
+  1856 0067C 1050          			MOV		A,0x50
+  1857 0067D 6CFF          			XOR		A,@0xFF		; Check Result ?
+  1858 0067E 40CE          			CALL	INST_XOR_JUDGE
+  1859 0067F               		INST_MOV_R_R:		;-------Instruction Test => MOV R,R
+  1860 0067F 6014          			MOV		A,@0x14
+  1861 00680 015A          			MOV		INST,A
+  1862 00681 40CB          			CALL	STATUS_CLEAR
+  1863 00682 6000          			MOV		A,@0x00
+  1864 00683 0150          			MOV		0x50,A		; [0x50] = 0x00		
+  1865 00684 1150          			MOV		0x50,0x50	; [0x50] = [0x50]
+  1866 00685 1003          			MOV		A,STATUS
+  1867 00686 6C1C          			XOR		A,@0x1C		; Check Status ?
+  1868                     			;;XOR		A,@0x14		; Check Status ?
+  1869 00687 3A03          			JBS		Z			; Check Z = 1?
+  1870 00688 506C          			JMP	INS_FAIL
+  1871 00689 3603          			JBC		N			; Check N = 0?
+  1872 0068A 506C          			JMP	INS_FAIL
+  1873 0068B 1050          			MOV		A,0x50
+  1874 0068C 2203          			BC		Z
+  1875 0068D 6C00          			XOR		A,@0x00		; Check Result ?
+  1876 0068E 3A03          			JBS		Z			; Check Z = 1?
+  1877 0068F 506C          			JMP	INS_FAIL
+  1878 00690 3603          			JBC		N			; Check N = 0?
+  1879 00691 506C          			JMP	INS_FAIL
+  1880 00692 40CB          			CALL	STATUS_CLEAR
+  1881 00693 6000          			MOV		A,@0x00
+  1882 00694 0150          			MOV		0x50,A		; [0x50] = 0x00		
+  1883 00695 1150          			MOV		0x50,0x50	; [0x50] = [0x50]
+  1884 00696 2850          			BS		0x50,0
+  1885 00697 1050          			MOV		A,0x50
+  1886 00698 6C01          			XOR		A,@0x01		; Check Result ?
+  1887 00699 40CE          			CALL	INST_XOR_JUDGE
+  1888                     
+  1889 0069A               		INST_SWAPA_R:		;-------Instruction Test => SWAPA R
+  1890 0069A 601F          			MOV		A,@0x1F
+  1891 0069B 015A          			MOV		INST,A
+  1892 0069C 40CB          			CALL	STATUS_CLEAR
+  1893 0069D 605A          			MOV		A,@0x5A
+  1894 0069E 0150          			MOV		0x50,A		; [0x50] = 0x5A
+  1895 0069F 1C50          			SWAPA	0x50
+  1896 006A0 6CA5          			XOR		A,@0xA5		; Check Result ?
+  1897 006A1 40CE          			CALL	INST_XOR_JUDGE
+  1898 006A2               		INST_SWAP_R:		;-------Instruction Test => SWAP R
+  1899 006A2 6020          			MOV		A,@0x20
+  1900 006A3 015A          			MOV		INST,A
+  1901 006A4 40CB          			CALL	STATUS_CLEAR
+  1902 006A5 605A          			MOV		A,@0x5A
+  1903 006A6 0150          			MOV		0x50,A		; [0x50] = 0x5A
+  1904 006A7 1D50          			SWAP	0x50
+  1905 006A8 1050          			MOV		A,0x50
+  1906 006A9 6CA5          			XOR		A,@0xA5		; Check Result ?
+  1907 006AA 40CE          			CALL	INST_XOR_JUDGE
+  1908 006AB 0012          		RET
+  1909                     
+  1910 006AC               	TEST_INST_MANIPULATION:
+  1911 006AC 0012          		RET
+  1912                     
+  1913 006AD               	TEST_INST_BRANCH_I:
+  1914 006AD               		INST_DJZ_R:			;------- Instruction Test => DJZ R
+  1915 006AD 601A          			MOV		A,@0x1A
+  1916 006AE 015A          			MOV		INST,A
+  1917 006AF 40CB          			CALL	STATUS_CLEAR
+  1918 006B0 6001          			MOV		A,@0x01
+  1919 006B1 0150          			MOV		0x50,A		; [0x50] = 0x01
+  1920 006B2 1750          			DJZ		0x50		; [0x50] = [0x50] - 1,if z,skip
+  1921 006B3 506C          			JMP		INS_FAIL
+  1922 006B4 1050          			MOV		A,0x50
+  1923 006B5 6C00          			XOR		A,@0x00		; Check Result ?
+  1924 006B6 40CE          			CALL	INST_XOR_JUDGE	
+  1925 006B7 40CB          			CALL	STATUS_CLEAR
+  1926 006B8 6002          			MOV		A,@0x02
+  1927 006B9 0150          			MOV		0x50,A		; [0x50] = 0x02
+  1928 006BA 1750          			DJZ		0x50		; [0x50] = [0x50] - 1,if z,skip
+  1929 006BB 56BD          			JMP		$+2
+  1930 006BC 506C          			JMP		INS_FAIL
+  1931 006BD               		INST_DJZA_R:		;------- Instruction Test => DJZA R
+  1932 006BD 6019          			MOV		A,@0x19
+  1933 006BE 015A          			MOV		INST,A
+  1934 006BF 40CB          			CALL	STATUS_CLEAR
+  1935 006C0 6001          			MOV		A,@0x01
+  1936 006C1 0150          			MOV		0x50,A		; [0x50] = 0x01
+  1937 006C2 1650          			DJZA	0x50		; A = [0x50] - 0x01,if z,skip
+  1938 006C3 506C          			JMP	INS_FAIL
+  1939 006C4 6C00          			XOR		A,@0x00		; Check Result ?
+  1940 006C5 40CE          			CALL	INST_XOR_JUDGE
+  1941 006C6 40CB          			CALL	STATUS_CLEAR
+  1942 006C7 6002          			MOV		A,@0x02
+  1943 006C8 0150          			MOV		0x50,A		; [0x50] = 0x02
+  1944 006C9 1650          			DJZA	0x50		; A = [0x50] - 0x01,if z,skip
+  1945 006CA 56CC          			JMP		$+2
+  1946 006CB 506C          			JMP	INS_FAIL
+  1947 006CC               		INST_JZA_R:			;-------Instruction Test => JZA R
+  1948 006CC 6021          			MOV		A,@0x21
+  1949 006CD 015A          			MOV		INST,A
+  1950 006CE 40CB          			CALL	STATUS_CLEAR
+  1951 006CF 60FF          			MOV		A,@0xFF
+  1952 006D0 0150          			MOV		0x50,A
+  1953 006D1 1E50          			JZA		0x50		; A = [0x50] + 1,if 0 skip
+  1954 006D2 506C          			JMP		INS_FAIL
+  1955 006D3 6C00          			XOR		A,@0x00		; Check Result ?
+  1956 006D4 40CE          			CALL	INST_XOR_JUDGE
+  1957 006D5 40CB          			CALL	STATUS_CLEAR
+  1958 006D6 6080          			MOV		A,@0x80
+  1959 006D7 0150          			MOV		0x50,A
+  1960 006D8 1E50          			JZA		0x50		; A = [0x50] + 1,if 0 skip
+  1961 006D9 56DB          			JMP		$+2
+  1962 006DA 506C          			JMP		INS_FAIL
+  1963 006DB               		INST_JZ_R:			;-------Instruction Test => JZ R
+  1964 006DB 6022          			MOV		A,@0x22
+  1965 006DC 015A          			MOV		INST,A
+  1966 006DD 40CB          			CALL	STATUS_CLEAR
+  1967 006DE 60FF          			MOV		A,@0xFF
+  1968 006DF 0150          			MOV		0x50,A		; [0x50] = 0xFF
+  1969 006E0 1F50          			JZ		0x50		; [0x50] = [0x50] + 1,if 0 skip
+  1970 006E1 506C          			JMP		INS_FAIL
+  1971 006E2 1050          			MOV		A,0x50
+  1972 006E3 6C00          			XOR		A,@0x00		; Check Result ?
+  1973 006E4 40CE          			CALL	INST_XOR_JUDGE
+  1974 006E5 40CB          			CALL	STATUS_CLEAR
+  1975 006E6 6080          			MOV		A,@0x80
+  1976 006E7 0150          			MOV		0x50,A		; [0x50] = 0xFF
+  1977 006E8 1F50          			JZ		0x50		; [0x50] = [0x50] + 1,if 0 skip
+  1978 006E9 56EB          			JMP		$+2
+  1979 006EA 506C          			JMP		INS_FAIL
+  1980 006EB 0012          		RET
+  1981 006EC               	TEST_INST_BRANCH_II:
+  1982 006EC               		INST_JE_R:			;-------Instruction Test => JE R
+  1983 006EC 6023          			MOV		A,@0x23
+  1984 006ED 015A          			MOV		INST,A
+  1985 006EE 40CB          			CALL	STATUS_CLEAR
+  1986 006EF 605A          			MOV		A,@0x5A
+  1987 006F0 0150          			MOV		0x50,A		; [0x50] = 0x5A
+  1988 006F1 6150          			JE		0x50		; [0x50] = A?
+  1989 006F2 506C          			JMP		INS_FAIL
+  1990 006F3 605B          			MOV		A,@0x5B
+  1991 006F4 0150          			MOV		0x50,A		; [0x50] = 0x5B
+  1992 006F5 605C          			MOV		A,@0x5C
+  1993 006F6 6150          			JE		0x50		; [0x50] = A(0x5C)?
+  1994 006F7 56F9          			JMP		$+2
+  1995 006F8 506C          			JMP		INS_FAIL
+  1996 006F9               		INST_JGE_R:			;-------Instruction Test => JGE R
+  1997 006F9 6024          			MOV		A,@0x24
+  1998 006FA 015A          			MOV		INST,A
+  1999 006FB 40CB          			CALL	STATUS_CLEAR
+  2000 006FC 607F          			MOV		A,@0x7F
+  2001 006FD 0150          			MOV		0x50,A		; [0x50] = 0x7F
+  2002 006FE 6000          			MOV		A,@0x00
+  2003 006FF 6250          			JGE		0x50		; [0x50] > A ?
+  2004 00700 506C          			JMP		INS_FAIL
+  2005 00701 40CB          			CALL	STATUS_CLEAR
+  2006 00702 60FF          			MOV		A,@0xFF
+  2007 00703 0150          			MOV		0x50,A		; [0x50] = 0xFF
+  2008 00704 6080          			MOV		A,@0x80
+  2009 00705 6250          			JGE		0x50		; [0x50] > A ?
+  2010 00706 506C          			JMP		INS_FAIL
+  2011 00707 40CB          			CALL	STATUS_CLEAR
+  2012 00708 6000          			MOV		A,@0x00
+  2013 00709 0150          			MOV		0x50,A		; [0x50] = 0x00
+  2014 0070A 60FF          			MOV		A,@0xFF
+  2015 0070B 6250          			JGE		0x50		; [0x50] > A(0xFF) ?x
+  2016 0070C 570E          			JMP		$+2
+  2017 0070D 506C          			JMP		INS_FAIL
+  2018                     
+  2019 0070E               		INST_JLE_R:			;-------Instruction Test => JLE R
+  2020 0070E 6025          			MOV		A,@0x25
+  2021 0070F 015A          			MOV		INST,A
+  2022 00710 40CB          			CALL	STATUS_CLEAR
+  2023 00711 6000          			MOV		A,@0x00
+  2024 00712 0150          			MOV		0x50,A		; [0x50] = 0x00
+  2025 00713 607F          			MOV		A,@0x7F
+  2026 00714 6350          			JLE		0x50		; [0x50] < A ?
+  2027 00715 506C          			JMP		INS_FAIL
+  2028 00716 6000          			MOV		A,@0x00
+  2029 00717 0103          			MOV		STATUS,A
+  2030 00718 6080          			MOV		A,@0x80
+  2031 00719 0150          			MOV		0x50,A		; [0x50] = 0x80
+  2032 0071A 60FF          			MOV		A,@0xFF
+  2033 0071B 6350          			JLE		0x50		; [0x50] < A ?
+  2034 0071C 506C          			JMP		INS_FAIL
+  2035 0071D 40CB          			CALL	STATUS_CLEAR
+  2036 0071E 60FF          			MOV		A,@0xFF
+  2037 0071F 0150          			MOV		0x50,A		; [0x50] = 0xFF
+  2038 00720 6000          			MOV		A,@0x00
+  2039 00721 6350          			JLE		0x50		; [0x50] < A(0x00) ?x
+  2040 00722 5724          			JMP		$+2
+  2041 00723 506C          			JMP		INS_FAIL
+  2042 00724               		INST_JE_K:			;-------Instruction Test => JE k
+  2043 00724 6027          			MOV		A,@0x27
+  2044 00725 015A          			MOV		INST,A
+  2045 00726 40CB          			CALL	STATUS_CLEAR
+  2046 00727 607F          			MOV		A,@0x7F
+  2047 00728 657F          			JE		@0x7F
+  2048 00729 506C          			JMP	INS_FAIL
+  2049 0072A 0012          		RET
+  2050 0072B               	TEST_INST_BRANCH_III:
+  2051 0072B               		INST_CALL_K:		;-------Instruction Test => CALL k
+  2052 0072B 6002          			MOV	A,@0x02
+  2053 0072C 015A          			MOV	INST,A
+  2054 0072D 40CB          			CALL	STATUS_CLEAR
+  2055 0072E 6003          			MOV		A,@0x03
+  2056 0072F 0150          			MOV		0x50,A
+  2057 00730 47D0          			CALL	CALL_Test
+  2058 00731 1050          			MOV		A,0x50
+  2059 00732 6C04          			XOR		A,@0x04
+  2060 00733 40CE          			CALL	INST_XOR_JUDGE
+  2061                     
+  2062 00734               		INST_LCALL_K:		;-------Instruction Test => LCALL k
+  2063 00734 6003          			MOV		A,@0x03
+  2064 00735 015A          			MOV		INST,A
+  2065 00736 40CB          			CALL	STATUS_CLEAR
+  2066 00737 6003          			MOV		A,@0x03
+  2067 00738 0151          			MOV		0x51,A
+  2068 00739 4FFE          			CALL	LCALL_Test
+  2069 0073A 1051          			MOV		A,0x51
+  2070 0073B 6C04          			XOR		A,@0x04		; Check Result ?
+  2071 0073C 40CE          			CALL	INST_XOR_JUDGE
+  2072                     
+  2073 0073D               		INST_RETL_K:		;-------Instruction Test => RETL k
+  2074 0073D 602C          			MOV		A,@0x2C
+  2075 0073E 015A          			MOV		INST,A
+  2076 0073F 40CB          			CALL	STATUS_CLEAR
+  2077 00740 6000          			MOV		A,@0x00
+  2078 00741 4EF0          			CALL	INST_RETL_TABLE
+  2079 00742 6CA1          			XOR		A,@0xA1
+  2080 00743 40CE          			CALL	INST_XOR_JUDGE
+  2081 00744 6001          			MOV		A,@0x01
+  2082 00745 4EF0          			CALL	INST_RETL_TABLE
+  2083 00746 6CA2          			XOR		A,@0xA2
+  2084 00747 40CE          			CALL	INST_XOR_JUDGE
+  2085 00748 6002          			MOV		A,@0x02
+  2086 00749 4EF0          			CALL	INST_RETL_TABLE
+  2087 0074A 6CA4          			XOR		A,@0xA4
+  2088 0074B 40CE          			CALL	INST_XOR_JUDGE
+  2089 0074C 6003          			MOV		A,@0x03
+  2090 0074D 4EF0          			CALL	INST_RETL_TABLE
+  2091 0074E 6CA8          			XOR		A,@0xA8
+  2092 0074F 40CE          			CALL	INST_XOR_JUDGE
+  2093 00750 0012          		RET
+  2094 00751               	TEST_INST_CONTROL:
+  2095 00751               		INST_ENI:			;-------Instruction Test => ENI , IT?
+  2096 00751 6004          			MOV		A,@0x04
+  2097 00752 015A          			MOV		INST,A
+  2098 00753 0010          			ENI
+  2099 00754 3F03          			JBS		IT		; Check IT = 1?
+  2100 00755 506C          			JMP	INS_FAIL
+  2101 00756               		INST_DISI:			;-------Instruction Test => DISI , IT?
+  2102 00756 6005          			MOV		A,@0x05
+  2103 00757 015A          			MOV		INST,A
+  2104 00758 0011          			DISI
+  2105 00759 3703          			JBC		IT		; Check IT = 0?
+  2106 0075A 506C          			JMP	INS_FAIL
+  2107 0075B 0012          		RET
+  2108                     
+  2109 0075C               	TEST_SHORT_BRANCH:
+  2110                     		;ORG	0x800
+  2111 0075C 40CB          		CALL	STATUS_CLEAR
+  2112 0075D 2803          		BS	C
+  2113 0075E 6903          		SJC		@0x03
+  2114 0075F 5066          		JMP		JMP_FAIL
+  2115 00760 5066          		JMP		JMP_FAIL
+  2116 00761 5066          		JMP		JMP_FAIL
+  2117 00762 2003          		BC	C
+  2118 00763 6A03          		SJNC	bbb		;@0x03
+  2119 00764 5066          		JMP		JMP_FAIL
+  2120 00765 5066          		JMP		JMP_FAIL
+  2121 00766 5066          		JMP		JMP_FAIL
+  2122 00767               		bbb:		
+  2123 00767 2A03          			BS		Z
+  2124 00768 6B03          			SJZ		@0x03
+  2125 00769 5066          			JMP		JMP_FAIL
+  2126 0076A 5066          			JMP		JMP_FAIL
+  2127 0076B 5066          			JMP		JMP_FAIL
+  2128 0076C 0200          			CLRA
+  2129 0076D 6B03          			SJZ		@0x03
+  2130 0076E 5066          			JMP		JMP_FAIL
+  2131 0076F 5066          			JMP		JMP_FAIL
+  2132 00770 5066          			JMP		JMP_FAIL
+  2133 00771 5779          		JMP		IATEST1		;JMP back Test as below
+  2134 00772               		aaa:	
+  2135 00772 5786          			JMP	IATEST2		; -9
+  2136 00773 5066          			JMP	JMP_FAIL	; -8
+  2137 00774 5066          			JMP	JMP_FAIL	; -7
+  2138 00775 5066          			JMP	JMP_FAIL	; -6
+  2139 00776 5066          			JMP	JMP_FAIL	; -5
+  2140 00777 5066          			JMP	JMP_FAIL	; -4
+  2141 00778 5066          			JMP	JMP_FAIL	; -3
+  2142 00779               		IATEST1:	
+  2143 00779 2803          			BS		C		; -2
+  2144 0077A 69F7          			SJC		aaa		; -1
+  2145 0077B 69F7          			SJC		@0xF7	; -1
+  2146 0077C 5066          			JMP		JMP_FAIL
+  2147 0077D 5066          			JMP		JMP_FAIL
+  2148 0077E 5066          			JMP		JMP_FAIL
+  2149 0077F 5792          			JMP		IATEST3		; -9
+  2150 00780 5066          			JMP		JMP_FAIL	; -8
+  2151 00781 5066          			JMP		JMP_FAIL	; -7
+  2152 00782 5066          			JMP		JMP_FAIL	; -6
+  2153 00783 5066          			JMP		JMP_FAIL	; -5
+  2154 00784 5066          			JMP		JMP_FAIL	; -4
+  2155 00785 5066          			JMP		JMP_FAIL	; -3
+  2156 00786               		IATEST2:	
+  2157 00786 2003          			BC		C		; -2
+  2158 00787 6AF7          			SJNC		@0xF7	; -1
+  2159 00788 57A3          			JMP		_IPass
+  2160 00789 57A3          			JMP		_IPass
+  2161 0078A 57A3          			JMP		_IPass
+  2162 0078B 579E          			JMP		IATEST4		; -9
+  2163 0078C 5066          			JMP		JMP_FAIL	; -8
+  2164 0078D 5066          			JMP		JMP_FAIL	; -7
+  2165 0078E 5066          			JMP		JMP_FAIL	; -6
+  2166 0078F 5066          			JMP		JMP_FAIL	; -5
+  2167 00790 5066          			JMP		JMP_FAIL	; -4
+  2168 00791 5066          			JMP		JMP_FAIL	; -3
+  2169 00792               		IATEST3:	
+  2170 00792 2A03          			BS		Z		; -2
+  2171 00793 6BF7          			SJZ		@0xF7	; -1
+  2172 00794 5066          			JMP		JMP_FAIL
+  2173 00795 5066          			JMP		JMP_FAIL
+  2174 00796 5066          			JMP		JMP_FAIL
+  2175                     
+  2176 00797 57A3          			JMP		_IPass		; -9
+  2177 00798 5066          			JMP		JMP_FAIL	; -8
+  2178 00799 5066          			JMP		JMP_FAIL	; -7
+  2179 0079A 5066          			JMP		JMP_FAIL	; -6
+  2180 0079B 5066          			JMP		JMP_FAIL	; -5
+  2181 0079C 5066          			JMP		JMP_FAIL	; -4
+  2182 0079D 5066          			JMP		JMP_FAIL	; -3
+  2183 0079E               		IATEST4:	
+  2184 0079E 2203          			BC		Z		; -2
+  2185 0079F 6DF7          			SJNZ	@0xF7	; -1
+  2186 007A0 5066          			JMP		JMP_FAIL
+  2187 007A1 5066          			JMP		JMP_FAIL
+  2188 007A2 5066          			JMP		JMP_FAIL
+  2189 007A3               		_IPass:
+  2190 007A3 0000          				NOP
+  2191 007A4 0012          		RET
+  2192                     
+  2193 007A5               	TEST_READ_ROM:
+  2194 007A5               		INST_TBLRD_R:
+  2195 007A5 6028          			MOV		A,@0x28
+  2196 007A6 015A          			MOV		INST,A
+  2197 007A7 7A01          			SBANK	1
+  2198 007A8 60F1          			MOV		A,@0xF1		;ADDR(0x0EF1)
+  2199 007A9 0145          			MOV		TBPTL,A
+  2200 007AA 600E          			MOV		A,@0x0E
+  2201 007AB 0146          			MOV		TBPTH,A
+  2202 007AC 7A00          			SBANK	0
+  2203 007AD 6750          			TBRDA	0x50		; [0x50]+ A = [TABPTR] 
+  2204 007AE 6CA1          			XOR		A,@0xA1
+  2205 007AF 40CE          			CALL	INST_XOR_JUDGE
+  2206 007B0 1050          			MOV		A,0x50
+  2207 007B1 6C70          			XOR		A,@0x70
+  2208 007B2 40CE          			CALL	INST_XOR_JUDGE
+  2209                     
+  2210 007B3 7A01          			SBANK	1
+  2211                     			;MOV		A,@0xF1		;ADDR(0x0EF1)
+  2212                     			;MOV		TBPTL,A
+  2213                     			;MOV		A,@0x0E
+  2214                     			;MOV		TBPTH,A
+  2215 007B4 1545          			INC		TBPTL		;ADDR(0x0EF2)
+  2216 007B5 7A00          			SBANK	0
+  2217 007B6 6750          			TBRDA	0x50		; [0x50]+ A = [TABPTR] 
+  2218 007B7 6CA2          			XOR		A,@0xA2
+  2219 007B8 40CE          			CALL	INST_XOR_JUDGE
+  2220 007B9 1050          			MOV		A,0x50
+  2221 007BA 6C70          			XOR		A,@0x70
+  2222 007BB 40CE          			CALL	INST_XOR_JUDGE
+  2223 007BC               		INST_TBRD_R:		;-------Instruction Test => TBRD R
+  2224 007BC 6033          			MOV		A,@0x33
+  2225 007BD 015A          			MOV		INST,A
+  2226 007BE 7A01          			SBANK	1
+  2227 007BF 60F3          			MOV		A,@0xF3		;ADDR(0x0EF3)
+  2228 007C0 0145          			MOV		TBPTL,A
+  2229 007C1 600E          			MOV		A,@0x0E
+  2230 007C2 0146          			MOV		TBPTH,A
+  2231 007C3 7A00          			SBANK	0
+  2232 007C4 7B50          			TBRD	0x50
+  2233 007C5 1050          			MOV		A,0x50
+  2234 007C6 6CA4          			XOR		A,@0xA4
+  2235 007C7 40CE          			CALL	INST_XOR_JUDGE
+  2236                     
+  2237 007C8 7A01          			SBANK	1
+  2238                     			;MOV		A,@0xF3
+  2239                     			;MOV		TBPTL,A
+  2240                     			;MOV		A,@0x0E
+  2241                     			;MOV		TBPTH,A
+  2242 007C9 1545          			INC		TBPTL		;ADDR(0x0EF4)
+  2243 007CA 7A00          			SBANK	0
+  2244 007CB 7B50          			TBRD	0x50
+  2245 007CC 1050          			MOV		A,0x50
+  2246 007CD 6CA8          			XOR		A,@0xA8
+  2247 007CE 40CE          			CALL	INST_XOR_JUDGE
+  2248 007CF 0012          		RET
+  2249                     
+  2250                     
+  2251 007D0               	CALL_Test:
+  2252 007D0 1550          		INC		0x50
+  2253 007D1 0012          		RET
+  2254                     ;================== EEPROM Test Routine =====================
+  2255                     
+  2256                     ;================== Return Table ============================
+  2257                     ORG	0x0EF0	; ADDR(3824)
+  2258 00EF0               	INST_RETL_TABLE:
+  2259 00EF0 0F02          		ADD		PCL, A	;BackUp PC to STACK,then SEARCH TABLE By PC
+  2260 00EF1 70A1          		RETL	@0xA1
+  2261 00EF2 70A2          		RETL	@0xA2
+  2262 00EF3 70A4          		RETL	@0xA4
+  2263 00EF4 70A8          		RETL	@0xA8
+  2264 00EF5 701A          		RETL	@0x1A
+  2265 00EF6 702A          		RETL	@0x2A
+  2266 00EF7 704A          		RETL	@0x4A
+  2267 00EF8 708A          		RETL	@0x8A
+  2268                     
+  2269                     ;================== RAM Test Routine ========================
+  2270                     ORG	0x0F00	; ADDR(3840)
+  2271 00F00               	TEST_RAM_BANK_0_5:
+  2272 00F00 6080          		MOV		A,@0x80		; Write Start SRAM(0x55)
+  2273 00F01 0104          		MOV		RSR,A
+  2274 00F02 7A40          		GBANK	0
+  2275 00F03 6055          		MOV		A,@0x55
+  2276 00F04 0100          		MOV		IAR,A
+  2277 00F05 1504          		INC		RSR
+  2278 00F06 6000          		MOV		A,@0x00
+  2279 00F07 0C04          		XOR		A,RSR		; INC(0x80),UNTIL(0x00)
+  2280 00F08 3A03          		JBS		Z
+  2281 00F09 5F03          		JMP		$-6
+  2282 00F0A 6080          		MOV		A,@0x80		; Read Start SRAM(0x55)
+  2283 00F0B 0104          		MOV		RSR,A
+  2284 00F0C 7A40          		GBANK	0
+  2285 00F0D 6055          		MOV		A,@0x55
+  2286 00F0E 0D00          		XOR		IAR,A
+  2287 00F0F 3A03          		JBS		Z
+  2288 00F10 5069          		JMP		RAM_FAIL
+  2289 00F11 1504          		INC		RSR
+  2290 00F12 6000          		MOV		A,@0x00
+  2291 00F13 0C04          		XOR		A,RSR		; INC(0x80),UNTIL(0x00)
+  2292 00F14 3A03          		JBS		Z
+  2293 00F15 5F0D          		JMP		$-8
+  2294 00F16 0012          		RET
+  2295 00F17               	TEST_RAM_BANK_0_A:
+  2296 00F17 6080          		MOV		A,@0x80		; Write Start SRAM(0xAA)
+  2297 00F18 0104          		MOV		RSR,A
+  2298 00F19 7A40          		GBANK	0
+  2299 00F1A 60AA          		MOV		A,@0xAA		; SRAM(0xAA)
+  2300 00F1B 0100          		MOV		IAR,A
+  2301 00F1C 1504          		INC		RSR
+  2302 00F1D 6000          		MOV		A,@0x00
+  2303 00F1E 0C04          		XOR		A,RSR		; INC(0x80),UNTIL(0x00)
+  2304 00F1F 3A03          		JBS		Z
+  2305 00F20 5F1A          		JMP		$-6
+  2306 00F21 6080          		MOV		A,@0x80
+  2307 00F22 0104          		MOV		RSR,A
+  2308 00F23 7A40          		GBANK	0
+  2309 00F24 60AA          		MOV		A,@0xAA
+  2310 00F25 0D00          		XOR		IAR,A
+  2311 00F26 3A03          		JBS		Z
+  2312 00F27 5069          		JMP		RAM_FAIL
+  2313 00F28 1504          		INC		RSR
+  2314 00F29 6000          		MOV		A,@0x00
+  2315 00F2A 0C04          		XOR		A,RSR		; INC(0x80),UNTIL(0x00)
+  2316 00F2B 3A03          		JBS		Z
+  2317 00F2C 5F24          		JMP		$-8
+  2318 00F2D 0012          		RET
+  2319 00F2E               	TEST_RAM_BANK_1_3:
+  2320 00F2E 6080          		MOV		A,@0x80		; Write Start SRAM(0x33)
+  2321 00F2F 0104          		MOV		RSR,A
+  2322 00F30 7A41          		GBANK	1
+  2323 00F31 6033          		MOV		A,@0x33		; SRAM(0x33)
+  2324 00F32 0100          		MOV		IAR,A
+  2325 00F33 1504          		INC		RSR
+  2326 00F34 6000          		MOV		A,@0x00
+  2327 00F35 0C04          		XOR		A,RSR		; INC(0x80),UNTIL(0x00)
+  2328 00F36 3A03          		JBS		Z
+  2329 00F37 5F31          		JMP		$-6
+  2330 00F38 6080          		MOV		A,@0x80
+  2331 00F39 0104          		MOV		RSR,A
+  2332 00F3A 7A41          		GBANK	1
+  2333 00F3B 6033          		MOV		A,@0x33
+  2334 00F3C 0D00          		XOR		IAR,A
+  2335 00F3D 3A03          		JBS		Z
+  2336 00F3E 5069          		JMP		RAM_FAIL
+  2337 00F3F 1504          		INC		RSR
+  2338 00F40 6000          		MOV		A,@0x00
+  2339 00F41 0C04          		XOR		A,RSR		; INC(0x80),UNTIL(0x00)
+  2340 00F42 3A03          		JBS		Z
+  2341 00F43 5F3B          		JMP		$-8
+  2342 00F44 0012          		RET
+  2343 00F45               	TEST_RAM_BANK_1_C:
+  2344 00F45 6080          		MOV		A,@0x80		; Write Start SRAM(0xCC)
+  2345 00F46 0104          		MOV		RSR,A
+  2346 00F47 7A41          		GBANK	1
+  2347 00F48 60CC          		MOV		A,@0xCC		; SRAM(0xCC)
+  2348 00F49 0100          		MOV		IAR,A
+  2349 00F4A 1504          		INC		RSR
+  2350 00F4B 6000          		MOV		A,@0x00
+  2351 00F4C 0C04          		XOR		A,RSR		; INC(0x80),UNTIL(0x00)
+  2352 00F4D 3A03          		JBS		Z
+  2353 00F4E 5F48          		JMP		$-6
+  2354 00F4F 6080          		MOV		A,@0x80
+  2355 00F50 0104          		MOV		RSR,A
+  2356 00F51 7A41          		GBANK	1
+  2357 00F52 60CC          		MOV		A,@0xCC
+  2358 00F53 0D00          		XOR		IAR,A
+  2359 00F54 3A03          		JBS		Z
+  2360 00F55 5069          		JMP		RAM_FAIL
+  2361 00F56 1504          		INC		RSR
+  2362 00F57 6000          		MOV		A,@0x00
+  2363 00F58 0C04          		XOR		A,RSR		; INC(0x80),UNTIL(0x00)
+  2364 00F59 3A03          		JBS		Z
+  2365 00F5A 5F52          		JMP		$-8
+  2366 00F5B 0012          		RET
+  2367                     
+  2368                     ;================== Long Sub Routine ========================
+  2369                     ORG	0x0FFE	; >4K
+  2370 00FFE               	LCALL_Test:
+  2371 00FFE 1551          		INC		0x51
+  2372 00FFF 0012          		RET
   0 Error(s), 0 Warning(s), 0 User Message(s)
