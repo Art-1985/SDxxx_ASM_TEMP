@@ -22,7 +22,6 @@
 ;Include	"SD028.INC"
 Include	"SD062.INC"
 
-
 ;================ General Purpose Register ===============
 	TMP50	== 0x50
 	TMP51	== 0x51

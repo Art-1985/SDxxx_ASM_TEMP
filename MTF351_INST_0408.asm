@@ -172,34 +172,21 @@ BACK_GROUND_LOOP:
 	CALL	TEST_RAM_BANK_1_3		;Write(0x33),Read(0x33),Clear(0x00)
 	CALL	TEST_RAM_BANK_1_C		;Write(0xCC),Read(0xCC),Clear(0x00)
 	JMP_PASS:
-	BTG		P5,0
-	BC		P5,1
-	BS		P5,2
-	BC		P5,3
-	BS		P5,4	
+	BTG		P5,1
 	JMP		BACK_GROUND_LOOP
 
 ;====================== ERROR_LOOP =====================
 JMP_FAIL:
 	SBANK	0
-	BS		P5,1
 	BC		P5,2
-	BS		P5,3
-	BC		P5,4
 	JMP		JMP_FAIL
 RAM_FAIL:
 	SBANK	0
-	BS		P5,1
-	BC		P5,2
-	BS		P5,3
-	BC		P5,4
+	BC		P5,3
 	JMP		RAM_FAIL
 INS_FAIL:
 	SBANK	0
-	BS		P5,1
-	BC		P5,2
-	BS		P5,3
-	BC		P5,4	
+	BC		P5,4
 	JMP		INS_FAIL
 
 ;================== PEIPHERAL_INITIAL ==================
@@ -283,18 +270,6 @@ INS_FAIL:
 		XOR		A,RSR
 		JBS		Z
 		JMP		$-6
-		
-		MOV		A,@0x50
-		MOV		RSR,A
-		MOV		A,@0xFF
-		XOR		A,IAR
-		JBS		Z
-		JMP		RAM_FAIL
-		INC		RSR
-		MOV		A,@0x80
-		XOR		A,RSR
-		JBS		Z
-		JMP		$-8
 		RET
 	;-------------------------------;		
 	RAM_IND_INIT:
@@ -2277,12 +2252,7 @@ INS_FAIL:
 	CALL_Test:
 		INC		0x50
 		RET
-ORG	0x800 ; ADDR(2048)
-	JMP		JMP_FAIL
-	JMP		JMP_FAIL
-	JMP		JMP_FAIL
 ;================== EEPROM Test Routine =====================
-
 
 ;================== Return Table ============================
 ORG	0x0EF0	; ADDR(3824)
