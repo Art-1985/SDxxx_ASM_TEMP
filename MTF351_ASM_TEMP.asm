@@ -145,6 +145,10 @@ Include	"MTF351.INC"
 MAIN:
 	;CALL 	EFT_INIT
 	CALL	SYS_INIT
+	SLEP
+	SLEP
+	SLEP
+	SLEP
 	CALL	GPIO_INIT
 	;CALL	WAKE_INIT
 	;CALL	KEY_DEBOUNCE
@@ -284,17 +288,17 @@ INS_FAIL:
 		JBS		Z
 		JMP		$-6
 		
-		MOV		A,@0x50
-		MOV		RSR,A
-		MOV		A,@0xFF
-		XOR		A,IAR
-		JBS		Z
-		JMP		RAM_FAIL
-		INC		RSR
-		MOV		A,@0x80
-		XOR		A,RSR
-		JBS		Z
-		JMP		$-8
+		;MOV		A,@0x50
+		;MOV		RSR,A
+		;MOV		A,@0xFF
+		;XOR		A,IAR
+		;JBS		Z
+		;JMP		RAM_FAIL
+		;INC		RSR
+		;MOV		A,@0x80
+		;XOR		A,RSR
+		;JBS		Z
+		;JMP		$-8
 		RET
 	;-------------------------------;		
 	RAM_IND_INIT:
