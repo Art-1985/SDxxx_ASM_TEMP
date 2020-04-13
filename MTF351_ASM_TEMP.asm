@@ -145,11 +145,11 @@ Include	"MTF351.INC"
 MAIN:
 	;CALL 	EFT_INIT
 	CALL	SYS_INIT
+	CALL	GPIO_INIT	
 	SLEP
 	SLEP
 	SLEP
 	SLEP
-	CALL	GPIO_INIT
 	;CALL	WAKE_INIT
 	;CALL	KEY_DEBOUNCE
 	CALL	RAM_SHA_INIT
@@ -224,11 +224,18 @@ INS_FAIL:
 	;-------------------------------;		
 	GPIO_INIT:
 		SBANK	0
-		CLR		P5
-		MOV		A,@0xE0
+		;CLR		P5
+		;MOV		A,@0xE0
+		;MOV		IOCR5,A
+		;MOV		A,@0xFF	;Turn-Off LED (Active-Low)
+		;MOV		P5,A
+		MOV		A,@0x00
 		MOV		IOCR5,A
-		MOV		A,@0xFF	;Turn-Off LED (Active-Low)
-		MOV		P5,A
+		MOV		IOCR6,A
+		MOV		IOCR7,A
+		CLR		P5
+		CLR		P6
+		CLR		P7
 		RET
 
 	;-------------------------------;
