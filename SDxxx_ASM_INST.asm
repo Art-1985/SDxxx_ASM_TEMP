@@ -19,8 +19,19 @@
 ;============================================================
 
 ;==================== Project Include ====================
-;Include	"SD028.INC"
-Include	"SD062.INC"
+TARGET	VAR	1
+
+IF	(TARGET == 1)
+	Include	"SD062.INC"
+ELSEIF(TARGET == 2)
+	Include	"SD028.INC"
+ELSE
+	NOP
+ENDIF
+	
+
+
+
 
 ;================ General Purpose Register ===============
 	TMP50	== 0x50
@@ -111,13 +122,6 @@ MAIN:
 
 ;====================== BACK_GROUND_LOOP ================
 BACK_GROUND_LOOP:
-	;IF	(INST == 0x00)
-		;NOP
-	;ELSEIF(INST==0x01)
-		;NOP
-	;ELSE
-		;NOP
-	;ENDIF
 	SBANK	0
 	CALL	TEST_INST_ARITHEMATIC	;ADD, SUB, DAA, DEC, DECA, INC, INCA, ADC, SUBB, NEG
 	CALL	TEST_INST_LOGIC_I		;AND, OR, COM, COMA, XOR, CLR, CLRA, BTG
