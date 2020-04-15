@@ -1,0 +1,8 @@
+{
+    "files.exclude": {
+        "**/*.lst": true
+        "**/*.deg": true
+        "**/*.map": true
+        "**/*.bbj": true
+    }
+}
