@@ -157,7 +157,7 @@ File Num=1
 File0=$\SD028_ASM_TEMP.lst
 [Map Files]
 File Num=1
-File0=?
+File0=$\SD028_ASM_TEMP.map
 [Library Files]
 File Num=0
 [BOOKMARK]
