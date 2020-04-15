@@ -11,7 +11,7 @@ BlockNum=0
 BlockNum=0
 [BREAKPOINT]
 BP Num=1
-BP0=1,A,1634120,1,1480304612,114,$\SDxxx_ASM_INST.asm
+BP0=1,A,1634644,1,1480304612,114,$\SDxxx_ASM_INST.asm
 [CODEOPTION]
 Option Num=115
 IRC Trim=1
@@ -144,8 +144,7 @@ AGENT=0
 [LibraryProject]
 LibraryProject=0
 [LastOpenFiles]
-File0=$\SDxxx_ASM_INST.asm
-File Num=1
+File Num=0
 [Source Files]
 File Num=1
 File0=$\SDxxx_ASM_INST.asm
