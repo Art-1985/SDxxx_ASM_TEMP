@@ -10,8 +10,7 @@ BlockNum=0
 [DATA_AREABlock]
 BlockNum=0
 [BREAKPOINT]
-BP Num=1
-BP0=1,A,1634644,1,1480304612,114,$\SDxxx_ASM_INST.asm
+BP Num=0
 [CODEOPTION]
 Option Num=115
 IRC Trim=1
