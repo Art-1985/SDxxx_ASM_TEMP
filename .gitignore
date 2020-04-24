@@ -2,6 +2,6 @@
 *.bbj
 *.lst
 *.map
-**.eac
+*.eac
 
 *.apj
