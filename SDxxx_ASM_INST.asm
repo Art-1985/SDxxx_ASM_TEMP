@@ -116,7 +116,8 @@ MAIN:
 	CALL	EEPROM_INIT
 	;CALL	TEST_EEPROM (Do not loop forever)
 	;CALL	TEST_FLASH (Do not loop forever)
-
+	MOV		A,@0x88
+	MOV		WDTCR,A
 ;====================== BACK_GROUND_LOOP ================
 BACK_GROUND_LOOP:
 	SBANK	0
@@ -138,6 +139,7 @@ BACK_GROUND_LOOP:
 	CALL	TEST_RAM_BANK_1_C		;Write(0xCC),Read(0xCC),Clear(0x00)
 	JMP_PASS:
 	BTG		P5,1
+	WDTC
 	JMP		BACK_GROUND_LOOP
 
 ;====================== ERROR_LOOP =====================
