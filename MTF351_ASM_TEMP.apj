@@ -19,7 +19,7 @@ WD0 1=0
 WD0 2=0
 WD0 3=0
 WD0 4=0
-ENWDT=0
+ENWDT=1
 RESETEN=0
 WD0 7=0
 WD0 8=0
@@ -34,8 +34,8 @@ RCOUT=0
 OSC0=0
 OSC1=0
 WD1 3=0
-RCM0=0
-RCM1=0
+RCM0=1
+RCM1=1
 WD1 6=0
 CLK0=0
 CLK1=0
@@ -43,7 +43,7 @@ CLK2=0
 BORS0=0
 BORS1=0
 WD1 12=0
-FSS=0
+FSS=1
 WD1 14=0
 CMPMEAS=0
 WD2 0=0
@@ -127,7 +127,7 @@ AGENT=0
 [LibraryProject]
 LibraryProject=0
 [LastOpenFiles]
-File0=$\MTF351_ASM_RAM_T2.asm
+File0=$\MTF351_ASM_TEMP.asm
 File Num=1
 [Source Files]
 File Num=1
@@ -140,7 +140,7 @@ File Num=1
 File0=$\MTF351_ASM_TEMP.lst
 [Map Files]
 File Num=1
-File0=?
+File0=$\MTF351_ASM_TEMP.map
 [Library Files]
 File Num=0
 [BOOKMARK]
@@ -502,6 +502,15 @@ R4C=4C
 R4D=4D
 R4E=4E
 R4F=4F
+[RAMBreakPoint]
+Set0=0 0 0 0 0 0 0
+Set1=0 0 0 0 0 0 0
+Set2=0 0 0 0 0 0 0
+Set3=0 0 0 0 0 0 0
+Set4=0 0 0 0 0 0 0
+Set5=0 0 0 0 0 0 0
+Set6=0 0 0 0 0 0 0
+Set7=0 0 0 0 0 0 0
 [Watch]
 Size#0=1
 0,0=INST,R,Register(0),5A,0,0
@@ -521,7 +530,7 @@ PopUp WDTReset Msg=1
 Disable EEPROM Protect Msg=0
 [C_LIB BUILD SETTING]
 No Debug Info=0
-[$\MTF351_ASM_RAM_T2.asm]
-Rectangle=0025 0025 0785 0484
+[$\MTF351_ASM_TEMP.asm]
+Rectangle=0050 0050 0736 0508
 Iconized=0
 Maximized=0
