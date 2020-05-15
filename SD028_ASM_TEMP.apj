@@ -6,9 +6,17 @@ ICE=ED028
 [CallRamBlock]
 BlockNum=0
 [EEPROMBlock]
-BlockNum=0
+BlockNum=8
+iID0=0
+iID1=1
+iID2=2
+iID3=3
+iID4=4
+iID5=5
+iID6=6
+iID7=7
 [DATA_AREABlock]
-BlockNum=0
+BlockNum=8
 [BREAKPOINT]
 BP Num=0
 [CODEOPTION]
@@ -144,17 +152,17 @@ AGENT=0
 [LibraryProject]
 LibraryProject=0
 [LastOpenFiles]
-File0=$\SD028_ASM_TEMP.asm
+File0=$\SDxxx_ASM_INST.asm
 File Num=1
 [Source Files]
 File Num=1
-File0=$\SD028_ASM_TEMP.asm
+File0=$\SDxxx_ASM_INST.asm
 [Reference Files]
 File Num=1
-File0=$\SD028.INC
+File0=$\SD062.INC
 [List Files]
 File Num=1
-File0=$\SD028_ASM_TEMP.lst
+File0=$\SDxxx_ASM_INST.lst
 [Map Files]
 File Num=1
 File0=$\SD028_ASM_TEMP.map
@@ -443,15 +451,24 @@ R4C=4C
 R4D=4D
 R4E=4E
 R4F=4F
+[RAMBreakPoint]
+Set0=0 0 0 0 0 0
+Set1=0 0 0 0 0 0
+Set2=0 0 0 0 0 0
+Set3=0 0 0 0 0 0
+Set4=0 0 0 0 0 0
+Set5=0 0 0 0 0 0
+Set6=0 0 0 0 0 0
+Set7=0 0 0 0 0 0
 [Watch]
 Size#0=0
 Size#1=0
 Size#2=0
 [UBRG SETTING]
 Voltage=5.000000
-IsExVoltage=0
+IsExVoltage=1
 Monitor DriftVol=0.500000
-Interface=1
+Interface=0
 Monitor DriftVolEnable=1
 [AdjustValue]
 PreAdvOptionItem=-1
@@ -461,7 +478,7 @@ PopUp WDTReset Msg=1
 Disable EEPROM Protect Msg=0
 [C_LIB BUILD SETTING]
 No Debug Info=0
-[$\SD028_ASM_TEMP.asm]
-Rectangle=0075 0075 1102 0562
+[$\SDxxx_ASM_INST.asm]
+Rectangle=0100 0100 0941 0547
 Iconized=0
 Maximized=0
