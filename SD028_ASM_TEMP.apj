@@ -18,7 +18,8 @@ iID7=7
 [DATA_AREABlock]
 BlockNum=8
 [BREAKPOINT]
-BP Num=0
+BP Num=1
+BP0=1,A,1636072,1,1980068210,122,$\SDxxx_ASM_INST.asm
 [CODEOPTION]
 Option Num=116
 WD2 1=1
@@ -452,14 +453,14 @@ R4D=4D
 R4E=4E
 R4F=4F
 [RAMBreakPoint]
-Set0=0 0 0 0 0 0
-Set1=0 0 0 0 0 0
-Set2=0 0 0 0 0 0
-Set3=0 0 0 0 0 0
-Set4=0 0 0 0 0 0
-Set5=0 0 0 0 0 0
-Set6=0 0 0 0 0 0
-Set7=0 0 0 0 0 0
+Set0=0 0 0 0 0 0 0
+Set1=0 0 0 0 0 0 0
+Set2=0 0 0 0 0 0 0
+Set3=0 0 0 0 0 0 0
+Set4=0 0 0 0 0 0 0
+Set5=0 0 0 0 0 0 0
+Set6=0 0 0 0 0 0 0
+Set7=0 0 0 0 0 0 0
 [Watch]
 Size#0=0
 Size#1=0
