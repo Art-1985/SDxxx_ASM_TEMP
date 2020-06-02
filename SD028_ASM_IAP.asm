@@ -112,13 +112,13 @@ JMP_FAIL:
 		MOV		A,@0x80		; Write Start SRAM
 		MOV		RSR,A
 		GBANK	3
-		MOV		A,@0x77		; SRAM(0x0085)
+		MOV		A,@0x55		; SRAM(0x0085)
 		MOV		IAR,A
 		INC		RSR
-		MOV		A,@0x77
+		MOV		A,@0xAA
 		MOV		IAR,A
 		INC		RSR		
-		MOV		A,@0xC0
+		MOV		A,@0xF0
 		XOR		A,RSR		; INC(0x80),UNTIL(0xC0)
 		JBS		Z
 		JMP		$-9
