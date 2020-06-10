@@ -75,8 +75,24 @@ Include	"SD028.INC"
 MAIN:
 	CALL	SYS_INIT
 	CALL	GPIO_INIT
-
-
+	
+	;SBANK	1
+	;MOV		A,@0x2B
+	;MOV		URCR,A
+	;MOV		A,@0x01
+	;MOV		URS,A
+	;MOV		A,@0x01
+	;MOV		URRDH,A
+	
+	SBANK	0
+	BS		P55
+	BS		P54
+	SBANK	1
+	MOV		A,@0x30
+	MOV		URTD,A
+	SBANK	0
+	BC		P55
+	BC		P54
 ;====================== Backgroung =======================
 BACK_GROUND_LOOP:
 	SBANK	0
@@ -96,7 +112,7 @@ JMP_FAIL:
 	GPIO_INIT:
 		SBANK	0
 		CLR		P5
-		MOV		A,@0x00
+		MOV		A,@0x07
 		MOV		IOCR5,A
 		RETI	
 
