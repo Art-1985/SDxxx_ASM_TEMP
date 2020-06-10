@@ -11,7 +11,7 @@ BlockNum=0
 BlockNum=0
 [BREAKPOINT]
 BP Num=1
-BP0=1,A,1636072,1,1991733618,131,$\SD028_ASM_IAP.asm
+BP0=1,A,1636072,1,1974956402,86,$\SD028_ASM_TEMP.asm
 [CODEOPTION]
 Option Num=116
 WD2 1=1
@@ -145,17 +145,18 @@ AGENT=0
 [LibraryProject]
 LibraryProject=0
 [LastOpenFiles]
-File0=$\SD028_ASM_IAP.asm
-File Num=1
+File0=$\SD028_ASM_TEMP.asm
+File1=$\SD028.INC
+File Num=2
 [Source Files]
 File Num=1
-File0=$\SD028_ASM_IAP.asm
+File0=$\SD028_ASM_TEMP.asm
 [Reference Files]
 File Num=1
 File0=$\SD028.INC
 [List Files]
 File Num=1
-File0=$\SD028_ASM_IAP.lst
+File0=$\SD028_ASM_TEMP.lst
 [Map Files]
 File Num=1
 File0=$\SD028_ASM_TEMP.map
@@ -471,7 +472,11 @@ PopUp WDTReset Msg=1
 Disable EEPROM Protect Msg=0
 [C_LIB BUILD SETTING]
 No Debug Info=0
-[$\SD028_ASM_IAP.asm]
-Rectangle=0000 0000 0787 0520
+[$\SD028_ASM_TEMP.asm]
+Rectangle=0000 0000 0545 0469
+Iconized=0
+Maximized=0
+[$\SD028.INC]
+Rectangle=0150 0150 0699 0621
 Iconized=0
 Maximized=0
