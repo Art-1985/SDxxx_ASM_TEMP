@@ -11,7 +11,7 @@ BlockNum=0
 BlockNum=0
 [BREAKPOINT]
 BP Num=1
-BP0=1,A,1636072,1,1974956402,86,$\SD028_ASM_TEMP.asm
+BP0=1,A,1635752,1,1973252466,173,$\SD028_ASM_TEMP.asm
 [CODEOPTION]
 Option Num=116
 WD2 1=1
@@ -37,8 +37,8 @@ WD1 3=1
 RCM0=1
 RCM1=0
 WD1 6=1
-IODG0=1
-IODG1=1
+IODG0=0
+IODG1=0
 WD1 9=1
 WD1 10=1
 WD1 11=1
@@ -145,9 +145,7 @@ AGENT=0
 [LibraryProject]
 LibraryProject=0
 [LastOpenFiles]
-File0=$\SD028_ASM_TEMP.asm
-File1=$\SD028.INC
-File Num=2
+File Num=0
 [Source Files]
 File Num=1
 File0=$\SD028_ASM_TEMP.asm
@@ -446,14 +444,14 @@ R4D=4D
 R4E=4E
 R4F=4F
 [RAMBreakPoint]
-Set0=0 0 0 0 0 0 0
-Set1=0 0 0 0 0 0 0
-Set2=0 0 0 0 0 0 0
-Set3=0 0 0 0 0 0 0
-Set4=0 0 0 0 0 0 0
-Set5=0 0 0 0 0 0 0
-Set6=0 0 0 0 0 0 0
-Set7=0 0 0 0 0 0 0
+Set0=0 0 0 0 0 0
+Set1=0 0 0 0 0 0
+Set2=0 0 0 0 0 0
+Set3=0 0 0 0 0 0
+Set4=0 0 0 0 0 0
+Set5=0 0 0 0 0 0
+Set6=0 0 0 0 0 0
+Set7=0 0 0 0 0 0
 [Watch]
 Size#0=0
 Size#1=0
@@ -472,11 +470,3 @@ PopUp WDTReset Msg=1
 Disable EEPROM Protect Msg=0
 [C_LIB BUILD SETTING]
 No Debug Info=0
-[$\SD028_ASM_TEMP.asm]
-Rectangle=0000 0000 0545 0469
-Iconized=0
-Maximized=0
-[$\SD028.INC]
-Rectangle=0150 0150 0699 0621
-Iconized=0
-Maximized=0
