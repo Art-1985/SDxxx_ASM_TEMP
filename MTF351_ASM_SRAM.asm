@@ -40,6 +40,7 @@ Include	"MTF351.INC"
 	TMP5F	== 0x5F
 	
 	INST	== 0x5A
+	WRDATA	== 0x5B
 
 	TMP80	== 0x80
 	TMP81	== 0x81
@@ -155,6 +156,60 @@ BACK_GROUND_LOOP:
 	CALL	TEST_RAM_BANK_0_A		;Write(0xAA),Read(0xAA),Clear(0x00)
 	CALL	TEST_RAM_BANK_1_3		;Write(0x33),Read(0x33),Clear(0x00)
 	CALL	TEST_RAM_BANK_1_C		;Write(0xCC),Read(0xCC),Clear(0x00)
+
+
+		MOV		A,@0x80		; Write Start SRAM(0x55)
+		MOV		RSR,A		; Address
+		;CALL	BIT_SET_RAM_0x11
+		GBANK	0
+		BS		IAR.0
+		BC		IAR.1
+		BC		IAR.2
+		BC		IAR.3
+		BS		IAR.4
+		BC		IAR.5
+		BC		IAR.6
+		BC		IAR.7
+		INC		RSR
+		;CALL	BIT_SET_RAM_0x22
+		GBANK	0
+		BC		IAR.0
+		BS		IAR.1
+		BC		IAR.2
+		BC		IAR.3
+		BC		IAR.4
+		BS		IAR.5
+		BC		IAR.6
+		BC		IAR.7
+		INC		RSR
+		;CALL	BIT_SET_RAM_0x44
+		GBANK	0
+		BC		IAR.0
+		BC		IAR.1
+		BS		IAR.2
+		BC		IAR.3
+		BC		IAR.4
+		BC		IAR.5
+		BS		IAR.6
+		BC		IAR.7
+		INC		RSR
+		;CALL	BIT_SET_RAM_0x88
+		GBANK	0
+		BC		IAR.0
+		BC		IAR.1
+		BC		IAR.2
+		BS		IAR.3
+		BC		IAR.4
+		BC		IAR.5
+		BC		IAR.6
+		BS		IAR.7
+		MOV		A,0xFF
+		XOR		A,RSR
+		JBS		Z
+		JMP		INS_FAIL	;; NEXT		
+
+
+
 	JMP_PASS:
 	BTG		P5,0
 	BC		P5,1
