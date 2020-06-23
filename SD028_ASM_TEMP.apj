@@ -10,8 +10,10 @@ BlockNum=0
 [DATA_AREABlock]
 BlockNum=0
 [BREAKPOINT]
-BP Num=1
-BP0=1,A,1635752,1,1973252466,173,$\SD028_ASM_TEMP.asm
+BP Num=3
+BP0=1,A,1636072,1,1959293298,190,$\SD028_ASM_TEMP.asm
+BP1=1,A,1636072,1,1959293298,197,$\SD028_ASM_TEMP.asm
+BP2=1,A,1636072,1,1959293298,204,$\SD028_ASM_TEMP.asm
 [CODEOPTION]
 Option Num=116
 WD2 1=1
@@ -145,7 +147,8 @@ AGENT=0
 [LibraryProject]
 LibraryProject=0
 [LastOpenFiles]
-File Num=0
+File0=$\SD028_ASM_TEMP.asm
+File Num=1
 [Source Files]
 File Num=1
 File0=$\SD028_ASM_TEMP.asm
@@ -470,3 +473,7 @@ PopUp WDTReset Msg=1
 Disable EEPROM Protect Msg=0
 [C_LIB BUILD SETTING]
 No Debug Info=0
+[$\SD028_ASM_TEMP.asm]
+Rectangle=0075 0075 0830 0584
+Iconized=0
+Maximized=0
