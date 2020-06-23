@@ -75,21 +75,10 @@ Include	"SD028.INC"
 MAIN:
 	CALL	SYS_INIT
 	CALL	GPIO_INIT
-	
-	SBANK	1
-	MOV		A,@0x2B
-	MOV		URCR,A
-	MOV		A,@0x01
-	MOV		URS,A
-	MOV		A,@0x01
-	MOV		URRDH,A
-	
-	SBANK	1
-	MOV		A,@0x30
-	MOV		URTD,A
-	SBANK	0
-	BS		UTIE
-	ENI
+	;CALL	UART_TX_IE
+	;CALL	UART_RX_IE
+	CALL	UART_ERR_IE
+
 
 ;====================== Backgroung =======================
 BACK_GROUND_LOOP:
@@ -105,16 +94,58 @@ JMP_FAIL:
 		SBANK	0
 		BS		CPUS
 		BS		IDLE
-		RETI
+		RET
 		
 	GPIO_INIT:
 		SBANK	0
 		CLR		P5
 		MOV		A,@0x0F
 		MOV		IOCR5,A
-		RETI	
+		RET
+
+	UART_TX_IE:
+		SBANK	1
+		MOV		A,@0x2B
+		MOV		URCR,A
+		MOV		A,@0x01
+		MOV		URS,A
+		MOV		A,@0x01
+		MOV		URRDH,A
+		SBANK	1
+		MOV		A,@0x30
+		MOV		URTD,A
+		SBANK	0
+		BS		UTIE
+		ENI
+		RET
+
+	UART_RX_IE:
+		SBANK	1
+		MOV		A,@0x2B
+		MOV		URCR,A
+		MOV		A,@0x01
+		MOV		URS,A
+		MOV		A,@0x01
+		MOV		URRDH,A
+		SBANK	0
+		BS		URIE
+		ENI
+		RET
 
 
+	UART_ERR_IE:
+		SBANK	1
+		MOV		A,@0x2B
+		MOV		URCR,A
+		MOV		A,@0x01
+		MOV		URS,A
+		MOV		A,@0x01
+		MOV		URRDH,A
+		SBANK	0
+		BS		UERRIE
+		ENI
+		RET
+	
 ;============== Interrupt Service Routine ================
 	;================================
 	_Int_EXINT:
@@ -175,11 +206,6 @@ JMP_FAIL:
 		JBS 	UTSF
 		JMP 	JMP_FAIL
 		BC		UTSF
-		
-		SBANK	1
-		MOV		A,@0x30
-		MOV		URTD,A
-		
 		RETI
 	;================================
 	_Int_SHINT:
