@@ -363,7 +363,7 @@ INS_FAIL:
 			MOV		A,@0x80
 			MOV		0x50,A		; [0x50] = 0x80
 			MOV		A,@0x7F		; 
-			ADC		A,0x50		; A = 0x7F + 0x80
+			ADC		A,0x40		; A = 0x7F + 0x80
 			DAA
 			JBS		C			; Check C = 1? 	/ By ADC
 			JMP	INS_FAIL
