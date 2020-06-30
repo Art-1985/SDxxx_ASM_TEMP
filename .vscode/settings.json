@@ -4,5 +4,7 @@
         "**/*.deg": true
         "**/*.map": true
         "**/*.bbj": true
+        "**/*.apj": true
+        "**/*.eac": true
     }
 }
