@@ -19,1059 +19,924 @@
     19                     ;============================================================
     20                     
     21                     ;==================== Project Include ====================
-    22       0001          TARGET	VAR	1
+    22       0002          TARGET	VAR	2
     23                     
     24                     IF	(TARGET == 1)
     25                     	Include	"SD062.INC"
-     1            C        /****************************************************************************
-     2            C         *  Title:       SD062 include file                                        *
-     3            C         *  Target MCU:  SD062                                                     *
-     4            C         *  Description: Register/bit definitions                                   *
-     5            C         *  Company:     ELAN LTD.                            *
-     6            C         *  Date:        2019-2-21                                                  *
-     7            C         *  Version:     v1.0                                                       *
-     8            C         ****************************************************************************/
-     9            C        ;======================================================;
-    10            C        ; Operational Registers Define                         ;
-    11            C        ;======================================================;
-    12       0000 C        BIT0    ==  0
-    13       0001 C        BIT1    ==  1
-    14       0002 C        BIT2    ==  2
-    15       0003 C        BIT3    ==  3
-    16       0004 C        BIT4    ==  4
-    17       0005 C        BIT5    ==  5
-    18       0006 C        BIT6    ==  6
-    19       0007 C        BIT7    ==  7
-    20            C        ;======================================================;
-    21            C        ; Registers R0~R4                                      ;
-    22            C        ;======================================================;
-    23            C        ;The general purpose registers
+    26                     ELSEIF(TARGET == 2)
+    27                     	Include	"SD028.INC"
+     1            C        ;===========================================================================;
+     2            C        ;  Title:       SD028 Include File                                          ;
+     3            C        ;  Target MCU:  SD028                                                       ;
+     4            C        ;  Description: The Definition of SD028 Registers                           ;
+     5            C        ;  Company:     ELAN MICROELECTRONICS LTD.	                            	;
+     6            C        ;  Date:        2020/02/20                                                  ;
+     7            C        ;  Version:     v0.9                                                        ;
+     8            C        ;===========================================================================;
+     9            C        
+    10            C        ;======================================================;
+    11            C        ; Operational Registers Define                         ;
+    12            C        ;======================================================;
+    13       0000 C            BIT0    ==  0
+    14       0001 C            BIT1    ==  1
+    15       0002 C            BIT2    ==  2
+    16       0003 C            BIT3    ==  3
+    17       0004 C            BIT4    ==  4
+    18       0005 C            BIT5    ==  5
+    19       0006 C            BIT6    ==  6
+    20       0007 C            BIT7    ==  7
+    21            C        ;======================================================;
+    22            C        ; Registers R0~R4                                      ;
+    23            C        ;======================================================;
     24            C        ; R0/IAR: Indirect Address Register
-    25       2000 C        R0          ==  0X00:rpage 0
-    25 00000 0010 C        R0          ==  0X00:rpage 0
-    26       2000 C        IAR         ==  0x00:rpage 0
-    26 00000 0010 C        IAR         ==  0x00:rpage 0
+    25       2000 C            R0      ==  0x00:rpage 0
+    25 00000 0010 C            R0      ==  0x00:rpage 0
+    26       2000 C            IAR     ==  0x00:rpage 0
+    26 00000 0010 C            IAR     ==  0x00:rpage 0
     27            C        ;R1/ BSR: Bank Selection Control Register
-    28       2001 C        R1          ==  0x01:rpage 0
-    28 00000 0010 C        R1          ==  0x01:rpage 0
-    29       2001 C        BSR         ==  0X01:rpage 0
-    29 00000 0010 C        BSR         ==  0X01:rpage 0
+    28       2001 C            R1      ==  0x01:rpage 0
+    28 00000 0010 C            R1      ==  0x01:rpage 0
+    29       2001 C            BSR     ==  0x01:rpage 0
+    29 00000 0010 C            BSR     ==  0x01:rpage 0
     30       2001 C                SBS1  ==  BSR.5
     30 00000 0540 C                SBS1  ==  BSR.5
     31       2001 C                SBS0  ==  BSR.4
     31 00000 0440 C                SBS0  ==  BSR.4
-    32       2001 C                GBS0  ==  BSR.0
-    32 00000 0040 C                GBS0  ==  BSR.0
-    33            C        ; R2/PC: Program Counter & Stack
-    34       2002 C        R2          ==  0X02:rpage 0       ; Program Counter.
-    34 00000 0010 C        R2          ==  0X02:rpage 0       ; Program Counter.
-    35       2002 C        PCL         ==  0X02:rpage 0       ;
-    35 00000 0010 C        PCL         ==  0X02:rpage 0       ;
-    36            C        
-    37            C        ;R3/SW:Status Register
-    38       2003 C        R3          ==  0X03:rpage 0
-    38 00000 0010 C        R3          ==  0X03:rpage 0
-    39       2003 C        STATUS      ==  0X03:rpage 0
-    39 00000 0010 C        STATUS      ==  0X03:rpage 0
-    40       2003 C        SR          ==  0X03:rpage 0
-    40 00000 0010 C        SR          ==  0X03:rpage 0
-    41       2003 C               	IT        == SR.7
-    41 00000 0740 C               	IT        == SR.7
-    42       2003 C                N           == SR.6
-    42 00000 0640 C                N           == SR.6
-    43       2003 C                OV          == SR.5
-    43 00000 0540 C                OV          == SR.5
-    44       2003 C                T           == SR.4
-    44 00000 0440 C                T           == SR.4
-    45       2003 C                P           == SR.3
-    45 00000 0340 C                P           == SR.3
-    46       2003 C                Z           == SR.2
-    46 00000 0240 C                Z           == SR.2
-    47       2003 C                DC          == SR.1
-    47 00000 0140 C                DC          == SR.1
-    48       2003 C                C           == SR.0
-    48 00000 0040 C                C           == SR.0
-    49            C        ;R4/ RSR:RAM Select Register
-    50       2004 C        R4          ==  0X04:rpage 0
-    50 00000 0010 C        R4          ==  0X04:rpage 0
-    51       2004 C        RSR         ==  0X04:rpage 0       ; File Select Register.
-    51 00000 0010 C        RSR         ==  0X04:rpage 0       ; File Select Register.
-    52            C        ;======================================================
-    53            C        ;      BANK 0
-    54            C        ;Registers R5~R4F
-    55            C        ;======================================================
-    56       2005 C        PORT5       ==  0X05:rpage 0        ; I/O Port Address
-    56 00000 0010 C        PORT5       ==  0X05:rpage 0        ; I/O Port Address
-    57       2005 C        P5       ==  0X05:rpage 0        ; I/O Port Address
-    57 00000 0010 C        P5       ==  0X05:rpage 0        ; I/O Port Address
-    58       2005 C                P50         ==  PORT5.0
-    58 00000 0040 C                P50         ==  PORT5.0
-    59       2005 C                P51         ==  PORT5.1
-    59 00000 0140 C                P51         ==  PORT5.1
-    60       2005 C                P52         ==  PORT5.2
-    60 00000 0240 C                P52         ==  PORT5.2
-    61       2005 C                P53         ==  PORT5.3
-    61 00000 0340 C                P53         ==  PORT5.3
-    62       2005 C                P54         ==  PORT5.4
-    62 00000 0440 C                P54         ==  PORT5.4
-    63       2005 C                P55         ==  PORT5.5
-    63 00000 0540 C                P55         ==  PORT5.5
-    64       2005 C                P56         ==  PORT5.6
-    64 00000 0640 C                P56         ==  PORT5.6
-    65       2005 C                P57         ==  PORT5.7
-    65 00000 0740 C                P57         ==  PORT5.7
-    66       2006 C        PORT6       ==  0X06:rpage 0        ; I/O Port Address
-    66 00000 0010 C        PORT6       ==  0X06:rpage 0        ; I/O Port Address
-    67       2006 C        P6       ==  0X06:rpage 0        ; I/O Port Address
-    67 00000 0010 C        P6       ==  0X06:rpage 0        ; I/O Port Address
-    68       2006 C                P60         ==  PORT6.0
-    68 00000 0040 C                P60         ==  PORT6.0
-    69       2006 C                P61         ==  PORT6.1
-    69 00000 0140 C                P61         ==  PORT6.1
-    70       2006 C                P62         ==  PORT6.2
-    70 00000 0240 C                P62         ==  PORT6.2
-    71            C                
-    72       200B C        IOCR5       ==  0X0B:rpage 0        ; IO PORT 5 Control Register
-    72 00000 0010 C        IOCR5       ==  0X0B:rpage 0        ; IO PORT 5 Control Register
-    73       200C C        IOCR6       ==  0X0C:rpage 0        ; IO PORT 6 Control Register
-    73 00000 0010 C        IOCR6       ==  0X0C:rpage 0        ; IO PORT 6 Control Register
-    74            C        ;RE/OMCR :OMCR:Operating Mode Control Register
-    75       200E C        OMCR        ==  0X0E:rpage 0
-    75 00000 0010 C        OMCR        ==  0X0E:rpage 0
-    76       200E C                CPUS        ==  OMCR.7
-    76 00000 0740 C                CPUS        ==  OMCR.7
-    77       200E C                IDLE        ==  OMCR.6
-    77 00000 0640 C                IDLE        ==  OMCR.6
-    78       200E C                PERCS       ==  OMCR.5
-    78 00000 0540 C                PERCS       ==  OMCR.5
-    79       200E C                IIPS        ==  OMCR.4
-    79 00000 0440 C                IIPS        ==  OMCR.4
-    80       200E C                FMSF        ==  OMCR.3
-    80 00000 0340 C                FMSF        ==  OMCR.3
-    81       200E C                RCM2		==  OMCR.2
-    81 00000 0240 C                RCM2		==  OMCR.2
-    82       200E C        		RCM1        ==  OMCR.1
-    82 00000 0140 C        		RCM1        ==  OMCR.1
-    83       200E C                RCM0        ==  OMCR.0
-    83 00000 0040 C                RCM0        ==  OMCR.0
-    84            C        ;RF/EIESCR :External Interrupt Edge Select Control Register
-    85       200F C        EIESCR      ==  0X0F:rpage 0
-    85 00000 0010 C        EIESCR      ==  0X0F:rpage 0
-    86       200F C                EIES11 == EIESCR.3
-    86 00000 0340 C                EIES11 == EIESCR.3
-    87       200F C        		EIES10 == EIESCR.2
-    87 00000 0240 C        		EIES10 == EIESCR.2
-    88       200F C        		EIES01 == EIESCR.1
-    88 00000 0140 C        		EIES01 == EIESCR.1
-    89       200F C        		EIES00 == EIESCR.0
-    89 00000 0040 C        		EIES00 == EIESCR.0
-    90            C        ;R10/WUCR1 :Wake-up Control Register1
-    91       2010 C        WUCR1       ==  0X10:rpage 0
-    91 00000 0010 C        WUCR1       ==  0X10:rpage 0
-    92       2010 C                CMP2WK	== WUCR1.7
-    92 00000 0740 C                CMP2WK	== WUCR1.7
-    93       2010 C        		CMP1WK	== WUCR1.6
-    93 00000 0640 C        		CMP1WK	== WUCR1.6
-    94       2010 C        		ADWK        ==  WUCR1.4
-    94 00000 0440 C        		ADWK        ==  WUCR1.4
-    95       2010 C                INT1WK      ==  WUCR1.3
-    95 00000 0340 C                INT1WK      ==  WUCR1.3
-    96       2010 C                INT0WK      ==  WUCR1.2
-    96 00000 0240 C                INT0WK      ==  WUCR1.2
-    97            C        ;R11/WUCR2 :Wake-up Control Register2
-    98       2011 C        WUCR2       ==  0X11:rpage 0
-    98 00000 0010 C        WUCR2       ==  0X11:rpage 0
-    99       2011 C                CMP3WK	== WUCR2.6
-    99 00000 0640 C                CMP3WK	== WUCR2.6
-   100            C        ;R12/WUCR3 :Wake-up Control Register3
-   101       2012 C        WUCR3       ==  0X12:rpage 0
-   101 00000 0010 C        WUCR3       ==  0X12:rpage 0
-   102       2012 C                ICWKP6      ==  WUCR3.5
-   102 00000 0540 C                ICWKP6      ==  WUCR3.5
-   103       2012 C                ICWKP5      ==  WUCR3.4
-   103 00000 0440 C                ICWKP5      ==  WUCR3.4
-   104            C        ;R13/SYSCON :
-   105       2013 C        SYSCON      ==  0X13:rpage 0
-   105 00000 0010 C        SYSCON      ==  0X13:rpage 0
-   106       2013 C                LDOI        ==  SYSCON.7
-   106 00000 0740 C                LDOI        ==  SYSCON.7
-   107            C        ;R14/SFR1 :Status Flag Register 1
-   108       2014 C        SFR1        ==  0X14:rpage 0
-   108 00000 0010 C        SFR1        ==  0X14:rpage 0
-   109       2014 C                CMP2SF == SFR1.7
-   109 00000 0740 C                CMP2SF == SFR1.7
-   110       2014 C        		CMP1SF == SFR1.6
-   110 00000 0640 C        		CMP1SF == SFR1.6
-   111       2014 C        		ADSF        ==  SFR1.4
-   111 00000 0440 C        		ADSF        ==  SFR1.4
-   112       2014 C                EXSF1       ==  SFR1.3
-   112 00000 0340 C                EXSF1       ==  SFR1.3
-   113       2014 C                EXSF0       ==  SFR1.2
-   113 00000 0240 C                EXSF0       ==  SFR1.2
-   114            C        ;R15/SFR2 :Status Flag Register2
-   115       2015 C        SFR2        ==  0X15:rpage 0
-   115 00000 0010 C        SFR2        ==  0X15:rpage 0
-   116       2015 C        	CMP3SF == SFR2.6
-   116 00000 0640 C        	CMP3SF == SFR2.6
-   117            C        ;R16/SFR3 :Status Flag Register3
-   118       2016 C        SFR3 == 0X16:rpage 0
-   118 00000 0010 C        SFR3 == 0X16:rpage 0
-   119       2016 C        	PWMCPSF == SFR3.5
-   119 00000 0540 C        	PWMCPSF == SFR3.5
-   120       2016 C        	PWMCDSF == SFR3.4
-   120 00000 0440 C        	PWMCDSF == SFR3.4
-   121       2016 C        	PWMBPSF == SFR3.3
-   121 00000 0340 C        	PWMBPSF == SFR3.3
-   122       2016 C        	PWMBDSF == SFR3.2
-   122 00000 0240 C        	PWMBDSF == SFR3.2
-   123       2016 C        	PWMAPSF == SFR3.1
-   123 00000 0140 C        	PWMAPSF == SFR3.1
-   124       2016 C        	PWMADSF == SFR3.0
-   124 00000 0040 C        	PWMADSF == SFR3.0
-   125            C        ;R17/SFR4 :Status Flag Register4
-   126       2017 C        SFR4        ==  0X17:rpage 0
-   126 00000 0010 C        SFR4        ==  0X17:rpage 0
-   127       2017 C                P6ICSF      ==  SFR4.5
-   127 00000 0540 C                P6ICSF      ==  SFR4.5
-   128       2017 C                P5ICSF      ==  SFR4.4
-   128 00000 0440 C                P5ICSF      ==  SFR4.4
-   129            C        ;R19/SFR6 :Status Flag Register6
-   130       2019 C        SFR6        ==  0X19:rpage 0
-   130 00000 0010 C        SFR6        ==  0X19:rpage 0
-   131       2019 C                SHSF        ==  SFR6.7
-   131 00000 0740 C                SHSF        ==  SFR6.7
-   132            C        ;R1A/SFR7 :Status Flag Register7
-   133       201A C        SFR7        ==  0X1A:rpage 0
-   133 00000 0010 C        SFR7        ==  0X1A:rpage 0
-   134       201A C                AFPWMSF     ==  SFR7.7
-   134 00000 0740 C                AFPWMSF     ==  SFR7.7
-   135       201A C                TXDSF       ==  SFR7.6
-   135 00000 0640 C                TXDSF       ==  SFR7.6
-   136       201A C                TXCSF       ==  SFR7.5
-   136 00000 0540 C                TXCSF       ==  SFR7.5
-   137       201A C                TM2DASF     ==  SFR7.4
-   137 00000 0440 C                TM2DASF     ==  SFR7.4
-   138       201A C                TM1DASF     ==  SFR7.3
-   138 00000 0340 C                TM1DASF     ==  SFR7.3
-   139       201A C                TM1OFSF     ==  SFR7.2
-   139 00000 0240 C                TM1OFSF     ==  SFR7.2
-   140       201A C                TM2DBSF     ==  SFR7.1
-   140 00000 0140 C                TM2DBSF     ==  SFR7.1
-   141       201A C                TM1DBSF     ==  SFR7.0
-   141 00000 0040 C                TM1DBSF     ==  SFR7.0
-   142            C        ;R1B/IMR1 :Interrupt Mask Register 1
-   143       201B C        IMR1        ==  0X1B:rpage 0
-   143 00000 0010 C        IMR1        ==  0X1B:rpage 0
-   144       201B C                CMP2IE == IMR1.7
-   144 00000 0740 C                CMP2IE == IMR1.7
-   145       201B C        		CMP1IE == IMR1.6
-   145 00000 0640 C        		CMP1IE == IMR1.6
-   146       201B C        		ADIE        ==  IMR1.4
-   146 00000 0440 C        		ADIE        ==  IMR1.4
-   147       201B C                EXIE1       ==  IMR1.3
-   147 00000 0340 C                EXIE1       ==  IMR1.3
-   148       201B C                EXIE0       ==  IMR1.2
-   148 00000 0240 C                EXIE0       ==  IMR1.2
-   149            C        ;RF/IMR2 :Interrupt Mask Register 2
-   150       201C C        IMR2        ==  0X1C:rpage 0
-   150 00000 0010 C        IMR2        ==  0X1C:rpage 0
-   151       201C C                CMP3IE == IMR2.6
-   151 00000 0640 C                CMP3IE == IMR2.6
-   152            C        ;R1D/IMR3 :Interrupt Mask Register 3
-   153       201D C        IMR3 == 0X1D:rpage 0
-   153 00000 0010 C        IMR3 == 0X1D:rpage 0
-   154       201D C        	PWMCPIE == IMR3.5
-   154 00000 0540 C        	PWMCPIE == IMR3.5
-   155       201D C        	PWMCDIE == IMR3.4
-   155 00000 0440 C        	PWMCDIE == IMR3.4
-   156       201D C        	PWMBPIE == IMR3.3
-   156 00000 0340 C        	PWMBPIE == IMR3.3
-   157       201D C        	PWMBDIE == IMR3.2
-   157 00000 0240 C        	PWMBDIE == IMR3.2
-   158       201D C        	PWMAPIE == IMR3.1
-   158 00000 0140 C        	PWMAPIE == IMR3.1
-   159       201D C        	PWMADIE == IMR3.0
-   159 00000 0040 C        	PWMADIE == IMR3.0
-   160            C        ;R1E/IMR4 :Interrupt Mask Register 4
-   161       201E C        IMR4        ==  0X1E:rpage 0
-   161 00000 0010 C        IMR4        ==  0X1E:rpage 0
-   162       201E C                P6ICIE      ==  IMR4.5
-   162 00000 0540 C                P6ICIE      ==  IMR4.5
-   163       201E C                P5ICIE      ==  IMR4.4
-   163 00000 0440 C                P5ICIE      ==  IMR4.4
-   164            C        ;R20/IMR6 :Interrupt Mask Register 6
-   165       2020 C        IMR6        ==  0X20:rpage 0
-   165 00000 0010 C        IMR6        ==  0X20:rpage 0
-   166       2020 C                SHIE        ==  IMR6.7
-   166 00000 0740 C                SHIE        ==  IMR6.7
-   167       2020 C                AFPWMIE     ==  IMR6.3
-   167 00000 0340 C                AFPWMIE     ==  IMR6.3
-   168       2020 C                TXTMIE      ==  IMR6.2
-   168 00000 0240 C                TXTMIE      ==  IMR6.2
-   169       2020 C                TM2IE       ==  IMR6.1
-   169 00000 0140 C                TM2IE       ==  IMR6.1
-   170       2020 C                TM1IE       ==  IMR6.0
-   170 00000 0040 C                TM1IE       ==  IMR6.0
-   171            C        ;R21/WDTCR :Watch Dog Timer Control Register
-   172       2021 C        WDTCR       ==  0X21:rpage 0
-   172 00000 0010 C        WDTCR       ==  0X21:rpage 0
-   173       2021 C                WDTE        ==  WDTCR.7
-   173 00000 0740 C                WDTE        ==  WDTCR.7
-   174       2021 C                FSSF        ==  WDTCR.6
-   174 00000 0640 C                FSSF        ==  WDTCR.6
-   175       2021 C                PSWE        ==  WDTCR.3
-   175 00000 0340 C                PSWE        ==  WDTCR.3
-   176       2021 C                WPSR2       ==  WDTCR.2
-   176 00000 0240 C                WPSR2       ==  WDTCR.2
-   177       2021 C                WPSR1       ==  WDTCR.1
-   177 00000 0140 C                WPSR1       ==  WDTCR.1
-   178       2021 C                WPSR0       ==  WDTCR.0
-   178 00000 0040 C                WPSR0       ==  WDTCR.0
-   179            C        ;R3E/ADCR1 :ADC Control Register1
-   180       203E C        ADCR1       ==  0X3E:rpage 0
-   180 00000 0010 C        ADCR1       ==  0X3E:rpage 0
-   181       203E C                CKR1        ==  ADCR1.6
-   181 00000 0640 C                CKR1        ==  ADCR1.6
-   182       203E C                CKR0        ==  ADCR1.5
-   182 00000 0540 C                CKR0        ==  ADCR1.5
-   183       203E C                ADRUN       ==  ADCR1.4
-   183 00000 0440 C                ADRUN       ==  ADCR1.4
-   184       203E C                ADP         ==  ADCR1.3
-   184 00000 0340 C                ADP         ==  ADCR1.3
-   185       203E C                ADOM        ==  ADCR1.2
-   185 00000 0240 C                ADOM        ==  ADCR1.2
-   186       203E C                SHS1        ==  ADCR1.1
-   186 00000 0140 C                SHS1        ==  ADCR1.1
-   187       203E C                SHS0        ==  ADCR1.0
-   187 00000 0040 C                SHS0        ==  ADCR1.0
-   188            C        ;R3F/ADCR2 :ADC Control Register2
-   189       203F C        ADCR2       ==  0X3F:rpage 0
-   189 00000 0010 C        ADCR2       ==  0X3F:rpage 0
-   190       203F C                ADLPFEN     ==  ADCR2.7
-   190 00000 0740 C                ADLPFEN     ==  ADCR2.7
-   191       203F C                ADIM        ==  ADCR2.5
-   191 00000 0540 C                ADIM        ==  ADCR2.5
-   192       203F C                ADCMS       ==  ADCR2.4
-   192 00000 0440 C                ADCMS       ==  ADCR2.4
-   193       203F C                VPIS1       ==  ADCR2.3
-   193 00000 0340 C                VPIS1       ==  ADCR2.3
-   194       203F C                VPIS0       ==  ADCR2.2
-   194 00000 0240 C                VPIS0       ==  ADCR2.2
-   195            C        ;R40/ADISR :Analog to Digital Converter Input Channel Selection Register
-   196       2040 C        ADISR       ==  0X40:rpage 0
-   196 00000 0010 C        ADISR       ==  0X40:rpage 0
-   197       2040 C                TSLPFEN     ==  ADISR.7
-   197 00000 0740 C                TSLPFEN     ==  ADISR.7
-   198       2040 C                TSP         ==  ADISR.6
-   198 00000 0640 C                TSP         ==  ADISR.6
-   199       2040 C                WMA1        ==  ADISR.5
-   199 00000 0540 C                WMA1        ==  ADISR.5
-   200       2040 C                WMA0        ==  ADISR.4
-   200 00000 0440 C                WMA0        ==  ADISR.4
-   201       2040 C                ADIS2       ==  ADISR.2
-   201 00000 0240 C                ADIS2       ==  ADISR.2
-   202       2040 C                ADIS1       ==  ADISR.1
-   202 00000 0140 C                ADIS1       ==  ADISR.1
-   203       2040 C                ADIS0       ==  ADISR.0
-   203 00000 0040 C                ADIS0       ==  ADISR.0
-   204            C        ;R41/ADER1 :ADC Input Enable Register
-   205       2041 C        ADER1       ==  0X41:rpage 0
-   205 00000 0010 C        ADER1       ==  0X41:rpage 0
-   206       2041 C                ADE5        ==  ADER1.5
-   206 00000 0540 C                ADE5        ==  ADER1.5
-   207       2041 C                ADE4        ==  ADER1.4
-   207 00000 0440 C                ADE4        ==  ADER1.4
-   208       2041 C                ADE3        ==  ADER1.3
-   208 00000 0340 C                ADE3        ==  ADER1.3
-   209       2041 C                ADE2        ==  ADER1.2
-   209 00000 0240 C                ADE2        ==  ADER1.2
-   210       2041 C                ADE1        ==  ADER1.1
-   210 00000 0140 C                ADE1        ==  ADER1.1
-   211       2041 C                ADE0        ==  ADER1.0
-   211 00000 0040 C                ADE0        ==  ADER1.0
-   212            C        ;R43/ADDL :ADC Low-8 Bits Data Buffer
-   213       2043 C        ADDL        ==  0X43:rpage 0
-   213 00000 0010 C        ADDL        ==  0X43:rpage 0
-   214            C        ;R44/ADDH :ADC High-8 Bits Data Buffer
-   215       2044 C        ADDH        ==  0X44:rpage 0
-   215 00000 0010 C        ADDH        ==  0X44:rpage 0
-   216            C        ;R45/ADCVL :Low Byte of Analog to Digital Converter Comparison
-   217       2045 C        ADCVL       ==  0X45:rpage 0
-   217 00000 0010 C        ADCVL       ==  0X45:rpage 0
-   218            C        ;R46/ADCVH :High Byte of Analog to Digital Converter Comparison
-   219       2046 C        ADCVH       ==  0X46:rpage 0
-   219 00000 0010 C        ADCVH       ==  0X46:rpage 0
-   220            C        ;======================================================
-   221            C        ;      BANK 1
-   222            C        ;Registers R5~R4F
-   223            C        ;======================================================
-   224            C        ;R08/P5PHCR :Port5 Pull-high Control Register
-   225       2008 C        P5PHCR      ==  0X08:rpage 1
-   225 00000 0011 C        P5PHCR      ==  0X08:rpage 1
-   226       2008 C                PH57        ==  P5PHCR.7
-   226 00000 0741 C                PH57        ==  P5PHCR.7
-   227       2008 C                PH56        ==  P5PHCR.6
-   227 00000 0641 C                PH56        ==  P5PHCR.6
-   228       2008 C                PH55        ==  P5PHCR.6
-   228 00000 0641 C                PH55        ==  P5PHCR.6
-   229       2008 C                PH54        ==  P5PHCR.4
-   229 00000 0441 C                PH54        ==  P5PHCR.4
-   230       2008 C                PH53        ==  P5PHCR.3
-   230 00000 0341 C                PH53        ==  P5PHCR.3
-   231       2008 C                PH52        ==  P5PHCR.2
-   231 00000 0241 C                PH52        ==  P5PHCR.2
-   232       2008 C                PH51        ==  P5PHCR.1
-   232 00000 0141 C                PH51        ==  P5PHCR.1
-   233       2008 C                PH50        ==  P5PHCR.0
-   233 00000 0041 C                PH50        ==  P5PHCR.0
-   234            C        ;R09/P6PHCR :Port6 Pull-high Control Register
-   235       2009 C        P6PHCR      ==  0X09:rpage 1
-   235 00000 0011 C        P6PHCR      ==  0X09:rpage 1
-   236       2009 C                PH62        ==  P6PHCR.2
-   236 00000 0241 C                PH62        ==  P6PHCR.2
-   237       2009 C                PH61        ==  P6PHCR.1
-   237 00000 0141 C                PH61        ==  P6PHCR.1
-   238       2009 C                PH60        ==  P6PHCR.0
-   238 00000 0041 C                PH60        ==  P6PHCR.0
-   239            C        ;R0B/P5PLCR Port 5 Pull-low Control Register
-   240       200B C        P5PLCR      ==  0X0B:rpage 1
-   240 00000 0011 C        P5PLCR      ==  0X0B:rpage 1
-   241       200B C                PL57        ==  P5PLCR.7
-   241 00000 0741 C                PL57        ==  P5PLCR.7
-   242       200B C                PL56        ==  P5PLCR.6
-   242 00000 0641 C                PL56        ==  P5PLCR.6
-   243       200B C                PL55        ==  P5PLCR.5
-   243 00000 0541 C                PL55        ==  P5PLCR.5
-   244       200B C                PL54        ==  P5PLCR.4
-   244 00000 0441 C                PL54        ==  P5PLCR.4
-   245       200B C                PL53        ==  P5PLCR.3
-   245 00000 0341 C                PL53        ==  P5PLCR.3
-   246       200B C                PL52        ==  P5PLCR.2
-   246 00000 0241 C                PL52        ==  P5PLCR.2
-   247       200B C                PL51        ==  P5PLCR.1
-   247 00000 0141 C                PL51        ==  P5PLCR.1
-   248       200B C                PL50        ==  P5PLCR.0
-   248 00000 0041 C                PL50        ==  P5PLCR.0
-   249            C        ;R0C/P6PLCR Port 6 Pull-low Control Register
-   250       200B C        P6PLCR      ==  0X0B:rpage 1
-   250 00000 0011 C        P6PLCR      ==  0X0B:rpage 1
-   251       200B C                PL62        ==  P6PLCR.2
-   251 00000 0241 C                PL62        ==  P6PLCR.2
-   252       200B C                PL61        ==  P6PLCR.1
-   252 00000 0141 C                PL61        ==  P6PLCR.1
-   253       200B C                PL60        ==  P6PLCR.0
-   253 00000 0041 C                PL60        ==  P6PLCR.0
-   254            C        ;R0E/P5HDSCR :Port 5 High Drive/Sink Control Register
-   255       200E C        P5HDSCR     ==  0X0E:rpage 1
-   255 00000 0011 C        P5HDSCR     ==  0X0E:rpage 1
-   256       200E C                HDS57       ==  P5HDSCR.7
-   256 00000 0741 C                HDS57       ==  P5HDSCR.7
-   257       200E C                HDS56       ==  P5HDSCR.6
-   257 00000 0641 C                HDS56       ==  P5HDSCR.6
-   258       200E C                HDS55       ==  P5HDSCR.5
-   258 00000 0541 C                HDS55       ==  P5HDSCR.5
-   259       200E C                HDS54       ==  P5HDSCR.4
-   259 00000 0441 C                HDS54       ==  P5HDSCR.4
-   260       200E C                HDS53       ==  P5HDSCR.3
-   260 00000 0341 C                HDS53       ==  P5HDSCR.3
-   261       200E C                HDS52       ==  P5HDSCR.2
-   261 00000 0241 C                HDS52       ==  P5HDSCR.2
-   262       200E C                HDS51       ==  P5HDSCR.1
-   262 00000 0141 C                HDS51       ==  P5HDSCR.1
-   263       200E C                HDS50       ==  P5HDSCR.0
-   263 00000 0041 C                HDS50       ==  P5HDSCR.0
-   264            C        ;R0F/P6HDSCR :Port 6 High Drive/Sink Control Register
-   265       200E C        P6HDSCR     ==  0X0E:rpage 1
-   265 00000 0011 C        P6HDSCR     ==  0X0E:rpage 1
-   266       200E C                HDS62       ==  P6HDSCR.2
-   266 00000 0241 C                HDS62       ==  P6HDSCR.2
-   267       200E C                HDS61       ==  P6HDSCR.1
-   267 00000 0141 C                HDS61       ==  P6HDSCR.1
-   268       200E C                HDS60       ==  P6HDSCR.0
-   268 00000 0041 C                HDS60       ==  P6HDSCR.0
-   269            C        ;R16 PWMSCR :PWM Start Control Register
-   270       2016 C        PWMSCR == 0X16:rpage 1
-   270 00000 0011 C        PWMSCR == 0X16:rpage 1
-   271       2016 C        	TBEN == PWMSCR.1
-   271 00000 0141 C        	TBEN == PWMSCR.1
-   272       2016 C        	TAEN == PWMSCR.0
-   272 00000 0041 C        	TAEN == PWMSCR.0
-   273            C        ;R17 PWMACR :PWMA Control Register
-   274       2017 C        PWMACR == 0X17:rpage 1
-   274 00000 0011 C        PWMACR == 0X17:rpage 1
-   275       2017 C        	PWMAE == PWMACR.7
-   275 00000 0741 C        	PWMAE == PWMACR.7
-   276       2017 C        	PWMAA == PWMACR.5
-   276 00000 0541 C        	PWMAA == PWMACR.5
-   277       2017 C        	PWMAS == PWMACR.3
-   277 00000 0341 C        	PWMAS == PWMACR.3
-   278       2017 C        	TAP2 == PWMACR.2
-   278 00000 0241 C        	TAP2 == PWMACR.2
-   279       2017 C        	TAP1 == PWMACR.1
-   279 00000 0141 C        	TAP1 == PWMACR.1
-   280       2017 C        	TAP0 == PWMACR.0
-   280 00000 0041 C        	TAP0 == PWMACR.0
-   281            C        ;R18 PRDAL (Low byte of PWMA period)
-   282       2018 C        PRDAL == 0X18:rpage 1
-   282 00000 0011 C        PRDAL == 0X18:rpage 1
-   283            C        ;R19 PRDAH (High byte of PWMA period)
-   284       2019 C        PRDAH == 0X19:rpage 1	
-   284 00000 0011 C        PRDAH == 0X19:rpage 1	
-   285            C        ;R1A DTAL (Low byte of PMWA duty)
-   286       201A C        DTAL == 0X1A:rpage 1
-   286 00000 0011 C        DTAL == 0X1A:rpage 1
-   287            C        ;R1B DTAH (High byte of PMWA duty)
-   288       201B C        DTAH == 0X1B:rpage 1
-   288 00000 0011 C        DTAH == 0X1B:rpage 1
-   289            C        ;R1C TMRAL (Low byte of TimerA)
-   290       201C C        TMRAL == 0X1C:rpage 1
-   290 00000 0011 C        TMRAL == 0X1C:rpage 1
-   291            C        ;R1D TMRAH (High byte of TimerA)
-   292       201D C        TMRAH == 0X1D:rpage 1
-   292 00000 0011 C        TMRAH == 0X1D:rpage 1
-   293            C        ;R1E PWMBCR (PWMB Control Register)
-   294       201E C        PWMBCR == 0X1E:rpage 1
-   294 00000 0011 C        PWMBCR == 0X1E:rpage 1
-   295       201E C        	PWMBE == PWMBCR.7
-   295 00000 0741 C        	PWMBE == PWMBCR.7
-   296       201E C        	PWMBA == PWMBCR.5
-   296 00000 0541 C        	PWMBA == PWMBCR.5
-   297       201E C        	PWMBS == PWMBCR.3
-   297 00000 0341 C        	PWMBS == PWMBCR.3
-   298       201E C        	TBP2 == PWMBCR.2
-   298 00000 0241 C        	TBP2 == PWMBCR.2
-   299       201E C        	TBP1 == PWMBCR.1
-   299 00000 0141 C        	TBP1 == PWMBCR.1
-   300       201E C        	TBP0 == PWMBCR.0
-   300 00000 0041 C        	TBP0 == PWMBCR.0
-   301            C        ;R1F PRDBL (Low byte of PWMB period)
-   302       201F C        PRDBL == 0X1F:rpage 1
-   302 00000 0011 C        PRDBL == 0X1F:rpage 1
-   303            C        ;R20 PRDBH (High byte of PWMB period)
-   304       2020 C        PRDBH == 0X20:rpage 1	
-   304 00000 0011 C        PRDBH == 0X20:rpage 1	
-   305            C        ;R21 DTBL (Low byte of PMWB duty)
-   306       2021 C        DTBL == 0X21:rpage 1
-   306 00000 0011 C        DTBL == 0X21:rpage 1
-   307            C        ;R22 DTBH (High byte of PMWB duty)
-   308       2022 C        DTBH == 0X22:rpage 1
-   308 00000 0011 C        DTBH == 0X22:rpage 1
-   309            C        ;R23 TMRBL (Low byte of TimerB)
-   310       2023 C        TMRBL == 0X23:rpage 1
-   310 00000 0011 C        TMRBL == 0X23:rpage 1
-   311            C        ;R24 TMRBH (High byte of TimerB)
-   312       2024 C        TMRBH == 0X24:rpage 1
-   312 00000 0011 C        TMRBH == 0X24:rpage 1
-   313            C        ;R40/EECR1 :EEPROM Control Register 1
-   314       2040 C        EECR1       ==  0X40:rpage 1
-   314 00000 0011 C        EECR1       ==  0X40:rpage 1
-   315       2040 C                EEPVSF      ==  EECR1.4
-   315 00000 0441 C                EEPVSF      ==  EECR1.4
-   316       2040 C                EEPV        ==  EECR1.3
-   316 00000 0341 C                EEPV        ==  EECR1.3
-   317       2040 C                ONRD        ==  EECR1.2
-   317 00000 0241 C                ONRD        ==  EECR1.2
-   318       2040 C                RD          ==  EECR1.1
-   318 00000 0141 C                RD          ==  EECR1.1
-   319       2040 C                WR          ==  EECR1.0
-   319 00000 0041 C                WR          ==  EECR1.0
-   320            C        ;R41/EECR2 :EEPROM Control Register 2
-   321       2041 C        EECR2       ==  0X41:rpage 1
-   321 00000 0011 C        EECR2       ==  0X41:rpage 1
-   322       2041 C                EEWE        ==  EECR2.7
-   322 00000 0741 C                EEWE        ==  EECR2.7
-   323       2041 C                EEDF        ==  EECR2.6
-   323 00000 0641 C                EEDF        ==  EECR2.6
-   324       2041 C                EEPC        ==  EECR2.5
-   324 00000 0541 C                EEPC        ==  EECR2.5
-   325            C        ;R42/EERA :EEPROM Address
-   326       2042 C        EERA        ==  0X42:rpage 1
-   326 00000 0011 C        EERA        ==  0X42:rpage 1
-   327       2042 C        EEAR        ==  0X42:rpage 1
-   327 00000 0011 C        EEAR        ==  0X42:rpage 1
-   328            C        ;R43/EERD :EEPROM Data
-   329       2043 C        EERD        ==  0X43:rpage 1
-   329 00000 0011 C        EERD        ==  0X43:rpage 1
-   330       2043 C        EEDR        ==  0X43:rpage 1
-   330 00000 0011 C        EEDR        ==  0X43:rpage 1
-   331            C        ;R44/FLKR :Flash Key Register for Table Write Use
-   332       2044 C        FLKR        ==  0X44:rpage 1
-   332 00000 0011 C        FLKR        ==  0X44:rpage 1
-   333            C        ;R45/TBPTL :Table Point Low Register
-   334       2045 C        TBPTL       ==  0X45:rpage 1
-   334 00000 0011 C        TBPTL       ==  0X45:rpage 1
-   335            C        ;R46/TBPTH :Table Point High Register
-   336       2046 C        TBPTH       ==  0X46:rpage 1
-   336 00000 0011 C        TBPTH       ==  0X46:rpage 1
-   337       2046 C                HLB     ==  TBPTH.7
-   337 00000 0741 C                HLB     ==  TBPTH.7
-   338       2046 C                RDS     ==  TBPTH.6
-   338 00000 0641 C                RDS     ==  TBPTH.6
-   339            C        ;R47/STKMON :Stack point
-   340       2047 C        STKMON      ==  0X47:rpage 1
-   340 00000 0011 C        STKMON      ==  0X47:rpage 1
-   341       2047 C                STOV        ==  STKMON.7
-   341 00000 0741 C                STOV        ==  STKMON.7
-   342       2047 C                STL2        ==  STKMON.2
-   342 00000 0241 C                STL2        ==  STKMON.2
-   343       2047 C                STL1        ==  STKMON.1
-   343 00000 0141 C                STL1        ==  STKMON.1
-   344       2047 C                STL0        ==  STKMON.0
-   344 00000 0041 C                STL0        ==  STKMON.0
-   345            C        ;R48/PCH :Program Counter High
-   346       2048 C        PCH         ==  0X48:rpage 1
-   346 00000 0011 C        PCH         ==  0X48:rpage 1
-   347       204A C        COBS1       ==  0X4A:rpage 1
-   347 00000 0011 C        COBS1       ==  0X4A:rpage 1
-   348       204A C        		HLFS	== COBS1.7
-   348 00000 0741 C        		HLFS	== COBS1.7
-   349       204A C        		ENWDT	== COBS1.5
-   349 00000 0541 C        		ENWDT	== COBS1.5
-   350       204A C        		NRHL	== COBS1.4
-   350 00000 0441 C        		NRHL	== COBS1.4
-   351       204A C        		NRE		== COBS1.3
-   351 00000 0341 C        		NRE		== COBS1.3
-   352       204A C        		ADFM	== COBS1.2
-   352 00000 0241 C        		ADFM	== COBS1.2
-   353       204B C        COBS2       ==  0X4B:rpage 1
-   353 00000 0011 C        COBS2       ==  0X4B:rpage 1
-   354       204B C        		RT5		== COBS2.5
-   354 00000 0541 C        		RT5		== COBS2.5
-   355       204B C        		RT4		== COBS2.4
-   355 00000 0441 C        		RT4		== COBS2.4
-   356       204B C        		RT3		== COBS2.3
-   356 00000 0341 C        		RT3		== COBS2.3
-   357       204B C        		RT2		== COBS2.2
-   357 00000 0241 C        		RT2		== COBS2.2
-   358       204B C        		RT1		== COBS2.1
-   358 00000 0141 C        		RT1		== COBS2.1
-   359       204B C        		RT0		== COBS2.0
-   359 00000 0041 C        		RT0		== COBS2.0
-   360       204C C        COBS3       ==  0X4C:rpage 1
-   360 00000 0011 C        COBS3       ==  0X4C:rpage 1
-   361       204C C        		IRT		== COBS3.7
-   361 00000 0741 C        		IRT		== COBS3.7
-   362       204C C        		TSRT	== COBS3.6
-   362 00000 0641 C        		TSRT	== COBS3.6
-   363       204C C        		RIRT	== COBS3.5
-   363 00000 0541 C        		RIRT	== COBS3.5
-   364       204C C        		CT3		== COBS3.3
-   364 00000 0341 C        		CT3		== COBS3.3
-   365       204C C        		CT2		== COBS3.2
-   365 00000 0241 C        		CT2		== COBS3.2
-   366       204C C        		CT1		== COBS3.1
-   366 00000 0141 C        		CT1		== COBS3.1
-   367       204C C        		CT0		== COBS3.0
-   367 00000 0041 C        		CT0		== COBS3.0
-   368            C        ;R4D/TBWCR :Table Write Control Register
-   369       204D C        TBWCR       ==  0X4D:rpage 1
-   369 00000 0011 C        TBWCR       ==  0X4D:rpage 1
-   370       204D C                IAPVSF     ==  TBWCR.2
-   370 00000 0241 C                IAPVSF     ==  TBWCR.2
-   371       204D C                IAPV       ==  TBWCR.1
-   371 00000 0141 C                IAPV       ==  TBWCR.1
-   372       204D C                IAPEN      ==  TBWCR.0
-   372 00000 0041 C                IAPEN      ==  TBWCR.0
-   373            C        ;R4E/TBWAL :Table Write start Address Low byte
-   374       204E C        TBWAL       ==  0X4E:rpage 1
-   374 00000 0011 C        TBWAL       ==  0X4E:rpage 1
-   375            C        ;R4F/TBWAH :Table Write start Address High byte
-   376       204F C        TBWAH       ==  0X4F:rpage 1
-   376 00000 0011 C        TBWAH       ==  0X4F:rpage 1
-   377            C        
-   378            C        ;======================================================
-   379            C        ;      BANK 2
-   380            C        ;Registers R5~R4F
-   381            C        ;======================================================
-   382            C        ;R05/TM1CR1 :Timer/Counter 1 Control Register 1
-   383       2005 C        TM1CR1      ==  0X05:rpage 2
-   383 00000 0012 C        TM1CR1      ==  0X05:rpage 2
-   384       2005 C                TM1S        ==  TM1CR1.7
-   384 00000 0742 C                TM1S        ==  TM1CR1.7
-   385       2005 C                TM1RC       ==  TM1CR1.6
-   385 00000 0642 C                TM1RC       ==  TM1CR1.6
-   386       2005 C                TM1SS1      ==  TM1CR1.5
-   386 00000 0542 C                TM1SS1      ==  TM1CR1.5
-   387       2005 C                TM1RX1      ==  TM1CR1.4
-   387 00000 0442 C                TM1RX1      ==  TM1CR1.4
-   388       2005 C                TM1FF       ==  TM1CR1.3
-   388 00000 0342 C                TM1FF       ==  TM1CR1.3
-   389       2005 C                TM1MOS      ==  TM1CR1.2
-   389 00000 0242 C                TM1MOS      ==  TM1CR1.2
-   390       2005 C                TM1IS1      ==  TM1CR1.1
-   390 00000 0142 C                TM1IS1      ==  TM1CR1.1
-   391       2005 C                TM1IS0      ==  TM1CR1.0
-   391 00000 0042 C                TM1IS0      ==  TM1CR1.0
-   392            C        ;R06/TM1CR2 :Timer/Counter 1 Control Register 2
-   393       2006 C        TM1CR2      ==  0X06:rpage 2
-   393 00000 0012 C        TM1CR2      ==  0X06:rpage 2
-   394       2006 C                TM1M2       ==  TM1CR2.7
-   394 00000 0742 C                TM1M2       ==  TM1CR2.7
-   395       2006 C                TM1M1       ==  TM1CR2.6
-   395 00000 0642 C                TM1M1       ==  TM1CR2.6
-   396       2006 C                TM1M0       ==  TM1CR2.5
-   396 00000 0542 C                TM1M0       ==  TM1CR2.5
-   397       2006 C                TM1SS0      ==  TM1CR2.4
-   397 00000 0442 C                TM1SS0      ==  TM1CR2.4
-   398       2006 C                TM1CK3      ==  TM1CR2.3
-   398 00000 0342 C                TM1CK3      ==  TM1CR2.3
-   399       2006 C                TM1CK2      ==  TM1CR2.2
-   399 00000 0242 C                TM1CK2      ==  TM1CR2.2
-   400       2006 C                TM1CK1      ==  TM1CR2.1
-   400 00000 0142 C                TM1CK1      ==  TM1CR2.1
-   401       2006 C                TM1CK0      ==  TM1CR2.0
-   401 00000 0042 C                TM1CK0      ==  TM1CR2.0
-   402            C        ;R07/TM1DBH :Timer/Counter 1 Data Buffer B High Byte
-   403       2007 C        TM1DBH      ==  0X07:rpage 2
-   403 00000 0012 C        TM1DBH      ==  0X07:rpage 2
-   404            C        ;R08/TM1DBL :Timer/Counter 1 Data Buffer B Low Byte
-   405       2008 C        TM1DBL      ==  0X08:rpage 2
-   405 00000 0012 C        TM1DBL      ==  0X08:rpage 2
-   406            C        ;R09/TM1DAH :Timer/Counter 1 Data Buffer A High Byte
-   407       2009 C        TM1DAH      ==  0X09:rpage 2
-   407 00000 0012 C        TM1DAH      ==  0X09:rpage 2
-   408            C        ;R0A/TM1DAL :Timer/Counter 1 Data Buffer A Low Byte
-   409       200A C        TM1DAL      ==  0X0A:rpage 2
-   409 00000 0012 C        TM1DAL      ==  0X0A:rpage 2
-   410            C        ;R0B/TM2CR1 :Timer/Counter 2 Control Register 1
-   411       200B C        TM2CR1      ==  0X0B:rpage 2
-   411 00000 0012 C        TM2CR1      ==  0X0B:rpage 2
-   412       200B C                TM2S        ==  TM2CR1.7
-   412 00000 0742 C                TM2S        ==  TM2CR1.7
-   413       200B C                TM2RC       ==  TM2CR1.6
-   413 00000 0642 C                TM2RC       ==  TM2CR1.6
-   414       200B C                TM2SS1      ==  TM2CR1.5
-   414 00000 0542 C                TM2SS1      ==  TM2CR1.5
-   415       200B C                TM2RX2      ==  TM2CR1.4
-   415 00000 0442 C                TM2RX2      ==  TM2CR1.4
-   416       200B C                TM2FF       ==  TM2CR1.3
-   416 00000 0342 C                TM2FF       ==  TM2CR1.3
-   417       200B C                TM2MOS      ==  TM2CR1.2
-   417 00000 0242 C                TM2MOS      ==  TM2CR1.2
-   418       200B C                TM2IS1      ==  TM2CR1.1
-   418 00000 0142 C                TM2IS1      ==  TM2CR1.1
-   419       200B C                TM2IS0      ==  TM2CR1.0
-   419 00000 0042 C                TM2IS0      ==  TM2CR1.0
-   420            C        ;R0C/TM2CR2 :Timer/Counter 2 Control Register 2
-   421       200C C        TM2CR2      ==  0X0C:rpage 2
-   421 00000 0012 C        TM2CR2      ==  0X0C:rpage 2
-   422       200C C                TM2M2       ==  TM2CR2.7
-   422 00000 0742 C                TM2M2       ==  TM2CR2.7
-   423       200C C                TM2M1       ==  TM2CR2.6
-   423 00000 0642 C                TM2M1       ==  TM2CR2.6
-   424       200C C                TM2M0       ==  TM2CR2.5
-   424 00000 0542 C                TM2M0       ==  TM2CR2.5
-   425       200C C                TM2SS0      ==  TM2CR2.4
-   425 00000 0442 C                TM2SS0      ==  TM2CR2.4
-   426       200C C                TM2CK3      ==  TM2CR2.3
-   426 00000 0342 C                TM2CK3      ==  TM2CR2.3
-   427       200C C                TM2CK2      ==  TM2CR2.2
-   427 00000 0242 C                TM2CK2      ==  TM2CR2.2
-   428       200C C                TM2CK1      ==  TM2CR2.1
-   428 00000 0142 C                TM2CK1      ==  TM2CR2.1
-   429       200C C                TM2CK0      ==  TM2CR2.0
-   429 00000 0042 C                TM2CK0      ==  TM2CR2.0
-   430            C        ;R0D/TM2DBH :Timer/Counter 2 Data Buffer B High Byte
-   431       200D C        TM2DBH      ==  0X0D:rpage 2
-   431 00000 0012 C        TM2DBH      ==  0X0D:rpage 2
-   432            C        ;R0E/TM2DBL :Timer/Counter 2 Data Buffer B Low Byte
-   433       200E C        TM2DBL      ==  0X0E:rpage 2
-   433 00000 0012 C        TM2DBL      ==  0X0E:rpage 2
-   434            C        ;R0F/TM2DAH :Timer/Counter 2 Data Buffer A High Byte
-   435       200F C        TM2DAH      ==  0X0F:rpage 2
-   435 00000 0012 C        TM2DAH      ==  0X0F:rpage 2
-   436            C        ;R10/TM2DAL :Timer/Counter 2 Data Buffer A Low Byte
-   437       2010 C        TM2DAL      ==  0X10:rpage 2
-   437 00000 0012 C        TM2DAL      ==  0X10:rpage 2
-   438            C        ;R11 RXCR(RX Control Register控制寄存器)
-   439       2011 C        RXCR       ==  0X11:rpage 2
-   439 00000 0012 C        RXCR       ==  0X11:rpage 2
-   440       2011 C                RXIE       ==  RXCR.7
-   440 00000 0742 C                RXIE       ==  RXCR.7
-   441            C        ;R12 RX1CR1(RX1 Control Register 1控制寄存器1)
-   442       2012 C        RX1CR1     ==  0X12:rpage 2
-   442 00000 0012 C        RX1CR1     ==  0X12:rpage 2
-   443       2012 C                RX1E       ==  RX1CR1.7
-   443 00000 0742 C                RX1E       ==  RX1CR1.7
-   444       2012 C                RX1HV4       ==  RX1CR1.4
-   444 00000 0442 C                RX1HV4       ==  RX1CR1.4
-   445       2012 C                RX1HV3       ==  RX1CR1.3
-   445 00000 0342 C                RX1HV3       ==  RX1CR1.3
-   446       2012 C                RX1HV2       ==  RX1CR1.2
-   446 00000 0242 C                RX1HV2       ==  RX1CR1.2
-   447       2012 C                RX1HV1       ==  RX1CR1.1
-   447 00000 0142 C                RX1HV1       ==  RX1CR1.1
-   448       2012 C                RX1HV0       ==  RX1CR1.0
-   448 00000 0042 C                RX1HV0       ==  RX1CR1.0
-   449            C        ;R13 RX1CR2(RX1 Control Register 2控制寄存器2)
-   450       2013 C        RX1CR2     ==  0X13:rpage 2
-   450 00000 0012 C        RX1CR2     ==  0X13:rpage 2
-   451       2013 C                RX1OPE       ==  RX1CR2.7
-   451 00000 0742 C                RX1OPE       ==  RX1CR2.7
-   452       2013 C                RX1OUT       ==  RX1CR2.6
-   452 00000 0642 C                RX1OUT       ==  RX1CR2.6
-   453       2013 C                RX1LV4       ==  RX1CR2.4
-   453 00000 0442 C                RX1LV4       ==  RX1CR2.4
-   454       2013 C                RX1LV3       ==  RX1CR2.3
-   454 00000 0342 C                RX1LV3       ==  RX1CR2.3
-   455       2013 C                RX1LV2       ==  RX1CR2.2
-   455 00000 0242 C                RX1LV2       ==  RX1CR2.2
-   456       2013 C                RX1LV1       ==  RX1CR2.1
-   456 00000 0142 C                RX1LV1       ==  RX1CR2.1
-   457       2013 C                RX1LV0       ==  RX1CR2.0
-   457 00000 0042 C                RX1LV0       ==  RX1CR2.0
-   458            C        ;R14 RX2CR1(RX2 Control Register 1控制寄存器1)
-   459       2014 C        RX2CR1     ==  0X14:rpage 2
-   459 00000 0012 C        RX2CR1     ==  0X14:rpage 2
-   460       2014 C                RX2E       ==  RX2CR1.7
-   460 00000 0742 C                RX2E       ==  RX2CR1.7
-   461       2014 C                RX2HV4       ==  RX2CR1.4
-   461 00000 0442 C                RX2HV4       ==  RX2CR1.4
-   462       2014 C                RX2HV3       ==  RX2CR1.3
-   462 00000 0342 C                RX2HV3       ==  RX2CR1.3
-   463       2014 C                RX2HV2       ==  RX2CR1.2
-   463 00000 0242 C                RX2HV2       ==  RX2CR1.2
-   464       2014 C                RX2HV1       ==  RX2CR1.1
-   464 00000 0142 C                RX2HV1       ==  RX2CR1.1
-   465       2014 C                RX2HV0       ==  RX2CR1.0
-   465 00000 0042 C                RX2HV0       ==  RX2CR1.0
-   466            C        ;R15 RX2CR2(RX2 Control Register 2控制寄存器2)
-   467       2015 C        RX2CR2     ==  0X15:rpage 2
-   467 00000 0012 C        RX2CR2     ==  0X15:rpage 2
-   468       2015 C                RX2OPE       ==  RX2CR2.7
-   468 00000 0742 C                RX2OPE       ==  RX2CR2.7
-   469       2015 C                RX2OUT       ==  RX2CR2.6
-   469 00000 0642 C                RX2OUT       ==  RX2CR2.6
-   470       2015 C                RX2LV4       ==  RX2CR2.4
-   470 00000 0442 C                RX2LV4       ==  RX2CR2.4
-   471       2015 C                RX2LV3       ==  RX2CR2.3
-   471 00000 0342 C                RX2LV3       ==  RX2CR2.3
-   472       2015 C                RX2LV2       ==  RX2CR2.2
-   472 00000 0242 C                RX2LV2       ==  RX2CR2.2
-   473       2015 C                RX2LV1       ==  RX2CR2.1
-   473 00000 0142 C                RX2LV1       ==  RX2CR2.1
-   474       2015 C                RX2LV0       ==  RX2CR2.0
-   474 00000 0042 C                RX2LV0       ==  RX2CR2.0
-   475            C        ;R16 RXDCR(RX Deglitch Control Register控制寄存器)
-   476       2016 C        RXDCR       ==  0X16:rpage 2
-   476 00000 0012 C        RXDCR       ==  0X16:rpage 2
-   477       2016 C                RX1DS       ==  RXDCR.7
-   477 00000 0742 C                RX1DS       ==  RXDCR.7
-   478       2016 C                RX1DT2      ==  RXDCR.6
-   478 00000 0642 C                RX1DT2      ==  RXDCR.6
-   479       2016 C                RX1DT1      ==  RXDCR.5
-   479 00000 0542 C                RX1DT1      ==  RXDCR.5
-   480       2016 C                RX1DT0      ==  RXDCR.4
-   480 00000 0442 C                RX1DT0      ==  RXDCR.4
-   481       2016 C                RX2DS       ==  RXDCR.3
-   481 00000 0342 C                RX2DS       ==  RXDCR.3
-   482       2016 C                RX2DT2      ==  RXDCR.2
-   482 00000 0242 C                RX2DT2      ==  RXDCR.2
-   483       2016 C                RX2DT1      ==  RXDCR.1
-   483 00000 0142 C                RX2DT1      ==  RXDCR.1
-   484       2016 C                RX2DT0      ==  RXDCR.0
-   484 00000 0042 C                RX2DT0      ==  RXDCR.0
-   485            C        ;R17 TXSC(TX Sink Current Register寄存器)
-   486       2017 C        TXSC       ==  0X17:rpage 2
-   486 00000 0012 C        TXSC       ==  0X17:rpage 2
-   487       2017 C                TXCS3       ==  TXSC.3
-   487 00000 0342 C                TXCS3       ==  TXSC.3
-   488       2017 C                TXCS2       ==  TXSC.2
-   488 00000 0242 C                TXCS2       ==  TXSC.2
-   489       2017 C                TXCS1       ==  TXSC.1
-   489 00000 0142 C                TXCS1       ==  TXSC.1
-   490       2017 C                TXCS0       ==  TXSC.0
-   490 00000 0042 C                TXCS0       ==  TXSC.0
-   491            C        ;R18 TXCR1(TX Control Register 1控制寄存器1)
-   492       2018 C        TXCR1     ==  0X18:rpage 2
-   492 00000 0012 C        TXCR1     ==  0X18:rpage 2
-   493       2018 C                TXE         ==  TXCR1.7
-   493 00000 0742 C                TXE         ==  TXCR1.7
-   494       2018 C                TXTM        ==  TXCR1.5
-   494 00000 0542 C                TXTM        ==  TXCR1.5
-   495       2018 C                TXSR1       ==  TXCR1.4
-   495 00000 0442 C                TXSR1       ==  TXCR1.4
-   496       2018 C                TXSR0       ==  TXCR1.3
-   496 00000 0342 C                TXSR0       ==  TXCR1.3
-   497       2018 C                TXMV2       ==  TXCR1.2
-   497 00000 0242 C                TXMV2       ==  TXCR1.2
-   498       2018 C                TXMV1       ==  TXCR1.1
-   498 00000 0142 C                TXMV1       ==  TXCR1.1
-   499       2018 C                TXMV0       ==  TXCR1.0
-   499 00000 0042 C                TXMV0       ==  TXCR1.0
-   500            C        ;R19 TXCR2(TX Control Register 2控制寄存器2)
-   501       2019 C        TXCR2     ==  0X19:rpage 2
-   501 00000 0012 C        TXCR2     ==  0X19:rpage 2
-   502       2019 C                TXS         ==  TXCR2.7
-   502 00000 0742 C                TXS         ==  TXCR2.7
-   503       2019 C                TXCLK       ==  TXCR2.6
-   503 00000 0642 C                TXCLK       ==  TXCR2.6
-   504       2019 C                TXDP2       ==  TXCR2.5
-   504 00000 0542 C                TXDP2       ==  TXCR2.5
-   505       2019 C                TXDP1       ==  TXCR2.4
-   505 00000 0442 C                TXDP1       ==  TXCR2.4
-   506       2019 C                TXDP0       ==  TXCR2.3
-   506 00000 0342 C                TXDP0       ==  TXCR2.3
-   507       2019 C                TXCP2       ==  TXCR2.2
-   507 00000 0242 C                TXCP2       ==  TXCR2.2
-   508       2019 C                TXCP1       ==  TXCR2.1
-   508 00000 0142 C                TXCP1       ==  TXCR2.1
-   509       2019 C                TXCP0       ==  TXCR2.0
-   509 00000 0042 C                TXCP0       ==  TXCR2.0
-   510            C        ;R1A TXDT(TX Delay Timer Register延遲寄存器)
-   511       201A C        TXDT       ==  0X1A:rpage 2
-   511 00000 0012 C        TXDT       ==  0X1A:rpage 2
-   512            C        ;R1B TXCT(TX Sink Current Timer Register使能時間寄存器)
-   513       201B C        TXCT       ==  0X1B:rpage 2
-   513 00000 0012 C        TXCT       ==  0X1B:rpage 2
-   514            C        ;R1C TXRC (TXTM Read Counting)
-   515       201C C        TXRC       ==  0X1C:rpage 2
-   515 00000 0012 C        TXRC       ==  0X1C:rpage 2
-   516            C        ;R1D CMP3&LRR (CMP3&Limiting Resistor Register限流電阻寄存器)
-   517       201D C        CMP3LRR    ==  0X1D:rpage 2
-   517 00000 0012 C        CMP3LRR    ==  0X1D:rpage 2
-   518       201D C                CMP3DS      ==  CMP3LRR.7
-   518 00000 0742 C                CMP3DS      ==  CMP3LRR.7
-   519       201D C                CMP3DT2     ==  CMP3LRR.6
-   519 00000 0642 C                CMP3DT2     ==  CMP3LRR.6
-   520       201D C                CMP3DT1     ==  CMP3LRR.5
-   520 00000 0542 C                CMP3DT1     ==  CMP3LRR.5
-   521       201D C                CMP3DT0     ==  CMP3LRR.4
-   521 00000 0442 C                CMP3DT0     ==  CMP3LRR.4
-   522       201D C                CL1   	    ==  CMP3LRR.1
-   522 00000 0142 C                CL1   	    ==  CMP3LRR.1
-   523       201D C                CL0  	    ==  CMP3LRR.0
-   523 00000 0042 C                CL0  	    ==  CMP3LRR.0
-   524            C        ;R1E DCCR (Discharge Control Register 放電控制寄存器)
-   525       201E C        DCCR       ==  0X1E:rpage 2
-   525 00000 0012 C        DCCR       ==  0X1E:rpage 2
-   526       201E C                CMP3E     ==  DCCR.7
-   526 00000 0742 C                CMP3E     ==  DCCR.7
-   527       201E C                MCDC      ==  DCCR.6
-   527 00000 0642 C                MCDC      ==  DCCR.6
-   528       201E C                DCT2      ==  DCCR.4
-   528 00000 0442 C                DCT2      ==  DCCR.4
-   529       201E C                DCT1      ==  DCCR.3
-   529 00000 0342 C                DCT1      ==  DCCR.3
-   530       201E C                DCT0      ==  DCCR.2
-   530 00000 0242 C                DCT0      ==  DCCR.2
-   531       201E C                DCR1      ==  DCCR.1
-   531 00000 0142 C                DCR1      ==  DCCR.1
-   532       201E C                DCR0      ==  DCCR.0
-   532 00000 0042 C                DCR0      ==  DCCR.0
-   533            C        ;R1F DCVS (Discharge Voltage select Register 放電電壓選擇寄存器)
-   534       201F C        DCVS       ==  0X1F:rpage 2
-   534 00000 0012 C        DCVS       ==  0X1F:rpage 2
-   535       201F C                CMP3OPE   ==  DCVS.7
-   535 00000 0742 C                CMP3OPE   ==  DCVS.7
-   536       201F C                CMP3OUT   ==  DCVS.6
-   536 00000 0642 C                CMP3OUT   ==  DCVS.6
-   537       201F C                DCP       ==  DCVS.3
-   537 00000 0342 C                DCP       ==  DCVS.3
-   538       201F C                DCV2      ==  DCVS.2
-   538 00000 0242 C                DCV2      ==  DCVS.2
-   539       201F C                DCV1      ==  DCVS.1
-   539 00000 0142 C                DCV1      ==  DCVS.1
-   540       201F C                DCV0      ==  DCVS.0
-   540 00000 0042 C                DCV0      ==  DCVS.0
-   541            C        ;R20 PWMCCR (PWMC Control Register)
-   542       2020 C        PWMCCR == 0X20:rpage 2
-   542 00000 0012 C        PWMCCR == 0X20:rpage 2
-   543       2020 C        	PWMCE == PWMCCR.7
-   543 00000 0742 C        	PWMCE == PWMCCR.7
-   544       2020 C        	PWMCRC == PWMCCR.6
-   544 00000 0642 C        	PWMCRC == PWMCCR.6
-   545       2020 C        	PWMCA == PWMCCR.5
-   545 00000 0542 C        	PWMCA == PWMCCR.5
-   546       2020 C        	TCEN == PWMCCR.4
-   546 00000 0442 C        	TCEN == PWMCCR.4
-   547       2020 C        	PWMCS == PWMCCR.3
-   547 00000 0342 C        	PWMCS == PWMCCR.3
-   548       2020 C        	TCP2 == PWMCCR.2
-   548 00000 0242 C        	TCP2 == PWMCCR.2
-   549       2020 C        	TCP1 == PWMCCR.1
-   549 00000 0142 C        	TCP1 == PWMCCR.1
-   550       2020 C        	TCP0 == PWMCCR.0
-   550 00000 0042 C        	TCP0 == PWMCCR.0
-   551       2021 C        PRDCL == 0X21:rpage 2
-   551 00000 0012 C        PRDCL == 0X21:rpage 2
-   552       2022 C        PRDCH == 0X22:rpage 2	
-   552 00000 0012 C        PRDCH == 0X22:rpage 2	
-   553       2023 C        DTCL == 0X23:rpage 2
-   553 00000 0012 C        DTCL == 0X23:rpage 2
-   554       2024 C        DTCH == 0X24:rpage 2
-   554 00000 0012 C        DTCH == 0X24:rpage 2
-   555       2025 C        TMRCL == 0X25:rpage 2
-   555 00000 0012 C        TMRCL == 0X25:rpage 2
-   556       2026 C        TMRCH == 0X26:rpage 2		
-   556 00000 0012 C        TMRCH == 0X26:rpage 2		
-   557       2027 C        AFPWMCCR1== 0X27:rpage 2
-   557 00000 0012 C        AFPWMCCR1== 0X27:rpage 2
-   558       2027 C        	AFPI2	== AFPWMCCR1.6
-   558 00000 0642 C        	AFPI2	== AFPWMCCR1.6
-   559       2027 C        	AFPI1	== AFPWMCCR1.5
-   559 00000 0542 C        	AFPI1	== AFPWMCCR1.5
-   560       2027 C        	AFPI0	== AFPWMCCR1.4
-   560 00000 0442 C        	AFPI0	== AFPWMCCR1.4
-   561       2027 C        	AFPD2	== AFPWMCCR1.2
-   561 00000 0242 C        	AFPD2	== AFPWMCCR1.2
-   562       2027 C        	AFPD1	== AFPWMCCR1.1
-   562 00000 0142 C        	AFPD1	== AFPWMCCR1.1
-   563       2027 C        	AFPD0	== AFPWMCCR1.0
-   563 00000 0042 C        	AFPD0	== AFPWMCCR1.0
-   564       2028 C        AFPWMCCR2== 0X28:rpage 2
-   564 00000 0012 C        AFPWMCCR2== 0X28:rpage 2
-   565       2028 C        	AFPM2	== AFPWMCCR2.7
-   565 00000 0742 C        	AFPM2	== AFPWMCCR2.7
-   566       2028 C        	AFPM1	== AFPWMCCR2.6
-   566 00000 0642 C        	AFPM1	== AFPWMCCR2.6
-   567       2028 C        	AFPM0	== AFPWMCCR2.5
-   567 00000 0542 C        	AFPM0	== AFPWMCCR2.5
-   568       2028 C        	AFPSS0	== AFPWMCCR2.4
-   568 00000 0442 C        	AFPSS0	== AFPWMCCR2.4
-   569       2028 C        	AFPCK3	== AFPWMCCR2.3
-   569 00000 0342 C        	AFPCK3	== AFPWMCCR2.3
-   570       2028 C        	AFPCK2	== AFPWMCCR2.2
-   570 00000 0242 C        	AFPCK2	== AFPWMCCR2.2
-   571       2028 C        	AFPCK1	== AFPWMCCR2.1
-   571 00000 0142 C        	AFPCK1	== AFPWMCCR2.1
-   572       2028 C        	AFPCK0	== AFPWMCCR2.0
-   572 00000 0042 C        	AFPCK0	== AFPWMCCR2.0
-   573       2029 C        AFDAL== 0X29:rpage 2
-   573 00000 0012 C        AFDAL== 0X29:rpage 2
-   574       202A C        AFDAH== 0X2A:rpage 2
-   574 00000 0012 C        AFDAH== 0X2A:rpage 2
-   575       202B C        AFDBL== 0X2B:rpage 2
-   575 00000 0012 C        AFDBL== 0X2B:rpage 2
-   576       202C C        AFDBH== 0X2C:rpage 2
-   576 00000 0012 C        AFDBH== 0X2C:rpage 2
-   577       202D C        PRDCL_T == 0X2D:rpage 2
-   577 00000 0012 C        PRDCL_T == 0X2D:rpage 2
-   578       202E C        PRDCH_T == 0X2E:rpage 2	
-   578 00000 0012 C        PRDCH_T == 0X2E:rpage 2	
-   579       202F C        DTCL_T == 0X2F:rpage 2
-   579 00000 0012 C        DTCL_T == 0X2F:rpage 2
-   580       2030 C        DTCH_T == 0X30:rpage 2
-   580 00000 0012 C        DTCH_T == 0X30:rpage 2
-   581            C        
-   582       2040 C        COBS4       ==  0X40:rpage 2
-   582 00000 0012 C        COBS4       ==  0X40:rpage 2
-   583            C        ;R3E/COBS5 :Code Option Bit Selection Register5
-   584       2041 C        COBS5       ==  0X41:rpage 2
-   584 00000 0012 C        COBS5       ==  0X41:rpage 2
-   585            C        ;R3F/COBS6 :Code Option Bit Selection Register6
-   586       2042 C        COBS6       ==  0X42:rpage 2
-   586 00000 0012 C        COBS6       ==  0X42:rpage 2
-   587            C        ;R40/COBS7 :Code Option Bit Selection Register7
-   588       2047 C        LOCKPR       ==  0X47:rpage 2
-   588 00000 0012 C        LOCKPR       ==  0X47:rpage 2
-   589            C        ;R41/COBS8 :Code Option Bit Selection Register8
-   590       2048 C        LOCKCR       ==  0X48:rpage 2
-   590 00000 0012 C        LOCKCR       ==  0X48:rpage 2
-   591       2048 C        	LOCKEN	== LOCKCR.7
-   591 00000 0742 C        	LOCKEN	== LOCKCR.7
-    26                     ELSEIF(TARGET == 2)
-    27                     	Include	"SD028.INC"
+    32       2001 C                GBS1  ==  BSR.1
+    32 00000 0140 C                GBS1  ==  BSR.1
+    33       2001 C                GBS0  ==  BSR.0
+    33 00000 0040 C                GBS0  ==  BSR.0
+    34            C        ; R2/PC: Program Counter & Stack
+    35       2002 C            R2      ==  0x02:rpage 0
+    35 00000 0010 C            R2      ==  0x02:rpage 0
+    36       2002 C            PCL     ==  0x02:rpage 0
+    36 00000 0010 C            PCL     ==  0x02:rpage 0
+    37            C        
+    38            C        ;R3/SW:Status Register
+    39       2003 C            R3      ==  0x03:rpage 0
+    39 00000 0010 C            R3      ==  0x03:rpage 0
+    40       2003 C            STATUS  ==  0x03:rpage 0
+    40 00000 0010 C            STATUS  ==  0x03:rpage 0
+    41       2003 C            SR      ==  0x03:rpage 0
+    41 00000 0010 C            SR      ==  0x03:rpage 0
+    42       2003 C                IT	    == SR.7
+    42 00000 0740 C                IT	    == SR.7
+    43       2003 C                N       == SR.6
+    43 00000 0640 C                N       == SR.6
+    44       2003 C                OV      == SR.5
+    44 00000 0540 C                OV      == SR.5
+    45       2003 C                T       == SR.4
+    45 00000 0440 C                T       == SR.4
+    46       2003 C                P       == SR.3
+    46 00000 0340 C                P       == SR.3
+    47       2003 C                Z       == SR.2
+    47 00000 0240 C                Z       == SR.2
+    48       2003 C                DC      == SR.1
+    48 00000 0140 C                DC      == SR.1
+    49       2003 C                C       == SR.0
+    49 00000 0040 C                C       == SR.0
+    50            C        ;R4/ RSR:RAM Select Register
+    51       2004 C            R4          == 0x04:rpage 0
+    51 00000 0010 C            R4          == 0x04:rpage 0
+    52       2004 C            RSR         == 0x04:rpage 0
+    52 00000 0010 C            RSR         == 0x04:rpage 0
+    53            C        
+    54            C        ;======================================================;
+    55            C        ; BANK 0                                               ;
+    56            C        ; Registers R5~R4F                                     ;
+    57            C        ;======================================================;
+    58            C        ;R5/PORT5 :IO PORT 5 Data Register
+    59       2005 C            PORT5   ==  0x05:rpage 0
+    59 00000 0010 C            PORT5   ==  0x05:rpage 0
+    60       2005 C            P5      ==  0x05:rpage 0
+    60 00000 0010 C            P5      ==  0x05:rpage 0
+    61       2005 C                P50     == PORT5.0
+    61 00000 0040 C                P50     == PORT5.0
+    62       2005 C                P51     == PORT5.1
+    62 00000 0140 C                P51     == PORT5.1
+    63       2005 C                P52     == PORT5.2
+    63 00000 0240 C                P52     == PORT5.2
+    64       2005 C                P53     == PORT5.3
+    64 00000 0340 C                P53     == PORT5.3
+    65       2005 C                P54     == PORT5.4
+    65 00000 0440 C                P54     == PORT5.4
+    66       2005 C                P55     == PORT5.5
+    66 00000 0540 C                P55     == PORT5.5
+    67       2005 C                P56     == PORT5.6
+    67 00000 0640 C                P56     == PORT5.6
+    68       2005 C                P57     == PORT5.7
+    68 00000 0740 C                P57     == PORT5.7
+    69            C        ;RB/IOCR5 :IO PORT 5 Control Register
+    70       200B C            IOCR5   ==  0x0B:rpage 0
+    70 00000 0010 C            IOCR5   ==  0x0B:rpage 0
+    71            C        ;RE/OMCR :OMCR:Operating Mode Control Register
+    72       200E C            OMCR    ==  0x0E:rpage 0
+    72 00000 0010 C            OMCR    ==  0x0E:rpage 0
+    73       200E C                CPUS    == OMCR.7
+    73 00000 0740 C                CPUS    == OMCR.7
+    74       200E C                IDLE    == OMCR.6
+    74 00000 0640 C                IDLE    == OMCR.6
+    75       200E C                PERCS   == OMCR.5
+    75 00000 0540 C                PERCS   == OMCR.5
+    76       200E C                IIPS    == OMCR.4
+    76 00000 0440 C                IIPS    == OMCR.4
+    77       200E C                FMSF    == OMCR.3
+    77 00000 0340 C                FMSF    == OMCR.3
+    78       200E C        	    RCM1    == OMCR.1
+    78 00000 0140 C        	    RCM1    == OMCR.1
+    79       200E C                RCM0    == OMCR.0
+    79 00000 0040 C                RCM0    == OMCR.0
+    80            C        ;RF/EIESCR :External Interrupt Edge Select Control Register
+    81       200F C            EIESCR  ==  0x0F:rpage 0
+    81 00000 0010 C            EIESCR  ==  0x0F:rpage 0
+    82       200F C                EI1ES1  == EIESCR.3
+    82 00000 0340 C                EI1ES1  == EIESCR.3
+    83       200F C        	    EI1ES0  == EIESCR.2
+    83 00000 0240 C        	    EI1ES0  == EIESCR.2
+    84       200F C        	    EI0ES1  == EIESCR.1
+    84 00000 0140 C        	    EI0ES1  == EIESCR.1
+    85       200F C        	    EI0ES0  == EIESCR.0
+    85 00000 0040 C        	    EI0ES0  == EIESCR.0
+    86            C        ;R10/WUCR1 :Wake-up Control Register1
+    87       2010 C            WUCR1   ==  0x10:rpage 0
+    87 00000 0010 C            WUCR1   ==  0x10:rpage 0
+    88       2010 C                CMP2WK	== WUCR1.7
+    88 00000 0740 C                CMP2WK	== WUCR1.7
+    89       2010 C        	    CMP1WK	== WUCR1.6
+    89 00000 0640 C        	    CMP1WK	== WUCR1.6
+    90       2010 C        	    ADWK    == WUCR1.4
+    90 00000 0440 C        	    ADWK    == WUCR1.4
+    91       2010 C                INT1WK  == WUCR1.3
+    91 00000 0340 C                INT1WK  == WUCR1.3
+    92       2010 C                INT0WK  == WUCR1.2
+    92 00000 0240 C                INT0WK  == WUCR1.2
+    93       2010 C                IGWK    == WUCR1.0
+    93 00000 0040 C                IGWK    == WUCR1.0
+    94            C        ;R11/WUCR2 :Wake-up Control Register2
+    95       2011 C            WUCR2   == 0x11:rpage 0
+    95 00000 0010 C            WUCR2   == 0x11:rpage 0
+    96       2011 C                CMP3WK	== WUCR2.6
+    96 00000 0640 C                CMP3WK	== WUCR2.6
+    97       2011 C                URWK	== WUCR2.4
+    97 00000 0440 C                URWK	== WUCR2.4
+    98            C        ;R12/WUCR3 :Wake-up Control Register3
+    99       2012 C            WUCR3   ==  0x12:rpage 0
+    99 00000 0010 C            WUCR3   ==  0x12:rpage 0
+   100       2012 C                ICWKP5  == WUCR3.4
+   100 00000 0440 C                ICWKP5  == WUCR3.4
+   101            C        ;R13/SYSCON :
+   102       2013 C            SYSCON  == 0x13:rpage 0
+   102 00000 0010 C            SYSCON  == 0x13:rpage 0
+   103       2013 C                LDOI    ==  SYSCON.7
+   103 00000 0740 C                LDOI    ==  SYSCON.7
+   104            C        ;R14/SFR1 :Status Flag Register 1
+   105       2014 C            SFR1    == 0x14:rpage 0
+   105 00000 0010 C            SFR1    == 0x14:rpage 0
+   106       2014 C                CMP2SF  == SFR1.7
+   106 00000 0740 C                CMP2SF  == SFR1.7
+   107       2014 C        	    CMP1SF  == SFR1.6
+   107 00000 0640 C        	    CMP1SF  == SFR1.6
+   108       2014 C        	    ADSF    == SFR1.4
+   108 00000 0440 C        	    ADSF    == SFR1.4
+   109       2014 C                EXSF1   == SFR1.3
+   109 00000 0340 C                EXSF1   == SFR1.3
+   110       2014 C                EXSF0   == SFR1.2
+   110 00000 0240 C                EXSF0   == SFR1.2
+   111            C        ;R15/SFR2 :Status Flag Register2
+   112       2015 C            SFR2    == 0x15:rpage 0
+   112 00000 0010 C            SFR2    == 0x15:rpage 0
+   113       2015 C        	    CMP3SF  == SFR2.6
+   113 00000 0640 C        	    CMP3SF  == SFR2.6
+   114       2015 C                UERRSF  == SFR2.5
+   114 00000 0540 C                UERRSF  == SFR2.5
+   115       2015 C                URSF    == SFR2.4
+   115 00000 0440 C                URSF    == SFR2.4
+   116       2015 C                UTSF    == SFR2.3
+   116 00000 0340 C                UTSF    == SFR2.3
+   117            C        
+   118            C        ;R17/SFR4 :Status Flag Register4
+   119       2017 C            SFR4    == 0x17:rpage 0
+   119 00000 0010 C            SFR4    == 0x17:rpage 0
+   120       2017 C                P5ICSF  == SFR4.4
+   120 00000 0440 C                P5ICSF  == SFR4.4
+   121            C        
+   122            C        ;R19/SFR6 :Status Flag Register6
+   123       2019 C            SFR6    ==  0x19:rpage 0
+   123 00000 0010 C            SFR6    ==  0x19:rpage 0
+   124       2019 C                SHSF    == SFR6.7
+   124 00000 0740 C                SHSF    == SFR6.7
+   125            C        ;R1A/SFR7 :Status Flag Register7
+   126       201A C            SFR7        == 0x1A:rpage 0
+   126 00000 0010 C            SFR7        == 0x1A:rpage 0
+   127       201A C                IGSF    == SFR7.7
+   127 00000 0740 C                IGSF    == SFR7.7
+   128       201A C                TXDSF   == SFR7.6
+   128 00000 0640 C                TXDSF   == SFR7.6
+   129       201A C                TXCSF   == SFR7.5
+   129 00000 0540 C                TXCSF   == SFR7.5
+   130       201A C                TM2DASF == SFR7.4
+   130 00000 0440 C                TM2DASF == SFR7.4
+   131       201A C                TM1DASF == SFR7.3
+   131 00000 0340 C                TM1DASF == SFR7.3
+   132       201A C                TM1OFSF == SFR7.2
+   132 00000 0240 C                TM1OFSF == SFR7.2
+   133       201A C                TM2DBSF == SFR7.1
+   133 00000 0140 C                TM2DBSF == SFR7.1
+   134       201A C                TM1DBSF == SFR7.0
+   134 00000 0040 C                TM1DBSF == SFR7.0
+   135            C        ;R1B/IMR1 :Interrupt Mask Register 1
+   136       201B C            IMR1        == 0x1B:rpage 0
+   136 00000 0010 C            IMR1        == 0x1B:rpage 0
+   137       201B C                CMP2IE  == IMR1.7
+   137 00000 0740 C                CMP2IE  == IMR1.7
+   138       201B C        	    CMP1IE  == IMR1.6
+   138 00000 0640 C        	    CMP1IE  == IMR1.6
+   139       201B C        	    ADIE    == IMR1.4
+   139 00000 0440 C        	    ADIE    == IMR1.4
+   140       201B C                EXIE1   == IMR1.3
+   140 00000 0340 C                EXIE1   == IMR1.3
+   141       201B C                EXIE0   == IMR1.2
+   141 00000 0240 C                EXIE0   == IMR1.2
+   142            C        ;RF/IMR2 :Interrupt Mask Register 2
+   143       201C C            IMR2        == 0x1C:rpage 0
+   143 00000 0010 C            IMR2        == 0x1C:rpage 0
+   144       201C C                CMP3IE  == IMR2.6
+   144 00000 0640 C                CMP3IE  == IMR2.6
+   145       201C C                UERRIE  == IMR2.5
+   145 00000 0540 C                UERRIE  == IMR2.5
+   146       201C C                URIE    == IMR2.4
+   146 00000 0440 C                URIE    == IMR2.4
+   147       201C C                UTIE    == IMR2.3
+   147 00000 0340 C                UTIE    == IMR2.3
+   148            C        
+   149            C        ;R1E/IMR4 :Interrupt Mask Register 4
+   150       201E C            IMR4        ==  0x1E:rpage 0
+   150 00000 0010 C            IMR4        ==  0x1E:rpage 0
+   151       201E C                P5ICIE  ==  IMR4.4
+   151 00000 0440 C                P5ICIE  ==  IMR4.4
+   152            C        
+   153            C        ;R20/IMR6 :Interrupt Mask Register 6
+   154       2020 C            IMR6        == 0x20:rpage 0
+   154 00000 0010 C            IMR6        == 0x20:rpage 0
+   155       2020 C                SHIE    == IMR6.7
+   155 00000 0740 C                SHIE    == IMR6.7
+   156       2020 C                IGIE    == IMR6.3
+   156 00000 0340 C                IGIE    == IMR6.3
+   157       2020 C                TXTMIE  == IMR6.2
+   157 00000 0240 C                TXTMIE  == IMR6.2
+   158       2020 C                TM2IE   == IMR6.1
+   158 00000 0140 C                TM2IE   == IMR6.1
+   159       2020 C                TM1IE   == IMR6.0
+   159 00000 0040 C                TM1IE   == IMR6.0
+   160            C        ;R21/WDTCR :Watch Dog Timer Control Register
+   161       2021 C            WDTCR       == 0x21:rpage 0
+   161 00000 0010 C            WDTCR       == 0x21:rpage 0
+   162       2021 C                WDTE    == WDTCR.7
+   162 00000 0740 C                WDTE    == WDTCR.7
+   163       2021 C                FSSF    == WDTCR.6
+   163 00000 0640 C                FSSF    == WDTCR.6
+   164       2021 C                PSWE    == WDTCR.3
+   164 00000 0340 C                PSWE    == WDTCR.3
+   165       2021 C                WPSR2   == WDTCR.2
+   165 00000 0240 C                WPSR2   == WDTCR.2
+   166       2021 C                WPSR1   == WDTCR.1
+   166 00000 0140 C                WPSR1   == WDTCR.1
+   167       2021 C                WPSR0   == WDTCR.0
+   167 00000 0040 C                WPSR0   == WDTCR.0
+   168            C        ;R3E/ADCR1 :ADC Control Register1
+   169       203E C            ADCR1       == 0x3E:rpage 0
+   169 00000 0010 C            ADCR1       == 0x3E:rpage 0
+   170       203E C                CKR1    == ADCR1.6
+   170 00000 0640 C                CKR1    == ADCR1.6
+   171       203E C                CKR0    == ADCR1.5
+   171 00000 0540 C                CKR0    == ADCR1.5
+   172       203E C                ADRUN   == ADCR1.4
+   172 00000 0440 C                ADRUN   == ADCR1.4
+   173       203E C                ADP     == ADCR1.3
+   173 00000 0340 C                ADP     == ADCR1.3
+   174       203E C                ADOM    == ADCR1.2
+   174 00000 0240 C                ADOM    == ADCR1.2
+   175       203E C                SHS1    == ADCR1.1
+   175 00000 0140 C                SHS1    == ADCR1.1
+   176       203E C                SHS0    == ADCR1.0
+   176 00000 0040 C                SHS0    == ADCR1.0
+   177            C        ;R3F/ADCR2 :ADC Control Register2
+   178       203F C            ADCR2       == 0x3F:rpage 0
+   178 00000 0010 C            ADCR2       == 0x3F:rpage 0
+   179       203F C                ADLPFEN == ADCR2.7
+   179 00000 0740 C                ADLPFEN == ADCR2.7
+   180       203F C                ADIM    == ADCR2.5
+   180 00000 0540 C                ADIM    == ADCR2.5
+   181       203F C                ADCMS   == ADCR2.4
+   181 00000 0440 C                ADCMS   == ADCR2.4
+   182       203F C                VPIS1   == ADCR2.3
+   182 00000 0340 C                VPIS1   == ADCR2.3
+   183       203F C                VPIS0   == ADCR2.2
+   183 00000 0240 C                VPIS0   == ADCR2.2
+   184       203F C                VREFP   == ADCR2.1
+   184 00000 0140 C                VREFP   == ADCR2.1
+   185            C        ;R40/ADISR :Analog to Digital Converter Input Channel Selection Register
+   186       2040 C            ADISR       == 0x40:rpage 0
+   186 00000 0010 C            ADISR       == 0x40:rpage 0
+   187       2040 C                ADIS1   == ADISR.1
+   187 00000 0140 C                ADIS1   == ADISR.1
+   188       2040 C                ADIS0   == ADISR.0
+   188 00000 0040 C                ADIS0   == ADISR.0
+   189            C        ;R41/ADER1 :ADC Input Enable Register
+   190       2041 C            ADER1       == 0x41:rpage 0
+   190 00000 0010 C            ADER1       == 0x41:rpage 0
+   191       2041 C                ADE1    == ADER1.1
+   191 00000 0140 C                ADE1    == ADER1.1
+   192       2041 C                ADE0    == ADER1.0
+   192 00000 0040 C                ADE0    == ADER1.0
+   193            C        ;R43/ADDL :ADC Low-8 Bits Data Buffer
+   194       2043 C            ADDL        == 0x43:rpage 0
+   194 00000 0010 C            ADDL        == 0x43:rpage 0
+   195            C        ;R44/ADDH :ADC High-8 Bits Data Buffer
+   196       2044 C            ADDH        == 0x44:rpage 0
+   196 00000 0010 C            ADDH        == 0x44:rpage 0
+   197            C        ;R45/ADCVL :Low Byte of Analog to Digital Converter Comparison
+   198       2045 C            ADCVL       == 0x45:rpage 0
+   198 00000 0010 C            ADCVL       == 0x45:rpage 0
+   199            C        ;R46/ADCVH :High Byte of Analog to Digital Converter Comparison
+   200       2046 C            ADCVH       == 0x46:rpage 0
+   200 00000 0010 C            ADCVH       == 0x46:rpage 0
+   201            C        ;======================================================
+   202            C        ; BANK 1
+   203            C        ; Registers R5~R4F
+   204            C        ;======================================================
+   205            C        ;R08/P5PHCR :Port5 Pull-high Control Register
+   206       2008 C          P5PHCR        ==  0x08:rpage 1
+   206 00000 0011 C          P5PHCR        ==  0x08:rpage 1
+   207       2008 C                PH55    ==  P5PHCR.6
+   207 00000 0641 C                PH55    ==  P5PHCR.6
+   208       2008 C                PH54    ==  P5PHCR.4
+   208 00000 0441 C                PH54    ==  P5PHCR.4
+   209       2008 C                PH53    ==  P5PHCR.3
+   209 00000 0341 C                PH53    ==  P5PHCR.3
+   210       2008 C                PH52    ==  P5PHCR.2
+   210 00000 0241 C                PH52    ==  P5PHCR.2
+   211       2008 C                PH51    ==  P5PHCR.1
+   211 00000 0141 C                PH51    ==  P5PHCR.1
+   212       2008 C                PH50    ==  P5PHCR.0
+   212 00000 0041 C                PH50    ==  P5PHCR.0
+   213            C        
+   214            C        ;R0B/P5PLCR Port 5 Pull-low Control Register
+   215       200B C            P5PLCR      ==  0x0B:rpage 1
+   215 00000 0011 C            P5PLCR      ==  0x0B:rpage 1
+   216       200B C                PL55    ==  P5PLCR.5
+   216 00000 0541 C                PL55    ==  P5PLCR.5
+   217       200B C                PL54    ==  P5PLCR.4
+   217 00000 0441 C                PL54    ==  P5PLCR.4
+   218       200B C                PL53    ==  P5PLCR.3
+   218 00000 0341 C                PL53    ==  P5PLCR.3
+   219       200B C                PL52    ==  P5PLCR.2
+   219 00000 0241 C                PL52    ==  P5PLCR.2
+   220       200B C                PL51    ==  P5PLCR.1
+   220 00000 0141 C                PL51    ==  P5PLCR.1
+   221       200B C                PL50    ==  P5PLCR.0
+   221 00000 0041 C                PL50    ==  P5PLCR.0
+   222            C        
+   223            C        ;R0E/P5HDSCR :Port 5 High Drive/Sink Control Register
+   224       200E C            P5HDSCR     ==  0x0E:rpage 1
+   224 00000 0011 C            P5HDSCR     ==  0x0E:rpage 1
+   225       200E C                HDS55   ==  P5HDSCR.5
+   225 00000 0541 C                HDS55   ==  P5HDSCR.5
+   226       200E C                HDS54   ==  P5HDSCR.4
+   226 00000 0441 C                HDS54   ==  P5HDSCR.4
+   227       200E C                HDS53   ==  P5HDSCR.3
+   227 00000 0341 C                HDS53   ==  P5HDSCR.3
+   228       200E C                HDS52   ==  P5HDSCR.2
+   228 00000 0241 C                HDS52   ==  P5HDSCR.2
+   229       200E C                HDS51   ==  P5HDSCR.1
+   229 00000 0141 C                HDS51   ==  P5HDSCR.1
+   230       200E C                HDS50   ==  P5HDSCR.0
+   230 00000 0041 C                HDS50   ==  P5HDSCR.0
+   231            C        
+   232            C        ;R33 URCR :UART Control Register
+   233       2033 C            URCR        == 0x33:rpage 1
+   233 00000 0011 C            URCR        == 0x33:rpage 1
+   234       2033 C                UINVEN  == URCR.7
+   234 00000 0741 C                UINVEN  == URCR.7
+   235       2033 C                UMODE1  == URCR.6
+   235 00000 0641 C                UMODE1  == URCR.6
+   236       2033 C                UMODE0  == URCR.5
+   236 00000 0541 C                UMODE0  == URCR.5
+   237       2033 C                BRATE2  == URCR.4
+   237 00000 0441 C                BRATE2  == URCR.4
+   238       2033 C                BRATE1  == URCR.3
+   238 00000 0341 C                BRATE1  == URCR.3
+   239       2033 C                BRATE0  == URCR.2
+   239 00000 0241 C                BRATE0  == URCR.2
+   240       2033 C        	    UTBF    == URCR.1
+   240 00000 0141 C        	    UTBF    == URCR.1
+   241       2033 C        	    TXE     == URCR.0
+   241 00000 0041 C        	    TXE     == URCR.0
+   242            C        ;R34 URS :UART Status Register
+   243       2034 C            URS         == 0x34:rpage 1
+   243 00000 0011 C            URS         == 0x34:rpage 1
+   244       2034 C                URTD8   == URS.7
+   244 00000 0741 C                URTD8   == URS.7
+   245       2034 C                EVEN    == URS.6
+   245 00000 0641 C                EVEN    == URS.6
+   246       2034 C                PER     == URS.5
+   246 00000 0541 C                PER     == URS.5
+   247       2034 C                PRERR   == URS.4
+   247 00000 0441 C                PRERR   == URS.4
+   248       2034 C                OVERR   == URS.3
+   248 00000 0341 C                OVERR   == URS.3
+   249       2034 C                FMERR   == URS.2
+   249 00000 0241 C                FMERR   == URS.2
+   250       2034 C        	    URBF    == URS.1
+   250 00000 0141 C        	    URBF    == URS.1
+   251       2034 C        	    RXE     == URS.0
+   251 00000 0041 C        	    RXE     == URS.0
+   252            C        ;R35 URTD :UART Transmit Data Buffer Register
+   253       2035 C            URTD        == 0x35:rpage 1
+   253 00000 0011 C            URTD        == 0x35:rpage 1
+   254            C        ;R36 URRDL :UART Receive Data Low Buffer Register
+   255       2036 C            URRDL       == 0x36:rpage 1
+   255 00000 0011 C            URRDL       == 0x36:rpage 1
+   256            C        ;R37 URRDH :UART Receive Data High Buffer Register
+   257       2037 C            URRDH       == 0x37:rpage 1
+   257 00000 0011 C            URRDH       == 0x37:rpage 1
+   258       2037 C                URRD8   == URRDH.7
+   258 00000 0741 C                URRD8   == URRDH.7
+   259       2037 C                URSS    == URRDH.0
+   259 00000 0041 C                URSS    == URRDH.0
+   260            C        
+   261            C        ;R40/EECR1 :EEPROM Control Register 1
+   262       2040 C            EECR1       ==  0x40:rpage 1
+   262 00000 0011 C            EECR1       ==  0x40:rpage 1
+   263       2040 C                EEPVSF  ==  EECR1.4
+   263 00000 0441 C                EEPVSF  ==  EECR1.4
+   264       2040 C                EEPV    ==  EECR1.3
+   264 00000 0341 C                EEPV    ==  EECR1.3
+   265       2040 C                ONRD    ==  EECR1.2
+   265 00000 0241 C                ONRD    ==  EECR1.2
+   266       2040 C                RD      ==  EECR1.1
+   266 00000 0141 C                RD      ==  EECR1.1
+   267       2040 C                WR      ==  EECR1.0
+   267 00000 0041 C                WR      ==  EECR1.0
+   268            C        ;R41/EECR2 :EEPROM Control Register 2
+   269       2041 C            EECR2       ==  0x41:rpage 1
+   269 00000 0011 C            EECR2       ==  0x41:rpage 1
+   270       2041 C                EEWE    ==  EECR2.7
+   270 00000 0741 C                EEWE    ==  EECR2.7
+   271       2041 C                EEDF    ==  EECR2.6
+   271 00000 0641 C                EEDF    ==  EECR2.6
+   272       2041 C                EEPC    ==  EECR2.5
+   272 00000 0541 C                EEPC    ==  EECR2.5
+   273            C        ;R42/EERA :EEPROM Address
+   274       2042 C            EERA        ==  0x42:rpage 1
+   274 00000 0011 C            EERA        ==  0x42:rpage 1
+   275            C        ;R43/EERD :EEPROM Data
+   276       2043 C            EERD        ==  0x43:rpage 1
+   276 00000 0011 C            EERD        ==  0x43:rpage 1
+   277            C        ;R44/FLKR :Flash Key Register for Table Write Use
+   278       2044 C            FLKR        ==  0x44:rpage 1
+   278 00000 0011 C            FLKR        ==  0x44:rpage 1
+   279            C        ;R45/TBPTL :Table Point Low Register
+   280       2045 C            TBPTL       ==  0x45:rpage 1
+   280 00000 0011 C            TBPTL       ==  0x45:rpage 1
+   281            C        ;R46/TBPTH :Table Point High Register
+   282       2046 C            TBPTH       ==  0x46:rpage 1
+   282 00000 0011 C            TBPTH       ==  0x46:rpage 1
+   283       2046 C                HLB     ==  TBPTH.7
+   283 00000 0741 C                HLB     ==  TBPTH.7
+   284       2046 C                RDS     ==  TBPTH.6
+   284 00000 0641 C                RDS     ==  TBPTH.6
+   285            C        ;R47/STKMON :Stack point
+   286       2047 C            STKMON      ==  0x47:rpage 1
+   286 00000 0011 C            STKMON      ==  0x47:rpage 1
+   287       2047 C                STOV    ==  STKMON.7
+   287 00000 0741 C                STOV    ==  STKMON.7
+   288       2047 C                STL2    ==  STKMON.2
+   288 00000 0241 C                STL2    ==  STKMON.2
+   289       2047 C                STL1    ==  STKMON.1
+   289 00000 0141 C                STL1    ==  STKMON.1
+   290       2047 C                STL0    ==  STKMON.0
+   290 00000 0041 C                STL0    ==  STKMON.0
+   291            C        ;R48/PCH :Program Counter High
+   292       2048 C            PCH         == 0x48:rpage 1
+   292 00000 0011 C            PCH         == 0x48:rpage 1
+   293            C        
+   294       204A C            COBS1       == 0x4A:rpage 1
+   294 00000 0011 C            COBS1       == 0x4A:rpage 1
+   295       204A C                HLFS	== COBS1.7
+   295 00000 0741 C                HLFS	== COBS1.7
+   296       204A C                ENWDT	== COBS1.5
+   296 00000 0541 C                ENWDT	== COBS1.5
+   297       204A C                NRHL	== COBS1.4
+   297 00000 0441 C                NRHL	== COBS1.4
+   298       204A C                NRE     == COBS1.3
+   298 00000 0341 C                NRE     == COBS1.3
+   299       204A C                ADFM	== COBS1.2
+   299 00000 0241 C                ADFM	== COBS1.2
+   300       204B C            COBS2       == 0x4B:rpage 1
+   300 00000 0011 C            COBS2       == 0x4B:rpage 1
+   301       204B C                RT5     == COBS2.5
+   301 00000 0541 C                RT5     == COBS2.5
+   302       204B C                RT4     == COBS2.4
+   302 00000 0441 C                RT4     == COBS2.4
+   303       204B C                RT3     == COBS2.3
+   303 00000 0341 C                RT3     == COBS2.3
+   304       204B C                RT2     == COBS2.2
+   304 00000 0241 C                RT2     == COBS2.2
+   305       204B C                RT1     == COBS2.1
+   305 00000 0141 C                RT1     == COBS2.1
+   306       204B C                RT0     == COBS2.0
+   306 00000 0041 C                RT0     == COBS2.0
+   307       204C C            COBS3       == 0x4C:rpage 1
+   307 00000 0011 C            COBS3       == 0x4C:rpage 1
+   308       204C C                CT3     == COBS3.3
+   308 00000 0341 C                CT3     == COBS3.3
+   309       204C C                CT2     == COBS3.2
+   309 00000 0241 C                CT2     == COBS3.2
+   310       204C C                CT1     == COBS3.1
+   310 00000 0141 C                CT1     == COBS3.1
+   311       204C C                CT0     == COBS3.0
+   311 00000 0041 C                CT0     == COBS3.0
+   312            C        ;R4D/TBWCR :Table Write Control Register
+   313       204D C            TBWCR       ==  0x4D:rpage 1
+   313 00000 0011 C            TBWCR       ==  0x4D:rpage 1
+   314       204D C                IAPVSF  ==  TBWCR.2
+   314 00000 0241 C                IAPVSF  ==  TBWCR.2
+   315       204D C                IAPV    ==  TBWCR.1
+   315 00000 0141 C                IAPV    ==  TBWCR.1
+   316       204D C                IAPEN   ==  TBWCR.0
+   316 00000 0041 C                IAPEN   ==  TBWCR.0
+   317            C        ;R4E/TBWAL :Table Write start Address Low byte
+   318       204E C            TBWAL       ==  0x4E:rpage 1
+   318 00000 0011 C            TBWAL       ==  0x4E:rpage 1
+   319            C        ;R4F/TBWAH :Table Write start Address High byte
+   320       204F C            TBWAH       ==  0x4F:rpage 1
+   320 00000 0011 C            TBWAH       ==  0x4F:rpage 1
+   321            C        
+   322            C        ;======================================================
+   323            C        ; BANK 2
+   324            C        ; Registers R5~R4F
+   325            C        ;======================================================
+   326            C        ;R05/TM1CR1 :Timer/Counter 1 Control Register 1
+   327       2005 C            TM1CR1      ==  0x05:rpage 2
+   327 00000 0012 C            TM1CR1      ==  0x05:rpage 2
+   328       2005 C                TM1S    ==  TM1CR1.7
+   328 00000 0742 C                TM1S    ==  TM1CR1.7
+   329       2005 C                TM1RC   ==  TM1CR1.6
+   329 00000 0642 C                TM1RC   ==  TM1CR1.6
+   330       2005 C                TM1SS1  ==  TM1CR1.5
+   330 00000 0542 C                TM1SS1  ==  TM1CR1.5
+   331       2005 C                TM1RX1  ==  TM1CR1.4
+   331 00000 0442 C                TM1RX1  ==  TM1CR1.4
+   332       2005 C                TM1FF   ==  TM1CR1.3
+   332 00000 0342 C                TM1FF   ==  TM1CR1.3
+   333       2005 C                TM1MOS  ==  TM1CR1.2
+   333 00000 0242 C                TM1MOS  ==  TM1CR1.2
+   334       2005 C                TM1IS1  ==  TM1CR1.1
+   334 00000 0142 C                TM1IS1  ==  TM1CR1.1
+   335       2005 C                TM1IS0  ==  TM1CR1.0
+   335 00000 0042 C                TM1IS0  ==  TM1CR1.0
+   336            C        ;R06/TM1CR2 :Timer/Counter 1 Control Register 2
+   337       2006 C            TM1CR2      ==  0x06:rpage 2
+   337 00000 0012 C            TM1CR2      ==  0x06:rpage 2
+   338       2006 C                TM1M2   ==  TM1CR2.7
+   338 00000 0742 C                TM1M2   ==  TM1CR2.7
+   339       2006 C                TM1M1   ==  TM1CR2.6
+   339 00000 0642 C                TM1M1   ==  TM1CR2.6
+   340       2006 C                TM1M0   ==  TM1CR2.5
+   340 00000 0542 C                TM1M0   ==  TM1CR2.5
+   341       2006 C                TM1SS0  ==  TM1CR2.4
+   341 00000 0442 C                TM1SS0  ==  TM1CR2.4
+   342       2006 C                TM1CK3  ==  TM1CR2.3
+   342 00000 0342 C                TM1CK3  ==  TM1CR2.3
+   343       2006 C                TM1CK2  ==  TM1CR2.2
+   343 00000 0242 C                TM1CK2  ==  TM1CR2.2
+   344       2006 C                TM1CK1  ==  TM1CR2.1
+   344 00000 0142 C                TM1CK1  ==  TM1CR2.1
+   345       2006 C                TM1CK0  ==  TM1CR2.0
+   345 00000 0042 C                TM1CK0  ==  TM1CR2.0
+   346            C        ;R07/TM1DBH :Timer/Counter 1 Data Buffer B High Byte
+   347       2007 C            TM1DBH      ==  0x07:rpage 2
+   347 00000 0012 C            TM1DBH      ==  0x07:rpage 2
+   348            C        ;R08/TM1DBL :Timer/Counter 1 Data Buffer B Low Byte
+   349       2008 C            TM1DBL      ==  0x08:rpage 2
+   349 00000 0012 C            TM1DBL      ==  0x08:rpage 2
+   350            C        ;R09/TM1DAH :Timer/Counter 1 Data Buffer A High Byte
+   351       2009 C            TM1DAH      ==  0x09:rpage 2
+   351 00000 0012 C            TM1DAH      ==  0x09:rpage 2
+   352            C        ;R0A/TM1DAL :Timer/Counter 1 Data Buffer A Low Byte
+   353       200A C            TM1DAL      ==  0x0A:rpage 2
+   353 00000 0012 C            TM1DAL      ==  0x0A:rpage 2
+   354            C        ;R0B/TM2CR1 :Timer/Counter 2 Control Register 1
+   355       200B C            TM2CR1      ==  0x0B:rpage 2
+   355 00000 0012 C            TM2CR1      ==  0x0B:rpage 2
+   356       200B C                TM2S    ==  TM2CR1.7
+   356 00000 0742 C                TM2S    ==  TM2CR1.7
+   357       200B C                TM2RC   ==  TM2CR1.6
+   357 00000 0642 C                TM2RC   ==  TM2CR1.6
+   358       200B C                TM2SS1  ==  TM2CR1.5
+   358 00000 0542 C                TM2SS1  ==  TM2CR1.5
+   359       200B C                TM2RX2  ==  TM2CR1.4
+   359 00000 0442 C                TM2RX2  ==  TM2CR1.4
+   360       200B C                TM2FF   ==  TM2CR1.3
+   360 00000 0342 C                TM2FF   ==  TM2CR1.3
+   361       200B C                TM2MOS  ==  TM2CR1.2
+   361 00000 0242 C                TM2MOS  ==  TM2CR1.2
+   362       200B C                TM2IS1  ==  TM2CR1.1
+   362 00000 0142 C                TM2IS1  ==  TM2CR1.1
+   363       200B C                TM2IS0  ==  TM2CR1.0
+   363 00000 0042 C                TM2IS0  ==  TM2CR1.0
+   364            C        ;R0C/TM2CR2 :Timer/Counter 2 Control Register 2
+   365       200C C            TM2CR2      ==  0x0C:rpage 2
+   365 00000 0012 C            TM2CR2      ==  0x0C:rpage 2
+   366       200C C                TM2M2   ==  TM2CR2.7
+   366 00000 0742 C                TM2M2   ==  TM2CR2.7
+   367       200C C                TM2M1   ==  TM2CR2.6
+   367 00000 0642 C                TM2M1   ==  TM2CR2.6
+   368       200C C                TM2M0   ==  TM2CR2.5
+   368 00000 0542 C                TM2M0   ==  TM2CR2.5
+   369       200C C                TM2SS0  ==  TM2CR2.4
+   369 00000 0442 C                TM2SS0  ==  TM2CR2.4
+   370       200C C                TM2CK3  ==  TM2CR2.3
+   370 00000 0342 C                TM2CK3  ==  TM2CR2.3
+   371       200C C                TM2CK2  ==  TM2CR2.2
+   371 00000 0242 C                TM2CK2  ==  TM2CR2.2
+   372       200C C                TM2CK1  ==  TM2CR2.1
+   372 00000 0142 C                TM2CK1  ==  TM2CR2.1
+   373       200C C                TM2CK0  ==  TM2CR2.0
+   373 00000 0042 C                TM2CK0  ==  TM2CR2.0
+   374            C        ;R0D/TM2DBH :Timer/Counter 2 Data Buffer B High Byte
+   375       200D C            TM2DBH      ==  0x0D:rpage 2
+   375 00000 0012 C            TM2DBH      ==  0x0D:rpage 2
+   376            C        ;R0E/TM2DBL :Timer/Counter 2 Data Buffer B Low Byte
+   377       200E C            TM2DBL      ==  0x0E:rpage 2
+   377 00000 0012 C            TM2DBL      ==  0x0E:rpage 2
+   378            C        ;R0F/TM2DAH :Timer/Counter 2 Data Buffer A High Byte
+   379       200F C            TM2DAH      ==  0x0F:rpage 2
+   379 00000 0012 C            TM2DAH      ==  0x0F:rpage 2
+   380            C        ;R10/TM2DAL :Timer/Counter 2 Data Buffer A Low Byte
+   381       2010 C            TM2DAL      ==  0x10:rpage 2
+   381 00000 0012 C            TM2DAL      ==  0x10:rpage 2
+   382            C        
+   383            C        ;R11 RX1CR1(RX1 Control Register 1)
+   384       2011 C            RX1CR1      ==  0x11:rpage 2
+   384 00000 0012 C            RX1CR1      ==  0x11:rpage 2
+   385       2011 C                RX1E    ==  RX1CR1.7
+   385 00000 0742 C                RX1E    ==  RX1CR1.7
+   386       2011 C                RXIVE   ==  RX1CR1.6
+   386 00000 0642 C                RXIVE   ==  RX1CR1.6
+   387       2011 C                RX1HV4  ==  RX1CR1.4
+   387 00000 0442 C                RX1HV4  ==  RX1CR1.4
+   388       2011 C                RX1HV3  ==  RX1CR1.3
+   388 00000 0342 C                RX1HV3  ==  RX1CR1.3
+   389       2011 C                RX1HV2  ==  RX1CR1.2
+   389 00000 0242 C                RX1HV2  ==  RX1CR1.2
+   390       2011 C                RX1HV1  ==  RX1CR1.1
+   390 00000 0142 C                RX1HV1  ==  RX1CR1.1
+   391       2011 C                RX1HV0  ==  RX1CR1.0
+   391 00000 0042 C                RX1HV0  ==  RX1CR1.0
+   392            C        ;R12 RX1CR2(RX1 Control Register 2)
+   393       2012 C            RX1CR2      ==  0x12:rpage 2
+   393 00000 0012 C            RX1CR2      ==  0x12:rpage 2
+   394       2012 C                RX1OPE  ==  RX1CR2.7
+   394 00000 0742 C                RX1OPE  ==  RX1CR2.7
+   395       2012 C                RX1OUT  ==  RX1CR2.6
+   395 00000 0642 C                RX1OUT  ==  RX1CR2.6
+   396       2012 C                RX1LV4  ==  RX1CR2.4
+   396 00000 0442 C                RX1LV4  ==  RX1CR2.4
+   397       2012 C                RX1LV3  ==  RX1CR2.3
+   397 00000 0342 C                RX1LV3  ==  RX1CR2.3
+   398       2012 C                RX1LV2  ==  RX1CR2.2
+   398 00000 0242 C                RX1LV2  ==  RX1CR2.2
+   399       2012 C                RX1LV1  ==  RX1CR2.1
+   399 00000 0142 C                RX1LV1  ==  RX1CR2.1
+   400       2012 C                RX1LV0  ==  RX1CR2.0
+   400 00000 0042 C                RX1LV0  ==  RX1CR2.0
+   401            C        ;R13 RX2CR1(RX2 Control Register 1)
+   402       2013 C            RX2CR1      ==  0x13:rpage 2
+   402 00000 0012 C            RX2CR1      ==  0x13:rpage 2
+   403       2013 C                RX2E    ==  RX2CR1.7
+   403 00000 0742 C                RX2E    ==  RX2CR1.7
+   404       2013 C                RX2HV4  ==  RX2CR1.4
+   404 00000 0442 C                RX2HV4  ==  RX2CR1.4
+   405       2013 C                RX2HV3  ==  RX2CR1.3
+   405 00000 0342 C                RX2HV3  ==  RX2CR1.3
+   406       2013 C                RX2HV2  ==  RX2CR1.2
+   406 00000 0242 C                RX2HV2  ==  RX2CR1.2
+   407       2013 C                RX2HV1  ==  RX2CR1.1
+   407 00000 0142 C                RX2HV1  ==  RX2CR1.1
+   408       2013 C                RX2HV0  ==  RX2CR1.0
+   408 00000 0042 C                RX2HV0  ==  RX2CR1.0
+   409            C        ;R14 RX2CR2(RX2 Control Register 2)
+   410       2014 C            RX2CR2      ==  0x14:rpage 2
+   410 00000 0012 C            RX2CR2      ==  0x14:rpage 2
+   411       2014 C                RX2OPE  ==  RX2CR2.7
+   411 00000 0742 C                RX2OPE  ==  RX2CR2.7
+   412       2014 C                RX2OUT  ==  RX2CR2.6
+   412 00000 0642 C                RX2OUT  ==  RX2CR2.6
+   413       2014 C                RX2LV4  ==  RX2CR2.4
+   413 00000 0442 C                RX2LV4  ==  RX2CR2.4
+   414       2014 C                RX2LV3  ==  RX2CR2.3
+   414 00000 0342 C                RX2LV3  ==  RX2CR2.3
+   415       2014 C                RX2LV2  ==  RX2CR2.2
+   415 00000 0242 C                RX2LV2  ==  RX2CR2.2
+   416       2014 C                RX2LV1  ==  RX2CR2.1
+   416 00000 0142 C                RX2LV1  ==  RX2CR2.1
+   417       2014 C                RX2LV0  ==  RX2CR2.0
+   417 00000 0042 C                RX2LV0  ==  RX2CR2.0
+   418            C        ;R15 RXDCR(RX Deglitch Control Register)
+   419       2015 C            RXDCR       ==  0x15:rpage 2
+   419 00000 0012 C            RXDCR       ==  0x15:rpage 2
+   420       2015 C                RX1DS   ==  RXDCR.7
+   420 00000 0742 C                RX1DS   ==  RXDCR.7
+   421       2015 C                RX1DT2  ==  RXDCR.6
+   421 00000 0642 C                RX1DT2  ==  RXDCR.6
+   422       2015 C                RX1DT1  ==  RXDCR.5
+   422 00000 0542 C                RX1DT1  ==  RXDCR.5
+   423       2015 C                RX1DT0  ==  RXDCR.4
+   423 00000 0442 C                RX1DT0  ==  RXDCR.4
+   424       2015 C                RX2DS   ==  RXDCR.3
+   424 00000 0342 C                RX2DS   ==  RXDCR.3
+   425       2015 C                RX2DT2  ==  RXDCR.2
+   425 00000 0242 C                RX2DT2  ==  RXDCR.2
+   426       2015 C                RX2DT1  ==  RXDCR.1
+   426 00000 0142 C                RX2DT1  ==  RXDCR.1
+   427       2015 C                RX2DT0  ==  RXDCR.0
+   427 00000 0042 C                RX2DT0  ==  RXDCR.0
+   428            C        ;R16 TXSC(TX Sink Current Register)
+   429       2016 C            TXSC        ==  0x16:rpage 2
+   429 00000 0012 C            TXSC        ==  0x16:rpage 2
+   430       2016 C                TXCS3   ==  TXSC.3
+   430 00000 0342 C                TXCS3   ==  TXSC.3
+   431       2016 C                TXCS2   ==  TXSC.2
+   431 00000 0242 C                TXCS2   ==  TXSC.2
+   432       2016 C                TXCS1   ==  TXSC.1
+   432 00000 0142 C                TXCS1   ==  TXSC.1
+   433       2016 C                TXCS0   ==  TXSC.0
+   433 00000 0042 C                TXCS0   ==  TXSC.0
+   434            C        ;R17 TXCR1(TX Control Register 1)
+   435       2017 C            TXCR1       ==  0x17:rpage 2
+   435 00000 0012 C            TXCR1       ==  0x17:rpage 2
+   436       2017 C                TXEN    ==  TXCR1.7
+   436 00000 0742 C                TXEN    ==  TXCR1.7
+   437       2017 C                TXTM    ==  TXCR1.5
+   437 00000 0542 C                TXTM    ==  TXCR1.5
+   438       2017 C                TXSR1   ==  TXCR1.4
+   438 00000 0442 C                TXSR1   ==  TXCR1.4
+   439       2017 C                TXSR0   ==  TXCR1.3
+   439 00000 0342 C                TXSR0   ==  TXCR1.3
+   440       2017 C                TXMV2   ==  TXCR1.2
+   440 00000 0242 C                TXMV2   ==  TXCR1.2
+   441       2017 C                TXMV1   ==  TXCR1.1
+   441 00000 0142 C                TXMV1   ==  TXCR1.1
+   442       2017 C                TXMV0   ==  TXCR1.0
+   442 00000 0042 C                TXMV0   ==  TXCR1.0
+   443            C        ;R18 TXCR2(TX Control Register 2)
+   444       2018 C            TXCR2       ==  0x18:rpage 2
+   444 00000 0012 C            TXCR2       ==  0x18:rpage 2
+   445       2018 C                TXS     ==  TXCR2.7
+   445 00000 0742 C                TXS     ==  TXCR2.7
+   446       2018 C                TXCLK   ==  TXCR2.6
+   446 00000 0642 C                TXCLK   ==  TXCR2.6
+   447       2018 C                TXDP2   ==  TXCR2.5
+   447 00000 0542 C                TXDP2   ==  TXCR2.5
+   448       2018 C                TXDP1   ==  TXCR2.4
+   448 00000 0442 C                TXDP1   ==  TXCR2.4
+   449       2018 C                TXDP0   ==  TXCR2.3
+   449 00000 0342 C                TXDP0   ==  TXCR2.3
+   450       2018 C                TXCP2   ==  TXCR2.2
+   450 00000 0242 C                TXCP2   ==  TXCR2.2
+   451       2018 C                TXCP1   ==  TXCR2.1
+   451 00000 0142 C                TXCP1   ==  TXCR2.1
+   452       2018 C                TXCP0   ==  TXCR2.0
+   452 00000 0042 C                TXCP0   ==  TXCR2.0
+   453            C        ;R19 TXDT(TX Delay Timer Register)
+   454       2019 C            TXDT       ==  0x19:rpage 2
+   454 00000 0012 C            TXDT       ==  0x19:rpage 2
+   455            C        ;R1A TXCT(TX Sink Current Timer Register)
+   456       201A C            TXCT       ==  0x1A:rpage 2
+   456 00000 0012 C            TXCT       ==  0x1A:rpage 2
+   457            C        ;R1B TXRC (TXTM Read Counting)
+   458       201B C            TXRC       ==  0x1B:rpage 2
+   458 00000 0012 C            TXRC       ==  0x1B:rpage 2
+   459            C        ;R1C CMP3&LRR (CMP3&Limiting Resistor)
+   460       201C C            LRR         ==  0x1C:rpage 2
+   460 00000 0012 C            LRR         ==  0x1C:rpage 2
+   461       201C C                CMP3DS  ==  LRR.7
+   461 00000 0742 C                CMP3DS  ==  LRR.7
+   462       201C C                CMP3DT2 ==  LRR.6
+   462 00000 0642 C                CMP3DT2 ==  LRR.6
+   463       201C C                CMP3DT1 ==  LRR.5
+   463 00000 0542 C                CMP3DT1 ==  LRR.5
+   464       201C C                CMP3DT0 ==  LRR.4
+   464 00000 0442 C                CMP3DT0 ==  LRR.4
+   465       201C C                CL0     ==  LRR.0
+   465 00000 0042 C                CL0     ==  LRR.0
+   466            C        ;R1D DCCR (Discharge Control Register)
+   467       201D C            DCCR        ==  0x1D:rpage 2
+   467 00000 0012 C            DCCR        ==  0x1D:rpage 2
+   468       201D C                CMP3E   ==  DCCR.7
+   468 00000 0742 C                CMP3E   ==  DCCR.7
+   469       201D C                MCDC    ==  DCCR.6
+   469 00000 0642 C                MCDC    ==  DCCR.6
+   470       201D C                DCT2    ==  DCCR.4
+   470 00000 0442 C                DCT2    ==  DCCR.4
+   471       201D C                DCT1    ==  DCCR.3
+   471 00000 0342 C                DCT1    ==  DCCR.3
+   472       201D C                DCT0    ==  DCCR.2
+   472 00000 0242 C                DCT0    ==  DCCR.2
+   473       201D C                DCR1    ==  DCCR.1
+   473 00000 0142 C                DCR1    ==  DCCR.1
+   474       201D C                DCR0    ==  DCCR.0
+   474 00000 0042 C                DCR0    ==  DCCR.0
+   475            C        ;R1E DCVS (Discharge Voltage select Register)
+   476       201E C            DCVS        ==  0x1E:rpage 2
+   476 00000 0012 C            DCVS        ==  0x1E:rpage 2
+   477       201E C                CMP3OPE ==  DCVS.7
+   477 00000 0742 C                CMP3OPE ==  DCVS.7
+   478       201E C                CMP3OUT ==  DCVS.6
+   478 00000 0642 C                CMP3OUT ==  DCVS.6
+   479       201E C                DCP     ==  DCVS.3
+   479 00000 0342 C                DCP     ==  DCVS.3
+   480       201E C                DCV2    ==  DCVS.2
+   480 00000 0242 C                DCV2    ==  DCVS.2
+   481       201E C                DCV1    ==  DCVS.1
+   481 00000 0142 C                DCV1    ==  DCVS.1
+   482       201E C                DCV0    ==  DCVS.0
+   482 00000 0042 C                DCV0    ==  DCVS.0
+   483            C        
+   484            C        
+   485            C        ;R1F IR1SR (IR1 Sink Current Control Register)
+   486       201F C            IR1SR       ==  0x1F:rpage 2
+   486 00000 0012 C            IR1SR       ==  0x1F:rpage 2
+   487            C        ;R20 IR2SR (IR2 Sink Current Control Register)
+   488       2020 C            IR2SR       ==  0x20:rpage 2
+   488 00000 0012 C            IR2SR       ==  0x20:rpage 2
+   489            C        ;R21 IRCR1 (IR Control Register 1)
+   490       2021 C            IRCR1       ==  0x21:rpage 2
+   490 00000 0012 C            IRCR1       ==  0x21:rpage 2
+   491            C        ;R22 IGCR1 (Integrator Control Register 1)
+   492       2022 C            IGCR1       ==  0x22:rpage 2
+   492 00000 0012 C            IGCR1       ==  0x22:rpage 2
+   493            C        ;R23 IGCR2 (Integrator Control Register 2)
+   494       2023 C            IGCR2       ==  0x23:rpage 2
+   494 00000 0012 C            IGCR2       ==  0x23:rpage 2
+   495            C        ;R24 IGCR3 (Integrator Control Register 3)
+   496       2024 C            IGCR3       ==  0x24:rpage 2
+   496 00000 0012 C            IGCR3       ==  0x24:rpage 2
+   497            C        ;R25 IGDBH (Integrator Data Buffer High byte)
+   498       2025 C            IGDBH       ==  0x25:rpage 2
+   498 00000 0012 C            IGDBH       ==  0x25:rpage 2
+   499            C        ;R26 IGDBL (Integrator Data Buffer Low byte)
+   500       2026 C            IGDBL       ==  0x26:rpage 2    
+   500 00000 0012 C            IGDBL       ==  0x26:rpage 2    
+   501            C        ;R27 TLED (Time of LED Control Register)
+   502       2027 C            TLED        ==  0x27:rpage 2
+   502 00000 0012 C            TLED        ==  0x27:rpage 2
+   503            C        
+   504            C        ;R38 IGCOBS1 (Integrator Code Option Bit Selection Register 1)
+   505       2038 C            IGCOBS1     ==  0x38:rpage 2
+   505 00000 0012 C            IGCOBS1     ==  0x38:rpage 2
+   506            C        ;R39 IGCOBS2 (Integrator Code Option Bit Selection Register 2)
+   507       2039 C            IGCOBS2     ==  0x39:rpage 2
+   507 00000 0012 C            IGCOBS2     ==  0x39:rpage 2
+   508            C        ;R3A IGCOBS3 (Integrator Code Option Bit Selection Register 3)
+   509       203A C            IGCOBS3     ==  0x3A:rpage 2
+   509 00000 0012 C            IGCOBS3     ==  0x3A:rpage 2
+   510            C        ;R3B IGCOBS4 (Integrator Code Option Bit Selection Register 4)
+   511       203B C            IGCOBS4     ==  0x3B:rpage 2
+   511 00000 0012 C            IGCOBS4     ==  0x3B:rpage 2
+   512            C        ;R3C IGCOBS5 (Integrator Code Option Bit Selection Register 5)
+   513       203C C            IGCOBS5     ==  0x3C:rpage 2
+   513 00000 0012 C            IGCOBS5     ==  0x3C:rpage 2
+   514            C        ;R3D IGCOBS6 (Integrator Code Option Bit Selection Register 6)
+   515       203D C            IGCOBS6     ==  0x3D:rpage 2
+   515 00000 0012 C            IGCOBS6     ==  0x3D:rpage 2
+   516            C        ;R3E IGCOBS7 (Integrator Code Option Bit Selection Register 7)
+   517       203E C            IGCOBS7     ==  0x3E:rpage 2
+   517 00000 0012 C            IGCOBS7     ==  0x3E:rpage 2
+   518            C        
+   519            C        ;R41 VRCOBS1 (VREF Code Option Bit Selection Register 1)
+   520       2041 C            VRCOBS1     ==  0x41:rpage 2
+   520 00000 0012 C            VRCOBS1     ==  0x41:rpage 2
+   521            C        ;R42/COBS4 :Code Option Bit Selection Register4
+   522       2042 C            COBS4       ==  0x42:rpage 2
+   522 00000 0012 C            COBS4       ==  0x42:rpage 2
+   523            C        ;R43/COBS5 :Code Option Bit Selection Register5
+   524       2043 C            COBS5       ==  0x43:rpage 2
+   524 00000 0012 C            COBS5       ==  0x43:rpage 2
+   525            C        ;R44/COBS6 :Code Option Bit Selection Register6
+   526       2044 C            COBS6       ==  0x44:rpage 2
+   526 00000 0012 C            COBS6       ==  0x44:rpage 2
+   527            C        
+   528            C        ;R47/LOCKPR (Lock Page Number Register)
+   529       2047 C            LOCKPR      ==  0x47:rpage 2
+   529 00000 0012 C            LOCKPR      ==  0x47:rpage 2
+   530            C        ;R46/LOCKCR (Lock Control Register)
+   531       2048 C            LOCKCR      ==  0x48:rpage 2
+   531 00000 0012 C            LOCKCR      ==  0x48:rpage 2
+   532       2048 C        	LOCKEN  == LOCKCR.7
+   532 00000 0742 C        	LOCKEN  == LOCKCR.7
     28                     ELSE
     29                     	NOP
     30                     ENDIF
@@ -1168,18 +1033,18 @@
    121                     ;====================== BACK_GROUND_LOOP ================
    122 00057               BACK_GROUND_LOOP:
    123 00057 7A00          	SBANK	0
-   124 00058 47F0          	CALL	TEST_STACK
+   124 00058 4816          	CALL	TEST_STACK
    125 00059 40F2          	CALL	TEST_INST_ARITHEMATIC	;ADD, SUB, DAA, DEC, DECA, INC, INCA, ADC, SUBB, NEG
    126 0005A 449C          	CALL	TEST_INST_LOGIC_I		;AND, OR, COM, COMA, XOR, CLR, CLRA, BTG
    127 0005B 45CB          	CALL	TEST_INST_LOGIC_II		;RLC, RLCA, RRC, RRCA, RRA, RR, RLA, RL, XCH
    128 0005C 4693          	CALL	TEST_INST_TRANSFER		;MOV, SWAP, SWAPA
    129 0005D 46CB          	CALL	TEST_INST_MANIPULATION	;BC, BS, JBC, JBS
-   130 0005E 46CC          	CALL	TEST_INST_BRANCH_I		;JC, JNC, JZ, JNZ, DJZ, DJZA, JZ, JZA
-   131 0005F 470B          	CALL	TEST_INST_BRANCH_II		;JE R, JGE, JLE, JE K
-   132 00060 474A          	CALL	TEST_INST_BRANCH_III	;CALL, JMP, LCALL, LJMP, RETL
-   133 00061 4771          	CALL	TEST_INST_CONTROL		;ENI, DISI, WDTC, SLEP, NOP, RETI, RET
-   134 00062 477C          	CALL	TEST_SHORT_BRANCH		;SJC, SJZ, SJNC, SJNZ
-   135 00063 47C5          	CALL	TEST_READ_ROM			;TBRD, TBRDA
+   130 0005E 46F2          	CALL	TEST_INST_BRANCH_I		;JC, JNC, JZ, JNZ, DJZ, DJZA, JZ, JZA
+   131 0005F 4731          	CALL	TEST_INST_BRANCH_II		;JE R, JGE, JLE, JE K
+   132 00060 4770          	CALL	TEST_INST_BRANCH_III	;CALL, JMP, LCALL, LJMP, RETL
+   133 00061 4797          	CALL	TEST_INST_CONTROL		;ENI, DISI, WDTC, SLEP, NOP, RETI, RET
+   134 00062 47A2          	CALL	TEST_SHORT_BRANCH		;SJC, SJZ, SJNC, SJNZ
+   135 00063 47EB          	CALL	TEST_READ_ROM			;TBRD, TBRDA
    136 00064 4F00          	CALL	TEST_RAM_BANK_0_5		;Write(0x55),Read(0x55),Clear(0x00)
    137 00065 4F17          	CALL	TEST_RAM_BANK_0_A		;Write(0xAA),Read(0xAA),Clear(0x00)
    138 00066 4F2E          	CALL	TEST_RAM_BANK_1_3		;Write(0x33),Read(0x33),Clear(0x00)
@@ -1410,7 +1275,7 @@
    363 00121 6080          			MOV		A,@0x80
    364 00122 0150          			MOV		0x50,A		; [0x50] = 0x80
    365 00123 607F          			MOV		A,@0x7F		; 
-   366 00124 7E40          			ADC		A,0x40		; A = 0x7F + 0x80
+   366 00124 7E50          			ADC		A,0x50		; A = 0x7F + 0x80
    367 00125 0001          			DAA
    368 00126 3803          			JBS		C			; Check C = 1? 	/ By ADC
    369 00127 5071          			JMP	INS_FAIL
@@ -2957,515 +2822,556 @@
   1910 006CA 0012          		RET
   1911                     
   1912 006CB               	TEST_INST_MANIPULATION:
-  1913 006CB 0012          		RET
-  1914                     
-  1915 006CC               	TEST_INST_BRANCH_I:
-  1916 006CC               		INST_DJZ_R:			;------- Instruction Test => DJZ R
-  1917 006CC 601A          			MOV		A,@0x1A
-  1918 006CD 015A          			MOV		INST,A
-  1919 006CE 40EA          			CALL	STATUS_CLEAR
-  1920 006CF 6001          			MOV		A,@0x01
-  1921 006D0 0150          			MOV		0x50,A		; [0x50] = 0x01
-  1922 006D1 1750          			DJZ		0x50		; [0x50] = [0x50] - 1,if z,skip
-  1923 006D2 5071          			JMP		INS_FAIL
-  1924 006D3 1050          			MOV		A,0x50
-  1925 006D4 6C00          			XOR		A,@0x00		; Check Result ?
-  1926 006D5 40ED          			CALL	INST_XOR_JUDGE	
-  1927 006D6 40EA          			CALL	STATUS_CLEAR
-  1928 006D7 6002          			MOV		A,@0x02
-  1929 006D8 0150          			MOV		0x50,A		; [0x50] = 0x02
-  1930 006D9 1750          			DJZ		0x50		; [0x50] = [0x50] - 1,if z,skip
-  1931 006DA 56DC          			JMP		$+2
-  1932 006DB 5071          			JMP		INS_FAIL
-  1933 006DC               		INST_DJZA_R:		;------- Instruction Test => DJZA R
-  1934 006DC 6019          			MOV		A,@0x19
-  1935 006DD 015A          			MOV		INST,A
-  1936 006DE 40EA          			CALL	STATUS_CLEAR
-  1937 006DF 6001          			MOV		A,@0x01
-  1938 006E0 0150          			MOV		0x50,A		; [0x50] = 0x01
-  1939 006E1 1650          			DJZA	0x50		; A = [0x50] - 0x01,if z,skip
-  1940 006E2 5071          			JMP	INS_FAIL
-  1941 006E3 6C00          			XOR		A,@0x00		; Check Result ?
-  1942 006E4 40ED          			CALL	INST_XOR_JUDGE
-  1943 006E5 40EA          			CALL	STATUS_CLEAR
-  1944 006E6 6002          			MOV		A,@0x02
-  1945 006E7 0150          			MOV		0x50,A		; [0x50] = 0x02
-  1946 006E8 1650          			DJZA	0x50		; A = [0x50] - 0x01,if z,skip
-  1947 006E9 56EB          			JMP		$+2
-  1948 006EA 5071          			JMP	INS_FAIL
-  1949 006EB               		INST_JZA_R:			;-------Instruction Test => JZA R
-  1950 006EB 6021          			MOV		A,@0x21
-  1951 006EC 015A          			MOV		INST,A
-  1952 006ED 40EA          			CALL	STATUS_CLEAR
-  1953 006EE 60FF          			MOV		A,@0xFF
-  1954 006EF 0150          			MOV		0x50,A
-  1955 006F0 1E50          			JZA		0x50		; A = [0x50] + 1,if 0 skip
-  1956 006F1 5071          			JMP		INS_FAIL
-  1957 006F2 6C00          			XOR		A,@0x00		; Check Result ?
-  1958 006F3 40ED          			CALL	INST_XOR_JUDGE
-  1959 006F4 40EA          			CALL	STATUS_CLEAR
-  1960 006F5 6080          			MOV		A,@0x80
-  1961 006F6 0150          			MOV		0x50,A
-  1962 006F7 1E50          			JZA		0x50		; A = [0x50] + 1,if 0 skip
-  1963 006F8 56FA          			JMP		$+2
-  1964 006F9 5071          			JMP		INS_FAIL
-  1965 006FA               		INST_JZ_R:			;-------Instruction Test => JZ R
-  1966 006FA 6022          			MOV		A,@0x22
-  1967 006FB 015A          			MOV		INST,A
+  1913 006CB               		INST_BS_R:		;-------Instruction Test => BS	R
+  1914 006CB 40EA          			CALL	STATUS_CLEAR
+  1915 006CC 7A00          			SBANK	0
+  1916 006CD 103E          			MOV		A,ADCR1
+  1917 006CE 0150          			MOV		TMP50,A
+  1918 006CF 283E          			BS		ADCR1.0
+  1919 006D0 1050          			MOV		A,TMP50
+  1920 006D1 0C3E          			XOR		A,ADCR1
+  1921 006D2 3203          			JBC		Z
+  1922 006D3 5071          			JMP		INS_FAIL
+  1923 006D4 3603          			JBC		N
+  1924 006D5 5071          			JMP		INS_FAIL
+  1925 006D6 103E          			MOV		A,ADCR1
+  1926 006D7 0150          			MOV		TMP50,A
+  1927 006D8 293E          			BS		ADCR1.1
+  1928 006D9 1050          			MOV		A,TMP50
+  1929 006DA 0C3E          			XOR		A,ADCR1
+  1930 006DB 3203          			JBC		Z
+  1931 006DC 5071          			JMP		INS_FAIL
+  1932 006DD 3603          			JBC		N
+  1933 006DE 5071          			JMP		INS_FAIL
+  1934 006DF               		INST_BC_R:		;-------Instruction Test => BC	R
+  1935 006DF 103E          			MOV		A,ADCR1
+  1936 006E0 0150          			MOV		TMP50,A
+  1937 006E1 203E          			BC		ADCR1.0
+  1938 006E2 1050          			MOV		A,TMP50
+  1939 006E3 0C3E          			XOR		A,ADCR1
+  1940 006E4 3203          			JBC		Z
+  1941 006E5 5071          			JMP		INS_FAIL
+  1942 006E6 3603          			JBC		N
+  1943 006E7 5071          			JMP		INS_FAIL
+  1944 006E8 103E          			MOV		A,ADCR1
+  1945 006E9 0150          			MOV		TMP50,A
+  1946 006EA 213E          			BC		ADCR1.1
+  1947 006EB 1050          			MOV		A,TMP50
+  1948 006EC 0C3E          			XOR		A,ADCR1
+  1949 006ED 3203          			JBC		Z
+  1950 006EE 5071          			JMP		INS_FAIL
+  1951 006EF 3603          			JBC		N
+  1952 006F0 5071          			JMP		INS_FAIL
+  1953                     
+  1954 006F1 0012          		RET
+  1955                     
+  1956 006F2               	TEST_INST_BRANCH_I:
+  1957 006F2               		INST_DJZ_R:			;------- Instruction Test => DJZ R
+  1958 006F2 601A          			MOV		A,@0x1A
+  1959 006F3 015A          			MOV		INST,A
+  1960 006F4 40EA          			CALL	STATUS_CLEAR
+  1961 006F5 6001          			MOV		A,@0x01
+  1962 006F6 0150          			MOV		0x50,A		; [0x50] = 0x01
+  1963 006F7 1750          			DJZ		0x50		; [0x50] = [0x50] - 1,if z,skip
+  1964 006F8 5071          			JMP		INS_FAIL
+  1965 006F9 1050          			MOV		A,0x50
+  1966 006FA 6C00          			XOR		A,@0x00		; Check Result ?
+  1967 006FB 40ED          			CALL	INST_XOR_JUDGE	
   1968 006FC 40EA          			CALL	STATUS_CLEAR
-  1969 006FD 60FF          			MOV		A,@0xFF
-  1970 006FE 0150          			MOV		0x50,A		; [0x50] = 0xFF
-  1971 006FF 1F50          			JZ		0x50		; [0x50] = [0x50] + 1,if 0 skip
-  1972 00700 5071          			JMP		INS_FAIL
-  1973 00701 1050          			MOV		A,0x50
-  1974 00702 6C00          			XOR		A,@0x00		; Check Result ?
-  1975 00703 40ED          			CALL	INST_XOR_JUDGE
-  1976 00704 40EA          			CALL	STATUS_CLEAR
-  1977 00705 6080          			MOV		A,@0x80
-  1978 00706 0150          			MOV		0x50,A		; [0x50] = 0xFF
-  1979 00707 1F50          			JZ		0x50		; [0x50] = [0x50] + 1,if 0 skip
-  1980 00708 570A          			JMP		$+2
-  1981 00709 5071          			JMP		INS_FAIL
-  1982 0070A 0012          		RET
-  1983 0070B               	TEST_INST_BRANCH_II:
-  1984 0070B               		INST_JE_R:			;-------Instruction Test => JE R
-  1985 0070B 6023          			MOV		A,@0x23
-  1986 0070C 015A          			MOV		INST,A
-  1987 0070D 40EA          			CALL	STATUS_CLEAR
-  1988 0070E 605A          			MOV		A,@0x5A
-  1989 0070F 0150          			MOV		0x50,A		; [0x50] = 0x5A
-  1990 00710 6150          			JE		0x50		; [0x50] = A?
-  1991 00711 5071          			JMP		INS_FAIL
-  1992 00712 605B          			MOV		A,@0x5B
-  1993 00713 0150          			MOV		0x50,A		; [0x50] = 0x5B
-  1994 00714 605C          			MOV		A,@0x5C
-  1995 00715 6150          			JE		0x50		; [0x50] = A(0x5C)?
-  1996 00716 5718          			JMP		$+2
+  1969 006FD 6002          			MOV		A,@0x02
+  1970 006FE 0150          			MOV		0x50,A		; [0x50] = 0x02
+  1971 006FF 1750          			DJZ		0x50		; [0x50] = [0x50] - 1,if z,skip
+  1972 00700 5702          			JMP		$+2
+  1973 00701 5071          			JMP		INS_FAIL
+  1974 00702               		INST_DJZA_R:		;------- Instruction Test => DJZA R
+  1975 00702 6019          			MOV		A,@0x19
+  1976 00703 015A          			MOV		INST,A
+  1977 00704 40EA          			CALL	STATUS_CLEAR
+  1978 00705 6001          			MOV		A,@0x01
+  1979 00706 0150          			MOV		0x50,A		; [0x50] = 0x01
+  1980 00707 1650          			DJZA	0x50		; A = [0x50] - 0x01,if z,skip
+  1981 00708 5071          			JMP	INS_FAIL
+  1982 00709 6C00          			XOR		A,@0x00		; Check Result ?
+  1983 0070A 40ED          			CALL	INST_XOR_JUDGE
+  1984 0070B 40EA          			CALL	STATUS_CLEAR
+  1985 0070C 6002          			MOV		A,@0x02
+  1986 0070D 0150          			MOV		0x50,A		; [0x50] = 0x02
+  1987 0070E 1650          			DJZA	0x50		; A = [0x50] - 0x01,if z,skip
+  1988 0070F 5711          			JMP		$+2
+  1989 00710 5071          			JMP	INS_FAIL
+  1990 00711               		INST_JZA_R:			;-------Instruction Test => JZA R
+  1991 00711 6021          			MOV		A,@0x21
+  1992 00712 015A          			MOV		INST,A
+  1993 00713 40EA          			CALL	STATUS_CLEAR
+  1994 00714 60FF          			MOV		A,@0xFF
+  1995 00715 0150          			MOV		0x50,A
+  1996 00716 1E50          			JZA		0x50		; A = [0x50] + 1,if 0 skip
   1997 00717 5071          			JMP		INS_FAIL
-  1998 00718               		INST_JGE_R:			;-------Instruction Test => JGE R
-  1999 00718 6024          			MOV		A,@0x24
-  2000 00719 015A          			MOV		INST,A
-  2001 0071A 40EA          			CALL	STATUS_CLEAR
-  2002 0071B 607F          			MOV		A,@0x7F
-  2003 0071C 0150          			MOV		0x50,A		; [0x50] = 0x7F
-  2004 0071D 6000          			MOV		A,@0x00
-  2005 0071E 6250          			JGE		0x50		; [0x50] > A ?
-  2006 0071F 5071          			JMP		INS_FAIL
-  2007 00720 40EA          			CALL	STATUS_CLEAR
-  2008 00721 60FF          			MOV		A,@0xFF
-  2009 00722 0150          			MOV		0x50,A		; [0x50] = 0xFF
-  2010 00723 6080          			MOV		A,@0x80
-  2011 00724 6250          			JGE		0x50		; [0x50] > A ?
-  2012 00725 5071          			JMP		INS_FAIL
-  2013 00726 40EA          			CALL	STATUS_CLEAR
-  2014 00727 6000          			MOV		A,@0x00
-  2015 00728 0150          			MOV		0x50,A		; [0x50] = 0x00
-  2016 00729 60FF          			MOV		A,@0xFF
-  2017 0072A 6250          			JGE		0x50		; [0x50] > A(0xFF) ?x
-  2018 0072B 572D          			JMP		$+2
-  2019 0072C 5071          			JMP		INS_FAIL
-  2020                     
-  2021 0072D               		INST_JLE_R:			;-------Instruction Test => JLE R
-  2022 0072D 6025          			MOV		A,@0x25
-  2023 0072E 015A          			MOV		INST,A
-  2024 0072F 40EA          			CALL	STATUS_CLEAR
-  2025 00730 6000          			MOV		A,@0x00
-  2026 00731 0150          			MOV		0x50,A		; [0x50] = 0x00
-  2027 00732 607F          			MOV		A,@0x7F
-  2028 00733 6350          			JLE		0x50		; [0x50] < A ?
-  2029 00734 5071          			JMP		INS_FAIL
-  2030 00735 6000          			MOV		A,@0x00
-  2031 00736 0103          			MOV		STATUS,A
-  2032 00737 6080          			MOV		A,@0x80
-  2033 00738 0150          			MOV		0x50,A		; [0x50] = 0x80
-  2034 00739 60FF          			MOV		A,@0xFF
-  2035 0073A 6350          			JLE		0x50		; [0x50] < A ?
-  2036 0073B 5071          			JMP		INS_FAIL
-  2037 0073C 40EA          			CALL	STATUS_CLEAR
-  2038 0073D 60FF          			MOV		A,@0xFF
-  2039 0073E 0150          			MOV		0x50,A		; [0x50] = 0xFF
-  2040 0073F 6000          			MOV		A,@0x00
-  2041 00740 6350          			JLE		0x50		; [0x50] < A(0x00) ?x
-  2042 00741 5743          			JMP		$+2
-  2043 00742 5071          			JMP		INS_FAIL
-  2044 00743               		INST_JE_K:			;-------Instruction Test => JE k
-  2045 00743 6027          			MOV		A,@0x27
-  2046 00744 015A          			MOV		INST,A
-  2047 00745 40EA          			CALL	STATUS_CLEAR
-  2048 00746 607F          			MOV		A,@0x7F
-  2049 00747 657F          			JE		@0x7F
-  2050 00748 5071          			JMP	INS_FAIL
-  2051 00749 0012          		RET
-  2052 0074A               	TEST_INST_BRANCH_III:
-  2053 0074A               		INST_CALL_K:		;-------Instruction Test => CALL k
-  2054 0074A 6002          			MOV	A,@0x02
-  2055 0074B 015A          			MOV	INST,A
-  2056 0074C 40EA          			CALL	STATUS_CLEAR
-  2057 0074D 6003          			MOV		A,@0x03
-  2058 0074E 0150          			MOV		0x50,A
-  2059 0074F 4816          			CALL	CALL_Test
-  2060 00750 1050          			MOV		A,0x50
-  2061 00751 6C04          			XOR		A,@0x04
-  2062 00752 40ED          			CALL	INST_XOR_JUDGE
-  2063                     
-  2064 00753               		INST_LCALL_K:		;-------Instruction Test => LCALL k
-  2065 00753 6003          			MOV		A,@0x03
-  2066 00754 015A          			MOV		INST,A
-  2067 00755 40EA          			CALL	STATUS_CLEAR
-  2068 00756 6003          			MOV		A,@0x03
-  2069 00757 0151          			MOV		0x51,A
-  2070 00758 7A80          			LCALL	LCALL_Test
-  2070 00759 1000          			LCALL	LCALL_Test
-  2071 0075A 1051          			MOV		A,0x51
-  2072 0075B 6C04          			XOR		A,@0x04		; Check Result ?
-  2073 0075C 40ED          			CALL	INST_XOR_JUDGE
-  2074                     
-  2075 0075D               		INST_RETL_K:		;-------Instruction Test => RETL k
-  2076 0075D 602C          			MOV		A,@0x2C
-  2077 0075E 015A          			MOV		INST,A
-  2078 0075F 40EA          			CALL	STATUS_CLEAR
-  2079 00760 6000          			MOV		A,@0x00
-  2080 00761 4EF0          			CALL	INST_RETL_TABLE
-  2081 00762 6CA1          			XOR		A,@0xA1
-  2082 00763 40ED          			CALL	INST_XOR_JUDGE
-  2083 00764 6001          			MOV		A,@0x01
-  2084 00765 4EF0          			CALL	INST_RETL_TABLE
-  2085 00766 6CA2          			XOR		A,@0xA2
-  2086 00767 40ED          			CALL	INST_XOR_JUDGE
-  2087 00768 6002          			MOV		A,@0x02
-  2088 00769 4EF0          			CALL	INST_RETL_TABLE
-  2089 0076A 6CA4          			XOR		A,@0xA4
-  2090 0076B 40ED          			CALL	INST_XOR_JUDGE
-  2091 0076C 6003          			MOV		A,@0x03
-  2092 0076D 4EF0          			CALL	INST_RETL_TABLE
-  2093 0076E 6CA8          			XOR		A,@0xA8
-  2094 0076F 40ED          			CALL	INST_XOR_JUDGE
-  2095 00770 0012          		RET
-  2096 00771               	TEST_INST_CONTROL:
-  2097 00771               		INST_ENI:			;-------Instruction Test => ENI , IT?
-  2098 00771 6004          			MOV		A,@0x04
-  2099 00772 015A          			MOV		INST,A
-  2100 00773 0010          			ENI
-  2101 00774 3F03          			JBS		IT		; Check IT = 1?
-  2102 00775 5071          			JMP	INS_FAIL
-  2103 00776               		INST_DISI:			;-------Instruction Test => DISI , IT?
-  2104 00776 6005          			MOV		A,@0x05
-  2105 00777 015A          			MOV		INST,A
-  2106 00778 0011          			DISI
-  2107 00779 3703          			JBC		IT		; Check IT = 0?
-  2108 0077A 5071          			JMP	INS_FAIL
-  2109 0077B 0012          		RET
-  2110                     
-  2111 0077C               	TEST_SHORT_BRANCH:
-  2112                     		;ORG	0x800
-  2113 0077C 40EA          		CALL	STATUS_CLEAR
-  2114 0077D 2803          		BS	C
-  2115 0077E 6903          		SJC		@0x03
-  2116 0077F 506B          		JMP		JMP_FAIL
-  2117 00780 506B          		JMP		JMP_FAIL
-  2118 00781 506B          		JMP		JMP_FAIL
-  2119 00782 2003          		BC	C
-  2120 00783 6A03          		SJNC	bbb		;@0x03
-  2121 00784 506B          		JMP		JMP_FAIL
-  2122 00785 506B          		JMP		JMP_FAIL
-  2123 00786 506B          		JMP		JMP_FAIL
-  2124 00787               		bbb:		
-  2125 00787 2A03          			BS		Z
-  2126 00788 6B03          			SJZ		@0x03
-  2127 00789 506B          			JMP		JMP_FAIL
-  2128 0078A 506B          			JMP		JMP_FAIL
-  2129 0078B 506B          			JMP		JMP_FAIL
-  2130 0078C 0200          			CLRA
-  2131 0078D 6B03          			SJZ		@0x03
-  2132 0078E 506B          			JMP		JMP_FAIL
-  2133 0078F 506B          			JMP		JMP_FAIL
-  2134 00790 506B          			JMP		JMP_FAIL
-  2135 00791 5799          		JMP		IATEST1		;JMP back Test as below
-  2136 00792               		aaa:	
-  2137 00792 57A6          			JMP	IATEST2		; -9
-  2138 00793 506B          			JMP	JMP_FAIL	; -8
-  2139 00794 506B          			JMP	JMP_FAIL	; -7
-  2140 00795 506B          			JMP	JMP_FAIL	; -6
-  2141 00796 506B          			JMP	JMP_FAIL	; -5
-  2142 00797 506B          			JMP	JMP_FAIL	; -4
-  2143 00798 506B          			JMP	JMP_FAIL	; -3
-  2144 00799               		IATEST1:	
-  2145 00799 2803          			BS		C		; -2
-  2146 0079A 69F7          			SJC		aaa		; -1
-  2147 0079B 69F7          			SJC		@0xF7	; -1
-  2148 0079C 506B          			JMP		JMP_FAIL
-  2149 0079D 506B          			JMP		JMP_FAIL
-  2150 0079E 506B          			JMP		JMP_FAIL
-  2151 0079F 57B2          			JMP		IATEST3		; -9
-  2152 007A0 506B          			JMP		JMP_FAIL	; -8
-  2153 007A1 506B          			JMP		JMP_FAIL	; -7
-  2154 007A2 506B          			JMP		JMP_FAIL	; -6
-  2155 007A3 506B          			JMP		JMP_FAIL	; -5
-  2156 007A4 506B          			JMP		JMP_FAIL	; -4
-  2157 007A5 506B          			JMP		JMP_FAIL	; -3
-  2158 007A6               		IATEST2:	
-  2159 007A6 2003          			BC		C		; -2
-  2160 007A7 6AF7          			SJNC		@0xF7	; -1
-  2161 007A8 57C3          			JMP		_IPass
-  2162 007A9 57C3          			JMP		_IPass
-  2163 007AA 57C3          			JMP		_IPass
-  2164 007AB 57BE          			JMP		IATEST4		; -9
-  2165 007AC 506B          			JMP		JMP_FAIL	; -8
-  2166 007AD 506B          			JMP		JMP_FAIL	; -7
-  2167 007AE 506B          			JMP		JMP_FAIL	; -6
-  2168 007AF 506B          			JMP		JMP_FAIL	; -5
-  2169 007B0 506B          			JMP		JMP_FAIL	; -4
-  2170 007B1 506B          			JMP		JMP_FAIL	; -3
-  2171 007B2               		IATEST3:	
-  2172 007B2 2A03          			BS		Z		; -2
-  2173 007B3 6BF7          			SJZ		@0xF7	; -1
-  2174 007B4 506B          			JMP		JMP_FAIL
-  2175 007B5 506B          			JMP		JMP_FAIL
-  2176 007B6 506B          			JMP		JMP_FAIL
-  2177                     
-  2178 007B7 57C3          			JMP		_IPass		; -9
-  2179 007B8 506B          			JMP		JMP_FAIL	; -8
-  2180 007B9 506B          			JMP		JMP_FAIL	; -7
-  2181 007BA 506B          			JMP		JMP_FAIL	; -6
-  2182 007BB 506B          			JMP		JMP_FAIL	; -5
-  2183 007BC 506B          			JMP		JMP_FAIL	; -4
-  2184 007BD 506B          			JMP		JMP_FAIL	; -3
-  2185 007BE               		IATEST4:	
-  2186 007BE 2203          			BC		Z		; -2
-  2187 007BF 6DF7          			SJNZ	@0xF7	; -1
-  2188 007C0 506B          			JMP		JMP_FAIL
-  2189 007C1 506B          			JMP		JMP_FAIL
-  2190 007C2 506B          			JMP		JMP_FAIL
-  2191 007C3               		_IPass:
-  2192 007C3 0000          				NOP
-  2193 007C4 0012          		RET
-  2194                     
-  2195 007C5               	TEST_READ_ROM:
-  2196 007C5               		INST_TBLRD_R:
-  2197 007C5 6028          			MOV		A,@0x28
-  2198 007C6 015A          			MOV		INST,A
-  2199 007C7 7A01          			SBANK	1
-  2200 007C8 60F1          			MOV		A,@0xF1		;ADDR(0x0EF1)
-  2201 007C9 0145          			MOV		TBPTL,A
-  2202 007CA 600E          			MOV		A,@0x0E
-  2203 007CB 0146          			MOV		TBPTH,A
-  2204 007CC 7A00          			SBANK	0
-  2205 007CD 6750          			TBRDA	0x50		; [0x50]+ A = [TABPTR] 
-  2206 007CE 6CA1          			XOR		A,@0xA1
-  2207 007CF 40ED          			CALL	INST_XOR_JUDGE
-  2208 007D0 1050          			MOV		A,0x50
-  2209 007D1 6C70          			XOR		A,@0x70
-  2210 007D2 40ED          			CALL	INST_XOR_JUDGE
-  2211                     
-  2212 007D3 7A01          			SBANK	1
-  2213                     			;MOV		A,@0xF1		;ADDR(0x0EF1)
-  2214                     			;MOV		TBPTL,A
-  2215                     			;MOV		A,@0x0E
-  2216                     			;MOV		TBPTH,A
-  2217 007D4 1545          			INC		TBPTL		;ADDR(0x0EF2)
-  2218 007D5 7A00          			SBANK	0
-  2219 007D6 6750          			TBRDA	0x50		; [0x50]+ A = [TABPTR] 
-  2220 007D7 6CA2          			XOR		A,@0xA2
-  2221 007D8 40ED          			CALL	INST_XOR_JUDGE
-  2222 007D9 1050          			MOV		A,0x50
-  2223 007DA 6C70          			XOR		A,@0x70
-  2224 007DB 40ED          			CALL	INST_XOR_JUDGE
-  2225 007DC               		INST_TBRD_R:		;-------Instruction Test => TBRD R
-  2226 007DC 6033          			MOV		A,@0x33
-  2227 007DD 015A          			MOV		INST,A
-  2228 007DE 7A01          			SBANK	1
-  2229 007DF 60F3          			MOV		A,@0xF3		;ADDR(0x0EF3)
-  2230 007E0 0145          			MOV		TBPTL,A
-  2231 007E1 600E          			MOV		A,@0x0E
-  2232 007E2 0146          			MOV		TBPTH,A
-  2233 007E3 7A00          			SBANK	0
-  2234 007E4 7B50          			TBRD	0x50
-  2235 007E5 1050          			MOV		A,0x50
-  2236 007E6 6CA4          			XOR		A,@0xA4
-  2237 007E7 40ED          			CALL	INST_XOR_JUDGE
-  2238                     
-  2239 007E8 7A01          			SBANK	1
-  2240                     			;MOV		A,@0xF3
-  2241                     			;MOV		TBPTL,A
-  2242                     			;MOV		A,@0x0E
-  2243                     			;MOV		TBPTH,A
-  2244 007E9 1545          			INC		TBPTL		;ADDR(0x0EF4)
-  2245 007EA 7A00          			SBANK	0
-  2246 007EB 7B50          			TBRD	0x50
-  2247 007EC 1050          			MOV		A,0x50
-  2248 007ED 6CA8          			XOR		A,@0xA8
-  2249 007EE 40ED          			CALL	INST_XOR_JUDGE
-  2250 007EF 0012          		RET
-  2251                     
-  2252 007F0               	TEST_STACK:
-  2253 007F0 7A01          		SBANK	1
-  2254 007F1 1047          		MOV		A,STKMON
-  2255 007F2 6C01          		XOR		A,@0x01
-  2256 007F3 40ED          		CALL	INST_XOR_JUDGE
-  2257 007F4 47F6          		CALL	STACK1
-  2258 007F5 0012          		RET
-  2259 007F6               	STACK1:
-  2260 007F6 1047          		MOV		A,STKMON
-  2261 007F7 6C02          		XOR		A,@0x02
-  2262 007F8 40ED          		CALL	INST_XOR_JUDGE
-  2263 007F9 47FB          		CALL	STACK2
-  2264 007FA 0012          		RET
-  2265 007FB               	STACK2:
-  2266 007FB 1047          		MOV		A,STKMON
-  2267 007FC 6C03          		XOR		A,@0x03
-  2268 007FD 40ED          		CALL	INST_XOR_JUDGE
-  2269 007FE 4800          		CALL	STACK3
-  2270 007FF 0012          		RET
-  2271 00800               	STACK3:
-  2272 00800 1047          		MOV		A,STKMON
-  2273 00801 6C04          		XOR		A,@0x04
-  2274 00802 40ED          		CALL	INST_XOR_JUDGE
-  2275 00803 4805          		CALL	STACK4
-  2276 00804 0012          		RET
-  2277 00805               	STACK4:
-  2278 00805 1047          		MOV		A,STKMON
-  2279 00806 6C05          		XOR		A,@0x05
-  2280 00807 40ED          		CALL	INST_XOR_JUDGE
-  2281 00808 480A          		CALL	STACK5
-  2282 00809 0012          		RET
-  2283 0080A               	STACK5:
-  2284 0080A 1047          		MOV		A,STKMON
-  2285 0080B 6C06          		XOR		A,@0x06
-  2286 0080C 40ED          		CALL	INST_XOR_JUDGE
-  2287 0080D 480F          		CALL	STACK6
-  2288 0080E 0012          		RET
-  2289 0080F               	STACK6:
-  2290 0080F 1047          		MOV		A,STKMON
-  2291 00810 6C07          		XOR		A,@0x07
-  2292 00811 40ED          		CALL	INST_XOR_JUDGE
-  2293 00812 4814          		CALL	STACK7
-  2294 00813 0012          		RET
-  2295 00814               	STACK7:
-  2296 00814 0000          		NOP
-  2297                     		;CALL	INST_XOR_JUDGE ;Sack Over(Shut Down Tst)
-  2298 00815 0012          		RET
-  2299                     
-  2300 00816               	CALL_Test:
-  2301 00816 1550          		INC		0x50
-  2302 00817 0012          		RET
-  2303                     ;================== EEPROM Test Routine =====================
-  2304                     
-  2305                     ;================== Return Table ============================
-  2306                     ORG	0x0EF0	; ADDR(3824)
-  2307 00EF0               	INST_RETL_TABLE:
-  2308 00EF0 0F02          		ADD		PCL, A	;BackUp PC to STACK,then SEARCH TABLE By PC
-  2309 00EF1 70A1          		RETL	@0xA1
-  2310 00EF2 70A2          		RETL	@0xA2
-  2311 00EF3 70A4          		RETL	@0xA4
-  2312 00EF4 70A8          		RETL	@0xA8
-  2313 00EF5 701A          		RETL	@0x1A
-  2314 00EF6 702A          		RETL	@0x2A
-  2315 00EF7 704A          		RETL	@0x4A
-  2316 00EF8 708A          		RETL	@0x8A
-  2317                     
-  2318                     ;================== RAM Test Routine ========================
-  2319                     ORG	0x0F00	; ADDR(3840)
-  2320 00F00               	TEST_RAM_BANK_0_5:
-  2321 00F00 6080          		MOV		A,@0x80		; Write Start SRAM(0x55)
-  2322 00F01 0104          		MOV		RSR,A
-  2323 00F02 7A40          		GBANK	0
-  2324 00F03 6055          		MOV		A,@0x55
-  2325 00F04 0100          		MOV		IAR,A
-  2326 00F05 1504          		INC		RSR
-  2327 00F06 6000          		MOV		A,@0x00
-  2328 00F07 0C04          		XOR		A,RSR		; INC(0x80),UNTIL(0x00)
-  2329 00F08 3A03          		JBS		Z
-  2330 00F09 5F03          		JMP		$-6
-  2331 00F0A 6080          		MOV		A,@0x80		; Read Start SRAM(0x55)
-  2332 00F0B 0104          		MOV		RSR,A
-  2333 00F0C 7A40          		GBANK	0
-  2334 00F0D 6055          		MOV		A,@0x55
-  2335 00F0E 0D00          		XOR		IAR,A
-  2336 00F0F 3A03          		JBS		Z
-  2337 00F10 506E          		JMP		RAM_FAIL
-  2338 00F11 1504          		INC		RSR
-  2339 00F12 6000          		MOV		A,@0x00
-  2340 00F13 0C04          		XOR		A,RSR		; INC(0x80),UNTIL(0x00)
-  2341 00F14 3A03          		JBS		Z
-  2342 00F15 5F0D          		JMP		$-8
-  2343 00F16 0012          		RET
-  2344 00F17               	TEST_RAM_BANK_0_A:
-  2345 00F17 6080          		MOV		A,@0x80		; Write Start SRAM(0xAA)
-  2346 00F18 0104          		MOV		RSR,A
-  2347 00F19 7A40          		GBANK	0
-  2348 00F1A 60AA          		MOV		A,@0xAA		; SRAM(0xAA)
-  2349 00F1B 0100          		MOV		IAR,A
-  2350 00F1C 1504          		INC		RSR
-  2351 00F1D 6000          		MOV		A,@0x00
-  2352 00F1E 0C04          		XOR		A,RSR		; INC(0x80),UNTIL(0x00)
-  2353 00F1F 3A03          		JBS		Z
-  2354 00F20 5F1A          		JMP		$-6
-  2355 00F21 6080          		MOV		A,@0x80
-  2356 00F22 0104          		MOV		RSR,A
-  2357 00F23 7A40          		GBANK	0
-  2358 00F24 60AA          		MOV		A,@0xAA
-  2359 00F25 0D00          		XOR		IAR,A
-  2360 00F26 3A03          		JBS		Z
-  2361 00F27 506E          		JMP		RAM_FAIL
-  2362 00F28 1504          		INC		RSR
-  2363 00F29 6000          		MOV		A,@0x00
-  2364 00F2A 0C04          		XOR		A,RSR		; INC(0x80),UNTIL(0x00)
-  2365 00F2B 3A03          		JBS		Z
-  2366 00F2C 5F24          		JMP		$-8
-  2367 00F2D 0012          		RET
-  2368 00F2E               	TEST_RAM_BANK_1_3:
-  2369 00F2E 6080          		MOV		A,@0x80		; Write Start SRAM(0x33)
-  2370 00F2F 0104          		MOV		RSR,A
-  2371 00F30 7A41          		GBANK	1
-  2372 00F31 6033          		MOV		A,@0x33		; SRAM(0x33)
-  2373 00F32 0100          		MOV		IAR,A
-  2374 00F33 1504          		INC		RSR
-  2375 00F34 6000          		MOV		A,@0x00
-  2376 00F35 0C04          		XOR		A,RSR		; INC(0x80),UNTIL(0x00)
-  2377 00F36 3A03          		JBS		Z
-  2378 00F37 5F31          		JMP		$-6
-  2379 00F38 6080          		MOV		A,@0x80
-  2380 00F39 0104          		MOV		RSR,A
-  2381 00F3A 7A41          		GBANK	1
-  2382 00F3B 6033          		MOV		A,@0x33
-  2383 00F3C 0D00          		XOR		IAR,A
-  2384 00F3D 3A03          		JBS		Z
-  2385 00F3E 506E          		JMP		RAM_FAIL
-  2386 00F3F 1504          		INC		RSR
-  2387 00F40 6000          		MOV		A,@0x00
-  2388 00F41 0C04          		XOR		A,RSR		; INC(0x80),UNTIL(0x00)
-  2389 00F42 3A03          		JBS		Z
-  2390 00F43 5F3B          		JMP		$-8
-  2391 00F44 0012          		RET
-  2392 00F45               	TEST_RAM_BANK_1_C:
-  2393 00F45 6080          		MOV		A,@0x80		; Write Start SRAM(0xCC)
-  2394 00F46 0104          		MOV		RSR,A
-  2395 00F47 7A41          		GBANK	1
-  2396 00F48 60CC          		MOV		A,@0xCC		; SRAM(0xCC)
-  2397 00F49 0100          		MOV		IAR,A
-  2398 00F4A 1504          		INC		RSR
-  2399 00F4B 6000          		MOV		A,@0x00
-  2400 00F4C 0C04          		XOR		A,RSR		; INC(0x80),UNTIL(0x00)
-  2401 00F4D 3A03          		JBS		Z
-  2402 00F4E 5F48          		JMP		$-6
-  2403 00F4F 6080          		MOV		A,@0x80
-  2404 00F50 0104          		MOV		RSR,A
-  2405 00F51 7A41          		GBANK	1
-  2406 00F52 60CC          		MOV		A,@0xCC
-  2407 00F53 0D00          		XOR		IAR,A
-  2408 00F54 3A03          		JBS		Z
-  2409 00F55 506E          		JMP		RAM_FAIL
-  2410 00F56 1504          		INC		RSR
-  2411 00F57 6000          		MOV		A,@0x00
-  2412 00F58 0C04          		XOR		A,RSR		; INC(0x80),UNTIL(0x00)
-  2413 00F59 3A03          		JBS		Z
-  2414 00F5A 5F52          		JMP		$-8
-  2415 00F5B 0012          		RET
-  2416                     
-  2417                     
-  2418                     ;================== Long Sub Routine ========================
-  2419                     ORG	0x1000	; >4K
-  2420 01000               	LCALL_Test:
-  2421 01000 1551          		INC		0x51
-  2422 01001 0012          		RET
+  1998 00718 6C00          			XOR		A,@0x00		; Check Result ?
+  1999 00719 40ED          			CALL	INST_XOR_JUDGE
+  2000 0071A 40EA          			CALL	STATUS_CLEAR
+  2001 0071B 6080          			MOV		A,@0x80
+  2002 0071C 0150          			MOV		0x50,A
+  2003 0071D 1E50          			JZA		0x50		; A = [0x50] + 1,if 0 skip
+  2004 0071E 5720          			JMP		$+2
+  2005 0071F 5071          			JMP		INS_FAIL
+  2006 00720               		INST_JZ_R:			;-------Instruction Test => JZ R
+  2007 00720 6022          			MOV		A,@0x22
+  2008 00721 015A          			MOV		INST,A
+  2009 00722 40EA          			CALL	STATUS_CLEAR
+  2010 00723 60FF          			MOV		A,@0xFF
+  2011 00724 0150          			MOV		0x50,A		; [0x50] = 0xFF
+  2012 00725 1F50          			JZ		0x50		; [0x50] = [0x50] + 1,if 0 skip
+  2013 00726 5071          			JMP		INS_FAIL
+  2014 00727 1050          			MOV		A,0x50
+  2015 00728 6C00          			XOR		A,@0x00		; Check Result ?
+  2016 00729 40ED          			CALL	INST_XOR_JUDGE
+  2017 0072A 40EA          			CALL	STATUS_CLEAR
+  2018 0072B 6080          			MOV		A,@0x80
+  2019 0072C 0150          			MOV		0x50,A		; [0x50] = 0xFF
+  2020 0072D 1F50          			JZ		0x50		; [0x50] = [0x50] + 1,if 0 skip
+  2021 0072E 5730          			JMP		$+2
+  2022 0072F 5071          			JMP		INS_FAIL
+  2023 00730 0012          		RET
+  2024 00731               	TEST_INST_BRANCH_II:
+  2025 00731               		INST_JE_R:			;-------Instruction Test => JE R
+  2026 00731 6023          			MOV		A,@0x23
+  2027 00732 015A          			MOV		INST,A
+  2028 00733 40EA          			CALL	STATUS_CLEAR
+  2029 00734 605A          			MOV		A,@0x5A
+  2030 00735 0150          			MOV		0x50,A		; [0x50] = 0x5A
+  2031 00736 6150          			JE		0x50		; [0x50] = A?
+  2032 00737 5071          			JMP		INS_FAIL
+  2033 00738 605B          			MOV		A,@0x5B
+  2034 00739 0150          			MOV		0x50,A		; [0x50] = 0x5B
+  2035 0073A 605C          			MOV		A,@0x5C
+  2036 0073B 6150          			JE		0x50		; [0x50] = A(0x5C)?
+  2037 0073C 573E          			JMP		$+2
+  2038 0073D 5071          			JMP		INS_FAIL
+  2039 0073E               		INST_JGE_R:			;-------Instruction Test => JGE R
+  2040 0073E 6024          			MOV		A,@0x24
+  2041 0073F 015A          			MOV		INST,A
+  2042 00740 40EA          			CALL	STATUS_CLEAR
+  2043 00741 607F          			MOV		A,@0x7F
+  2044 00742 0150          			MOV		0x50,A		; [0x50] = 0x7F
+  2045 00743 6000          			MOV		A,@0x00
+  2046 00744 6250          			JGE		0x50		; [0x50] > A ?
+  2047 00745 5071          			JMP		INS_FAIL
+  2048 00746 40EA          			CALL	STATUS_CLEAR
+  2049 00747 60FF          			MOV		A,@0xFF
+  2050 00748 0150          			MOV		0x50,A		; [0x50] = 0xFF
+  2051 00749 6080          			MOV		A,@0x80
+  2052 0074A 6250          			JGE		0x50		; [0x50] > A ?
+  2053 0074B 5071          			JMP		INS_FAIL
+  2054 0074C 40EA          			CALL	STATUS_CLEAR
+  2055 0074D 6000          			MOV		A,@0x00
+  2056 0074E 0150          			MOV		0x50,A		; [0x50] = 0x00
+  2057 0074F 60FF          			MOV		A,@0xFF
+  2058 00750 6250          			JGE		0x50		; [0x50] > A(0xFF) ?x
+  2059 00751 5753          			JMP		$+2
+  2060 00752 5071          			JMP		INS_FAIL
+  2061                     
+  2062 00753               		INST_JLE_R:			;-------Instruction Test => JLE R
+  2063 00753 6025          			MOV		A,@0x25
+  2064 00754 015A          			MOV		INST,A
+  2065 00755 40EA          			CALL	STATUS_CLEAR
+  2066 00756 6000          			MOV		A,@0x00
+  2067 00757 0150          			MOV		0x50,A		; [0x50] = 0x00
+  2068 00758 607F          			MOV		A,@0x7F
+  2069 00759 6350          			JLE		0x50		; [0x50] < A ?
+  2070 0075A 5071          			JMP		INS_FAIL
+  2071 0075B 6000          			MOV		A,@0x00
+  2072 0075C 0103          			MOV		STATUS,A
+  2073 0075D 6080          			MOV		A,@0x80
+  2074 0075E 0150          			MOV		0x50,A		; [0x50] = 0x80
+  2075 0075F 60FF          			MOV		A,@0xFF
+  2076 00760 6350          			JLE		0x50		; [0x50] < A ?
+  2077 00761 5071          			JMP		INS_FAIL
+  2078 00762 40EA          			CALL	STATUS_CLEAR
+  2079 00763 60FF          			MOV		A,@0xFF
+  2080 00764 0150          			MOV		0x50,A		; [0x50] = 0xFF
+  2081 00765 6000          			MOV		A,@0x00
+  2082 00766 6350          			JLE		0x50		; [0x50] < A(0x00) ?x
+  2083 00767 5769          			JMP		$+2
+  2084 00768 5071          			JMP		INS_FAIL
+  2085 00769               		INST_JE_K:			;-------Instruction Test => JE k
+  2086 00769 6027          			MOV		A,@0x27
+  2087 0076A 015A          			MOV		INST,A
+  2088 0076B 40EA          			CALL	STATUS_CLEAR
+  2089 0076C 607F          			MOV		A,@0x7F
+  2090 0076D 657F          			JE		@0x7F
+  2091 0076E 5071          			JMP	INS_FAIL
+  2092 0076F 0012          		RET
+  2093 00770               	TEST_INST_BRANCH_III:
+  2094 00770               		INST_CALL_K:		;-------Instruction Test => CALL k
+  2095 00770 6002          			MOV	A,@0x02
+  2096 00771 015A          			MOV	INST,A
+  2097 00772 40EA          			CALL	STATUS_CLEAR
+  2098 00773 6003          			MOV		A,@0x03
+  2099 00774 0150          			MOV		0x50,A
+  2100 00775 483C          			CALL	CALL_Test
+  2101 00776 1050          			MOV		A,0x50
+  2102 00777 6C04          			XOR		A,@0x04
+  2103 00778 40ED          			CALL	INST_XOR_JUDGE
+  2104                     
+  2105 00779               		INST_LCALL_K:		;-------Instruction Test => LCALL k
+  2106 00779 6003          			MOV		A,@0x03
+  2107 0077A 015A          			MOV		INST,A
+  2108 0077B 40EA          			CALL	STATUS_CLEAR
+  2109 0077C 6003          			MOV		A,@0x03
+  2110 0077D 0151          			MOV		0x51,A
+  2111 0077E 7A80          			LCALL	LCALL_Test
+  2111 0077F 1000          			LCALL	LCALL_Test
+  2112 00780 1051          			MOV		A,0x51
+  2113 00781 6C04          			XOR		A,@0x04		; Check Result ?
+  2114 00782 40ED          			CALL	INST_XOR_JUDGE
+  2115                     
+  2116 00783               		INST_RETL_K:		;-------Instruction Test => RETL k
+  2117 00783 602C          			MOV		A,@0x2C
+  2118 00784 015A          			MOV		INST,A
+  2119 00785 40EA          			CALL	STATUS_CLEAR
+  2120 00786 6000          			MOV		A,@0x00
+  2121 00787 4EF0          			CALL	INST_RETL_TABLE
+  2122 00788 6CA1          			XOR		A,@0xA1
+  2123 00789 40ED          			CALL	INST_XOR_JUDGE
+  2124 0078A 6001          			MOV		A,@0x01
+  2125 0078B 4EF0          			CALL	INST_RETL_TABLE
+  2126 0078C 6CA2          			XOR		A,@0xA2
+  2127 0078D 40ED          			CALL	INST_XOR_JUDGE
+  2128 0078E 6002          			MOV		A,@0x02
+  2129 0078F 4EF0          			CALL	INST_RETL_TABLE
+  2130 00790 6CA4          			XOR		A,@0xA4
+  2131 00791 40ED          			CALL	INST_XOR_JUDGE
+  2132 00792 6003          			MOV		A,@0x03
+  2133 00793 4EF0          			CALL	INST_RETL_TABLE
+  2134 00794 6CA8          			XOR		A,@0xA8
+  2135 00795 40ED          			CALL	INST_XOR_JUDGE
+  2136 00796 0012          			RET
+  2137 00797               	TEST_INST_CONTROL:
+  2138 00797               		INST_ENI:			;-------Instruction Test => ENI , IT?
+  2139 00797 6004          			MOV		A,@0x04
+  2140 00798 015A          			MOV		INST,A
+  2141 00799 0010          			ENI
+  2142 0079A 3F03          			JBS		IT		; Check IT = 1?
+  2143 0079B 5071          			JMP	INS_FAIL
+  2144 0079C               		INST_DISI:			;-------Instruction Test => DISI , IT?
+  2145 0079C 6005          			MOV		A,@0x05
+  2146 0079D 015A          			MOV		INST,A
+  2147 0079E 0011          			DISI
+  2148 0079F 3703          			JBC		IT		; Check IT = 0?
+  2149 007A0 5071          			JMP	INS_FAIL
+  2150 007A1 0012          			RET
+  2151                     
+  2152 007A2               	TEST_SHORT_BRANCH:
+  2153                     		;ORG	0x800
+  2154 007A2 40EA          		CALL	STATUS_CLEAR
+  2155 007A3 2803          		BS	C
+  2156 007A4 6903          		SJC		@0x03
+  2157 007A5 506B          		JMP		JMP_FAIL
+  2158 007A6 506B          		JMP		JMP_FAIL
+  2159 007A7 506B          		JMP		JMP_FAIL
+  2160 007A8 2003          		BC	C
+  2161 007A9 6A03          		SJNC	bbb		;@0x03
+  2162 007AA 506B          		JMP		JMP_FAIL
+  2163 007AB 506B          		JMP		JMP_FAIL
+  2164 007AC 506B          		JMP		JMP_FAIL
+  2165 007AD               		bbb:		
+  2166 007AD 2A03          			BS		Z
+  2167 007AE 6B03          			SJZ		@0x03
+  2168 007AF 506B          			JMP		JMP_FAIL
+  2169 007B0 506B          			JMP		JMP_FAIL
+  2170 007B1 506B          			JMP		JMP_FAIL
+  2171 007B2 0200          			CLRA
+  2172 007B3 6B03          			SJZ		@0x03
+  2173 007B4 506B          			JMP		JMP_FAIL
+  2174 007B5 506B          			JMP		JMP_FAIL
+  2175 007B6 506B          			JMP		JMP_FAIL
+  2176 007B7 57BF          		JMP		IATEST1		;JMP back Test as below
+  2177 007B8               		aaa:	
+  2178 007B8 57CC          			JMP	IATEST2		; -9
+  2179 007B9 506B          			JMP	JMP_FAIL	; -8
+  2180 007BA 506B          			JMP	JMP_FAIL	; -7
+  2181 007BB 506B          			JMP	JMP_FAIL	; -6
+  2182 007BC 506B          			JMP	JMP_FAIL	; -5
+  2183 007BD 506B          			JMP	JMP_FAIL	; -4
+  2184 007BE 506B          			JMP	JMP_FAIL	; -3
+  2185 007BF               		IATEST1:	
+  2186 007BF 2803          			BS		C		; -2
+  2187 007C0 69F7          			SJC		aaa		; -1
+  2188 007C1 69F7          			SJC		@0xF7	; -1
+  2189 007C2 506B          			JMP		JMP_FAIL
+  2190 007C3 506B          			JMP		JMP_FAIL
+  2191 007C4 506B          			JMP		JMP_FAIL
+  2192 007C5 57D8          			JMP		IATEST3		; -9
+  2193 007C6 506B          			JMP		JMP_FAIL	; -8
+  2194 007C7 506B          			JMP		JMP_FAIL	; -7
+  2195 007C8 506B          			JMP		JMP_FAIL	; -6
+  2196 007C9 506B          			JMP		JMP_FAIL	; -5
+  2197 007CA 506B          			JMP		JMP_FAIL	; -4
+  2198 007CB 506B          			JMP		JMP_FAIL	; -3
+  2199 007CC               		IATEST2:	
+  2200 007CC 2003          			BC		C		; -2
+  2201 007CD 6AF7          			SJNC		@0xF7	; -1
+  2202 007CE 57E9          			JMP		_IPass
+  2203 007CF 57E9          			JMP		_IPass
+  2204 007D0 57E9          			JMP		_IPass
+  2205 007D1 57E4          			JMP		IATEST4		; -9
+  2206 007D2 506B          			JMP		JMP_FAIL	; -8
+  2207 007D3 506B          			JMP		JMP_FAIL	; -7
+  2208 007D4 506B          			JMP		JMP_FAIL	; -6
+  2209 007D5 506B          			JMP		JMP_FAIL	; -5
+  2210 007D6 506B          			JMP		JMP_FAIL	; -4
+  2211 007D7 506B          			JMP		JMP_FAIL	; -3
+  2212 007D8               		IATEST3:	
+  2213 007D8 2A03          			BS		Z		; -2
+  2214 007D9 6BF7          			SJZ		@0xF7	; -1
+  2215 007DA 506B          			JMP		JMP_FAIL
+  2216 007DB 506B          			JMP		JMP_FAIL
+  2217 007DC 506B          			JMP		JMP_FAIL
+  2218                     
+  2219 007DD 57E9          			JMP		_IPass		; -9
+  2220 007DE 506B          			JMP		JMP_FAIL	; -8
+  2221 007DF 506B          			JMP		JMP_FAIL	; -7
+  2222 007E0 506B          			JMP		JMP_FAIL	; -6
+  2223 007E1 506B          			JMP		JMP_FAIL	; -5
+  2224 007E2 506B          			JMP		JMP_FAIL	; -4
+  2225 007E3 506B          			JMP		JMP_FAIL	; -3
+  2226 007E4               		IATEST4:	
+  2227 007E4 2203          			BC		Z		; -2
+  2228 007E5 6DF7          			SJNZ	@0xF7	; -1
+  2229 007E6 506B          			JMP		JMP_FAIL
+  2230 007E7 506B          			JMP		JMP_FAIL
+  2231 007E8 506B          			JMP		JMP_FAIL
+  2232 007E9               		_IPass:
+  2233 007E9 0000          				NOP
+  2234 007EA 0012          		RET
+  2235                     
+  2236 007EB               	TEST_READ_ROM:
+  2237 007EB               		INST_TBLRD_R:
+  2238 007EB 6028          			MOV		A,@0x28
+  2239 007EC 015A          			MOV		INST,A
+  2240 007ED 7A01          			SBANK	1
+  2241 007EE 60F1          			MOV		A,@0xF1		;ADDR(0x0EF1)
+  2242 007EF 0145          			MOV		TBPTL,A
+  2243 007F0 600E          			MOV		A,@0x0E
+  2244 007F1 0146          			MOV		TBPTH,A
+  2245 007F2 7A00          			SBANK	0
+  2246 007F3 6750          			TBRDA	0x50		; [0x50]+ A = [TABPTR] 
+  2247 007F4 6CA1          			XOR		A,@0xA1
+  2248 007F5 40ED          			CALL	INST_XOR_JUDGE
+  2249 007F6 1050          			MOV		A,0x50
+  2250 007F7 6C70          			XOR		A,@0x70
+  2251 007F8 40ED          			CALL	INST_XOR_JUDGE
+  2252                     
+  2253 007F9 7A01          			SBANK	1
+  2254                     			;MOV		A,@0xF1		;ADDR(0x0EF1)
+  2255                     			;MOV		TBPTL,A
+  2256                     			;MOV		A,@0x0E
+  2257                     			;MOV		TBPTH,A
+  2258 007FA 1545          			INC		TBPTL		;ADDR(0x0EF2)
+  2259 007FB 7A00          			SBANK	0
+  2260 007FC 6750          			TBRDA	0x50		; [0x50]+ A = [TABPTR] 
+  2261 007FD 6CA2          			XOR		A,@0xA2
+  2262 007FE 40ED          			CALL	INST_XOR_JUDGE
+  2263 007FF 1050          			MOV		A,0x50
+  2264 00800 6C70          			XOR		A,@0x70
+  2265 00801 40ED          			CALL	INST_XOR_JUDGE
+  2266 00802               		INST_TBRD_R:		;-------Instruction Test => TBRD R
+  2267 00802 6033          			MOV		A,@0x33
+  2268 00803 015A          			MOV		INST,A
+  2269 00804 7A01          			SBANK	1
+  2270 00805 60F3          			MOV		A,@0xF3		;ADDR(0x0EF3)
+  2271 00806 0145          			MOV		TBPTL,A
+  2272 00807 600E          			MOV		A,@0x0E
+  2273 00808 0146          			MOV		TBPTH,A
+  2274 00809 7A00          			SBANK	0
+  2275 0080A 7B50          			TBRD	0x50
+  2276 0080B 1050          			MOV		A,0x50
+  2277 0080C 6CA4          			XOR		A,@0xA4
+  2278 0080D 40ED          			CALL	INST_XOR_JUDGE
+  2279                     
+  2280 0080E 7A01          			SBANK	1
+  2281                     			;MOV		A,@0xF3
+  2282                     			;MOV		TBPTL,A
+  2283                     			;MOV		A,@0x0E
+  2284                     			;MOV		TBPTH,A
+  2285 0080F 1545          			INC		TBPTL		;ADDR(0x0EF4)
+  2286 00810 7A00          			SBANK	0
+  2287 00811 7B50          			TBRD	0x50
+  2288 00812 1050          			MOV		A,0x50
+  2289 00813 6CA8          			XOR		A,@0xA8
+  2290 00814 40ED          			CALL	INST_XOR_JUDGE
+  2291 00815 0012          		RET
+  2292                     
+  2293 00816               	TEST_STACK:
+  2294 00816 7A01          		SBANK	1
+  2295 00817 1047          		MOV		A,STKMON
+  2296 00818 6C01          		XOR		A,@0x01
+  2297 00819 40ED          		CALL	INST_XOR_JUDGE
+  2298 0081A 481C          		CALL	STACK1
+  2299 0081B 0012          		RET
+  2300 0081C               	STACK1:
+  2301 0081C 1047          		MOV		A,STKMON
+  2302 0081D 6C02          		XOR		A,@0x02
+  2303 0081E 40ED          		CALL	INST_XOR_JUDGE
+  2304 0081F 4821          		CALL	STACK2
+  2305 00820 0012          		RET
+  2306 00821               	STACK2:
+  2307 00821 1047          		MOV		A,STKMON
+  2308 00822 6C03          		XOR		A,@0x03
+  2309 00823 40ED          		CALL	INST_XOR_JUDGE
+  2310 00824 4826          		CALL	STACK3
+  2311 00825 0012          		RET
+  2312 00826               	STACK3:
+  2313 00826 1047          		MOV		A,STKMON
+  2314 00827 6C04          		XOR		A,@0x04
+  2315 00828 40ED          		CALL	INST_XOR_JUDGE
+  2316 00829 482B          		CALL	STACK4
+  2317 0082A 0012          		RET
+  2318 0082B               	STACK4:
+  2319 0082B 1047          		MOV		A,STKMON
+  2320 0082C 6C05          		XOR		A,@0x05
+  2321 0082D 40ED          		CALL	INST_XOR_JUDGE
+  2322 0082E 4830          		CALL	STACK5
+  2323 0082F 0012          		RET
+  2324 00830               	STACK5:
+  2325 00830 1047          		MOV		A,STKMON
+  2326 00831 6C06          		XOR		A,@0x06
+  2327 00832 40ED          		CALL	INST_XOR_JUDGE
+  2328 00833 4835          		CALL	STACK6
+  2329 00834 0012          		RET
+  2330 00835               	STACK6:
+  2331 00835 1047          		MOV		A,STKMON
+  2332 00836 6C07          		XOR		A,@0x07
+  2333 00837 40ED          		CALL	INST_XOR_JUDGE
+  2334 00838 483A          		CALL	STACK7
+  2335 00839 0012          		RET
+  2336 0083A               	STACK7:
+  2337 0083A 0000          		NOP
+  2338                     		;CALL	INST_XOR_JUDGE ;Sack Over(Shut Down Tst)
+  2339 0083B 0012          		RET
+  2340                     
+  2341 0083C               	CALL_Test:
+  2342 0083C 1550          		INC		0x50
+  2343 0083D 0012          		RET
+  2344                     ;================== EEPROM Test Routine =====================
+  2345                     
+  2346                     ;================== Return Table ============================
+  2347                     ORG	0x0EF0	; ADDR(3824)
+  2348 00EF0               	INST_RETL_TABLE:
+  2349 00EF0 0F02          		ADD		PCL, A	;BackUp PC to STACK,then SEARCH TABLE By PC
+  2350 00EF1 70A1          		RETL	@0xA1
+  2351 00EF2 70A2          		RETL	@0xA2
+  2352 00EF3 70A4          		RETL	@0xA4
+  2353 00EF4 70A8          		RETL	@0xA8
+  2354 00EF5 701A          		RETL	@0x1A
+  2355 00EF6 702A          		RETL	@0x2A
+  2356 00EF7 704A          		RETL	@0x4A
+  2357 00EF8 708A          		RETL	@0x8A
+  2358                     
+  2359                     ;================== RAM Test Routine ========================
+  2360                     ORG	0x0F00	; ADDR(3840)
+  2361 00F00               	TEST_RAM_BANK_0_5:
+  2362 00F00 6080          		MOV		A,@0x80		; Write Start SRAM(0x55)
+  2363 00F01 0104          		MOV		RSR,A
+  2364 00F02 7A40          		GBANK	0
+  2365 00F03 6055          		MOV		A,@0x55
+  2366 00F04 0100          		MOV		IAR,A
+  2367 00F05 1504          		INC		RSR
+  2368 00F06 6000          		MOV		A,@0x00
+  2369 00F07 0C04          		XOR		A,RSR		; INC(0x80),UNTIL(0x00)
+  2370 00F08 3A03          		JBS		Z
+  2371 00F09 5F03          		JMP		$-6
+  2372 00F0A 6080          		MOV		A,@0x80		; Read Start SRAM(0x55)
+  2373 00F0B 0104          		MOV		RSR,A
+  2374 00F0C 7A40          		GBANK	0
+  2375 00F0D 6055          		MOV		A,@0x55
+  2376 00F0E 0D00          		XOR		IAR,A
+  2377 00F0F 3A03          		JBS		Z
+  2378 00F10 506E          		JMP		RAM_FAIL
+  2379 00F11 1504          		INC		RSR
+  2380 00F12 6000          		MOV		A,@0x00
+  2381 00F13 0C04          		XOR		A,RSR		; INC(0x80),UNTIL(0x00)
+  2382 00F14 3A03          		JBS		Z
+  2383 00F15 5F0D          		JMP		$-8
+  2384 00F16 0012          		RET
+  2385 00F17               	TEST_RAM_BANK_0_A:
+  2386 00F17 6080          		MOV		A,@0x80		; Write Start SRAM(0xAA)
+  2387 00F18 0104          		MOV		RSR,A
+  2388 00F19 7A40          		GBANK	0
+  2389 00F1A 60AA          		MOV		A,@0xAA		; SRAM(0xAA)
+  2390 00F1B 0100          		MOV		IAR,A
+  2391 00F1C 1504          		INC		RSR
+  2392 00F1D 6000          		MOV		A,@0x00
+  2393 00F1E 0C04          		XOR		A,RSR		; INC(0x80),UNTIL(0x00)
+  2394 00F1F 3A03          		JBS		Z
+  2395 00F20 5F1A          		JMP		$-6
+  2396 00F21 6080          		MOV		A,@0x80
+  2397 00F22 0104          		MOV		RSR,A
+  2398 00F23 7A40          		GBANK	0
+  2399 00F24 60AA          		MOV		A,@0xAA
+  2400 00F25 0D00          		XOR		IAR,A
+  2401 00F26 3A03          		JBS		Z
+  2402 00F27 506E          		JMP		RAM_FAIL
+  2403 00F28 1504          		INC		RSR
+  2404 00F29 6000          		MOV		A,@0x00
+  2405 00F2A 0C04          		XOR		A,RSR		; INC(0x80),UNTIL(0x00)
+  2406 00F2B 3A03          		JBS		Z
+  2407 00F2C 5F24          		JMP		$-8
+  2408 00F2D 0012          		RET
+  2409 00F2E               	TEST_RAM_BANK_1_3:
+  2410 00F2E 6080          		MOV		A,@0x80		; Write Start SRAM(0x33)
+  2411 00F2F 0104          		MOV		RSR,A
+  2412 00F30 7A41          		GBANK	1
+  2413 00F31 6033          		MOV		A,@0x33		; SRAM(0x33)
+  2414 00F32 0100          		MOV		IAR,A
+  2415 00F33 1504          		INC		RSR
+  2416 00F34 6000          		MOV		A,@0x00
+  2417 00F35 0C04          		XOR		A,RSR		; INC(0x80),UNTIL(0x00)
+  2418 00F36 3A03          		JBS		Z
+  2419 00F37 5F31          		JMP		$-6
+  2420 00F38 6080          		MOV		A,@0x80
+  2421 00F39 0104          		MOV		RSR,A
+  2422 00F3A 7A41          		GBANK	1
+  2423 00F3B 6033          		MOV		A,@0x33
+  2424 00F3C 0D00          		XOR		IAR,A
+  2425 00F3D 3A03          		JBS		Z
+  2426 00F3E 506E          		JMP		RAM_FAIL
+  2427 00F3F 1504          		INC		RSR
+  2428 00F40 6000          		MOV		A,@0x00
+  2429 00F41 0C04          		XOR		A,RSR		; INC(0x80),UNTIL(0x00)
+  2430 00F42 3A03          		JBS		Z
+  2431 00F43 5F3B          		JMP		$-8
+  2432 00F44 0012          		RET
+  2433 00F45               	TEST_RAM_BANK_1_C:
+  2434 00F45 6080          		MOV		A,@0x80		; Write Start SRAM(0xCC)
+  2435 00F46 0104          		MOV		RSR,A
+  2436 00F47 7A41          		GBANK	1
+  2437 00F48 60CC          		MOV		A,@0xCC		; SRAM(0xCC)
+  2438 00F49 0100          		MOV		IAR,A
+  2439 00F4A 1504          		INC		RSR
+  2440 00F4B 6000          		MOV		A,@0x00
+  2441 00F4C 0C04          		XOR		A,RSR		; INC(0x80),UNTIL(0x00)
+  2442 00F4D 3A03          		JBS		Z
+  2443 00F4E 5F48          		JMP		$-6
+  2444 00F4F 6080          		MOV		A,@0x80
+  2445 00F50 0104          		MOV		RSR,A
+  2446 00F51 7A41          		GBANK	1
+  2447 00F52 60CC          		MOV		A,@0xCC
+  2448 00F53 0D00          		XOR		IAR,A
+  2449 00F54 3A03          		JBS		Z
+  2450 00F55 506E          		JMP		RAM_FAIL
+  2451 00F56 1504          		INC		RSR
+  2452 00F57 6000          		MOV		A,@0x00
+  2453 00F58 0C04          		XOR		A,RSR		; INC(0x80),UNTIL(0x00)
+  2454 00F59 3A03          		JBS		Z
+  2455 00F5A 5F52          		JMP		$-8
+  2456 00F5B 0012          		RET
+  2457                     
+  2458                     
+  2459                     ;================== Long Sub Routine ========================
+  2460                     ORG	0x1000	; >4K
+  2461 01000               	LCALL_Test:
+  2462 01000 1551          		INC		0x51
+  2463 01001 0012          		RET
   0 Error(s), 0 Warning(s), 0 User Message(s)
