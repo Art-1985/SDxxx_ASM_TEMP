@@ -19,7 +19,7 @@
 ;============================================================
 
 ;==================== Project Include ====================
-TARGET	VAR	1
+TARGET	VAR	2
 
 IF	(TARGET == 1)
 	Include	"SD062.INC"
@@ -363,7 +363,7 @@ INS_FAIL:
 			MOV		A,@0x80
 			MOV		0x50,A		; [0x50] = 0x80
 			MOV		A,@0x7F		; 
-			ADC		A,0x40		; A = 0x7F + 0x80
+			ADC		A,0x50		; A = 0x7F + 0x80
 			DAA
 			JBS		C			; Check C = 1? 	/ By ADC
 			JMP	INS_FAIL
@@ -1910,6 +1910,46 @@ INS_FAIL:
 		RET
 
 	TEST_INST_MANIPULATION:
+		INST_BS_R:		;-------Instruction Test => BS	R
+			CALL	STATUS_CLEAR
+			SBANK	0
+			MOV		A,ADCR1
+			MOV		TMP50,A
+			BS		ADCR1.0
+			MOV		A,TMP50
+			XOR		A,ADCR1
+			JBC		Z
+			JMP		INS_FAIL
+			JBC		N
+			JMP		INS_FAIL
+			MOV		A,ADCR1
+			MOV		TMP50,A
+			BS		ADCR1.1
+			MOV		A,TMP50
+			XOR		A,ADCR1
+			JBC		Z
+			JMP		INS_FAIL
+			JBC		N
+			JMP		INS_FAIL
+		INST_BC_R:		;-------Instruction Test => BC	R
+			MOV		A,ADCR1
+			MOV		TMP50,A
+			BC		ADCR1.0
+			MOV		A,TMP50
+			XOR		A,ADCR1
+			JBC		Z
+			JMP		INS_FAIL
+			JBC		N
+			JMP		INS_FAIL
+			MOV		A,ADCR1
+			MOV		TMP50,A
+			BC		ADCR1.1
+			MOV		A,TMP50
+			XOR		A,ADCR1
+			JBC		Z
+			JMP		INS_FAIL
+			JBC		N
+			JMP		INS_FAIL
 		RET
 
 	TEST_INST_BRANCH_I:
