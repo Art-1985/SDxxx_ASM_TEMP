@@ -97,6 +97,9 @@ INIT:
 	CALL	RAM_TABLE
 	CALL 	IAP_WRITE
 	CALL	IAP_RAED
+	CALL	RAM_TABLE
+	;CALL	INF_WRITE
+	;CALL	INF_RAED
 
 	;====== Enhance Protect ======;
 	SBANK	2
@@ -208,6 +211,7 @@ JMP_FAIL:
 		JBS		Z
 		JMP		TEXT1
 		RET
+
 
 ;============== Interrupt Service Routine ================
 	;================================
