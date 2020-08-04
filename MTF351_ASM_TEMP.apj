@@ -502,6 +502,15 @@ R4C=4C
 R4D=4D
 R4E=4E
 R4F=4F
+[RAMBreakPoint]
+Set0=0 0 0 0 0 0
+Set1=0 0 0 0 0 0
+Set2=0 0 0 0 0 0
+Set3=0 0 0 0 0 0
+Set4=0 0 0 0 0 0
+Set5=0 0 0 0 0 0
+Set6=0 0 0 0 0 0
+Set7=0 0 0 0 0 0
 [Watch]
 Size#0=1
 0,0=INST,R,Register(0),5A,0,0
@@ -522,6 +531,6 @@ Disable EEPROM Protect Msg=0
 [C_LIB BUILD SETTING]
 No Debug Info=0
 [$\MTF351_InstructionSet.asm]
-Rectangle=0150 0150 0905 0659
+Rectangle=0000 0000 0693 0519
 Iconized=0
 Maximized=0
