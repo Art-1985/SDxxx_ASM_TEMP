@@ -1,0 +1,119 @@
+;ORG 	0x03FF
+;SDxxx_SYS_INIT:	
+    ;SBANK	0
+    ;BS		CPUS
+    ;BS		IDLE
+    ;RET
+
+SDxxx_SYS_INIT MACRO
+    SBANK	0
+    BS		CPUS
+    BS		IDLE
+    ENDM
+SDxxx_GPIO_INIT MACRO
+	SBANK	0
+	CLR		P5
+	MOV		A,@0x0F
+	MOV		IOCR5,A
+    ENDM
+DELAY_NOP_NO_10	MACRO
+    NOP
+    NOP
+    NOP
+    NOP
+    NOP
+    NOP
+    NOP
+    NOP
+    NOP
+    NOP
+    ENDM
+
+
+SDxxx_RAM_TABLE MACRO
+    MOV		A,@0x80		; Write Start SRAM
+    MOV		RSR,A
+    GBANK	3
+    MOV		A,@0x55		; SRAM(0x0085)
+    MOV		IAR,A
+    INC		RSR
+    MOV		A,@0xAA
+    MOV		IAR,A
+    INC		RSR		
+    MOV		A,@0xF0
+    XOR		A,RSR		; INC(0x80),UNTIL(0xC0)
+    JBS		Z
+    JMP		$-9
+    ENDM
+
+SDxxx_IAP_WR MACRO
+    SBANK	1		
+    MOV		A,@0x00
+    MOV		TBWAL,A
+    MOV		A,@0x0C
+    MOV		TBWAH,A
+    MOV		A,@0x01
+    MOV		TBWCR,A
+    MOV		A,@0xB4
+    MOV		FLKR,A
+    TBWR
+    ENDM
+
+SDxxx_IAP_RD MACRO
+	GBANK	0
+    MOV		A,@0x80
+    MOV		TMP4,A
+    MOV		A,@0x00
+    MOV		TMP3,A			
+    TEXT1:
+    MOV		A,TMP4
+    MOV		RSR,A
+    SBANK	1
+    MOV		A,TMP3	; Set ROM Pointer
+    MOV		TBPTL,A
+    MOV		A,@0x0C
+    MOV		TBPTH,A
+    TBRDA	TMP5	; A(LowByte),TMP5(HiByte)
+    MOV		IAR,A
+    INC		RSR
+    MOV		A,TMP5
+    MOV		IAR,A
+    INC		TMP3
+    INC		TMP4
+    INC		TMP4
+    MOV		A,TMP4
+    XOR		A,@0xC0
+    JBS		Z
+    JMP		TEXT1
+    ENDM
+
+SDxxx_ROM_PROTECT   MACRO RANGE
+	SBANK	2
+	BS		LOCKEN
+	SBANK	1
+	MOV		A,@0xC5
+	MOV		FLKR,A
+	SBANK	2
+	MOV		A,@RANGE    ;0x01
+	MOV		LOCKPR,A	;Lock(0x0000~0x007F)
+    ENDM
+SDxxx_ROM_READ  MACRO ADDR_H,ADDR_L,BYTE_H
+	SBANK	1
+	MOV		A,@ADDR_L
+	MOV		TBPTL,A
+	MOV		A,@ADDR_H
+	MOV		TBPTH,A
+	TBRDA	BYTE_H	    ;A(LowByte),TMP5(HiByte)
+    ENDM
+
+
+;RAM_WRITE MACRO G_BANK,START_ADDR,VALUE
+; GBANK G_BANK
+; MOV A,@START_ADDR
+; MOV RSR,A
+; MOV A,@VALUE
+; MOV IAR,A
+; INC RSR
+; JBS Z
+; JMP $-3
+;ENDM

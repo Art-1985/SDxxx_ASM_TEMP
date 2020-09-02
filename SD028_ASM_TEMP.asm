@@ -18,7 +18,7 @@
 ;============================================================
 
 ;==================== Project Include ====================
-Include	"SD028.INC"
+INCLUDE		"SDxxx_DEV_TAR.h"
 
 ;================ General Purpose Register ===============
 	TMP0	== 0x50
@@ -27,6 +27,8 @@ Include	"SD028.INC"
 	TMP3	== 0x53
 
 ;================ Interrupt Vector Table =================
+	ORG 	0x0000
+		JMP MAIN
 	ORG		0x0002
 		JMP	_Int_EXINT
 	ORG		0x0004
@@ -67,16 +69,15 @@ Include	"SD028.INC"
 	JMP JMP_FAIL	;0x004D
 	JMP JMP_FAIL	;0x004E
 	JMP JMP_FAIL	;0x004F
-;==================== Main Function ======================
-	ORG 	0x0000
-	JMP 	MAIN
 
+;==================== Main Function ======================
 	ORG		0x0050
 MAIN:
-	CALL	SYS_INIT
-	CALL	GPIO_INIT
-
-
+	SDxxx_SYS_INIT
+	SDxxx_GPIO_INIT
+	DELAY_NOP_NO_10
+	SDxxx_IAP_WR
+	
 ;====================== Backgroung =======================
 BACK_GROUND_LOOP:
 	SBANK	0
@@ -86,19 +87,8 @@ BACK_GROUND_LOOP:
 JMP_FAIL:
 	SBANK	0
 	JMP		JMP_FAIL
+
 ;================== Jmp Sub Function ==================
-	SYS_INIT:	
-		SBANK	0
-		BS		CPUS
-		BS		IDLE
-		RET
-		
-	GPIO_INIT:
-		SBANK	0
-		CLR		P5
-		MOV		A,@0x0F
-		MOV		IOCR5,A
-		RET
 
 ;============== Interrupt Service Routine ================
 	;================================
@@ -200,6 +190,5 @@ JMP_FAIL:
 		JMP 	JMP_FAIL
 		BC		IGSF
 		RETI
-
 
 

@@ -19,16 +19,7 @@
 ;============================================================
 
 ;==================== Project Include ====================
-TARGET	VAR	2
-
-IF	(TARGET == 1)
-	Include	"SD062.INC"
-ELSEIF(TARGET == 2)
-	Include	"SD028.INC"
-ELSE
-	NOP
-ENDIF
-	
+INCLUDE		"SDxxx_DEV_TAR.h"
 
 ;================ General Purpose Register ===============
 	TMP50	== 0x50

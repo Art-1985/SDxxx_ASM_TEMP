@@ -6,5 +6,9 @@
         "**/*.bbj": true
         "**/*.apj": true
         "**/*.eac": true
+        "**/*.cds": true
+        "**/*.PDF": true
+        "**/*.AOP": true
+        "**/*.PKG": true
     }
 }

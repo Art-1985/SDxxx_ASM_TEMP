@@ -11,9 +11,9 @@ BlockNum=0
 BlockNum=0
 [BREAKPOINT]
 BP Num=3
-BP0=1,A,1636072,1,1983934834,74,$\SD062_ASM_IAP.asm
-BP1=1,A,1636072,1,1983934834,148,$\SD062_ASM_IAP.asm
-BP2=1,A,1636072,1,1983934834,153,$\SD062_ASM_IAP.asm
+BP0=1,A,1634644,1,1639098340,74,$\SD062_ASM_IAP.asm
+BP1=1,A,1634644,1,1639098340,148,$\SD062_ASM_IAP.asm
+BP2=1,A,1634644,1,1639098340,153,$\SD062_ASM_IAP.asm
 [CODEOPTION]
 Option Num=115
 IRC Trim=1
@@ -146,8 +146,7 @@ AGENT=0
 [LibraryProject]
 LibraryProject=0
 [LastOpenFiles]
-File0=$\SD062_ASM_IAP.asm
-File Num=1
+File Num=0
 [Source Files]
 File Num=1
 File0=$\SD062_ASM_IAP.asm
@@ -159,7 +158,7 @@ File Num=1
 File0=$\SD062_ASM_IAP.lst
 [Map Files]
 File Num=1
-File0=$\SD062_ASM_TEMP.map
+File0=?
 [Library Files]
 File Num=0
 [BOOKMARK]
@@ -445,15 +444,6 @@ R4C=4C
 R4D=4D
 R4E=4E
 R4F=4F
-[RAMBreakPoint]
-Set0=0 0 0 0 0 0
-Set1=0 0 0 0 0 0
-Set2=0 0 0 0 0 0
-Set3=0 0 0 0 0 0
-Set4=0 0 0 0 0 0
-Set5=0 0 0 0 0 0
-Set6=0 0 0 0 0 0
-Set7=0 0 0 0 0 0
 [Watch]
 Size#0=3
 0,0=TMP4,R,Register(0),54,0,0
@@ -475,7 +465,3 @@ PopUp WDTReset Msg=1
 Disable EEPROM Protect Msg=0
 [C_LIB BUILD SETTING]
 No Debug Info=0
-[$\SD062_ASM_IAP.asm]
-Rectangle=0125 0125 0721 0639
-Iconized=0
-Maximized=0
