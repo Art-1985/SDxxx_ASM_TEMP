@@ -10,5 +10,6 @@
         "**/*.PDF": true
         "**/*.AOP": true
         "**/*.PKG": true
+        "**/*.mif": true
     }
 }

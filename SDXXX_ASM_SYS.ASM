@@ -29,7 +29,6 @@ DELAY_NOP_NO_10	MACRO
     NOP
     ENDM
 
-
 SDxxx_RAM_TABLE MACRO
     MOV		A,@0x80		; Write Start SRAM
     MOV		RSR,A

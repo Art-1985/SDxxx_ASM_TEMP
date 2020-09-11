@@ -1,7 +1,7 @@
 ;============================================================
-;	Project:		SD028_ASM_TEMP
-;	FILE:			SD028_ASM_TEMP.asm
-;  	Target:  		SD028
+;	Project:		SD062_ASM_TEMP
+;	FILE:			SD062_ASM_TEMP.asm
+;  	Target:  		SD062
 ;	Author:			Arthur (Lu Hungche)
 ;	Date:			2020/03/11
 ;------------------------------------------------------------
@@ -18,7 +18,7 @@
 ;============================================================
 
 ;==================== Project Include ====================
-Include	"SD062.INC"
+INCLUDE		"SDXXX_DEV_TAR.h"
 
 ;================ General Purpose Register ===============
 	TMP0	== 0x50
@@ -37,14 +37,20 @@ Include	"SD062.INC"
 		JMP	_Int_CMP2INT
 	ORG		0x0010
 		JMP	_Int_ADINT
+	ORG		0x0014
+		JMP	_Int_PWMPAINT
+	ORG		0x0016
+		JMP	_Int_PWMDAINT
 	ORG		0x0018
 		JMP	_Int_CMP3INT
-	ORG		0x002E
-		JMP	_Int_UERRINT
-	ORG		0x0030
-		JMP	_Int_URINT
-	ORG		0x0032
-		JMP	_Int_UTINT
+	ORG		0x0024
+		JMP	_Int_PWMPBINT
+	ORG		0x0026
+		JMP	_Int_PWMDBINT
+	ORG		0x002A
+		JMP	_Int_PWMPCINT
+	ORG		0x002C
+		JMP	_Int_PWMDCINT
 	ORG		0x003A
 		JMP	_Int_SHINT
 	ORG		0x003C
@@ -56,7 +62,7 @@ Include	"SD062.INC"
 	ORG		0x0042
 		JMP	_Int_TXTMINT
 	ORG		0x0044
-		JMP	_Int_IGINT
+		JMP	_Int_AFPWMINT
 	JMP JMP_FAIL	;0x0046
 	JMP JMP_FAIL	;0x0047
 	JMP JMP_FAIL	;0x0048
@@ -73,8 +79,10 @@ Include	"SD062.INC"
 
 	ORG		0x0050
 MAIN:
-	CALL	SYS_INIT
-	CALL	GPIO_INIT
+	SDxxx_SYS_INIT
+	SDxxx_GPIO_INIT
+	;SDxxx_EFT_KEY_TRIG
+	SDxxx_EFT_TES_JMP
 
 
 ;====================== Backgroung =======================
@@ -87,18 +95,13 @@ JMP_FAIL:
 	SBANK	0
 	JMP		JMP_FAIL
 ;================== Jmp Sub Function ==================
-	SYS_INIT:	
-		SBANK	0
-		BS		CPUS
-		BS		IDLE
-		RETI
-		
-	GPIO_INIT:
-		SBANK	0
-		CLR		P5
-		MOV		A,@0x00
-		MOV		IOCR5,A
-		RETI	
+	INST_XOR_JUDGE:
+		JBS		Z			; IF(Z=1) BRANCH
+		JMP		INS_FAIL
+		JBC		N			; IF(N=0) BRANCH
+		JMP		INS_FAIL
+		RET
+
 
 
 ;============== Interrupt Service Routine ================
@@ -135,6 +138,14 @@ JMP_FAIL:
 		BC		ADSF
 		RETI
 	;================================
+	_Int_PWMPAINT:
+		SBANK	0
+		RETI
+	;================================
+	_Int_PWMDAINT:
+		SBANK	0
+		RETI
+	;================================
 	_Int_CMP3INT:
 		SBANK	0
 		JBS 	CMP3SF
@@ -142,26 +153,25 @@ JMP_FAIL:
 		BC		CMP3SF
 		RETI
 	;================================
-	_Int_UERRINT:
+	_Int_PWMPBINT:
 		SBANK	0
-		JBS 	UERRSF
-		JMP 	JMP_FAIL
-		BC		UERRSF
 		RETI
+
 	;================================
-	_Int_URINT:
+	_Int_PWMDBINT:
 		SBANK	0
-		JBS 	URSF
-		JMP 	JMP_FAIL
-		BC		URSF
 		RETI
+
 	;================================
-	_Int_UTINT:
+	_Int_PWMPCINT:
 		SBANK	0
-		JBS 	UTSF
-		JMP 	JMP_FAIL
-		BC		UTSF
 		RETI
+
+	;================================
+	_Int_PWMDCINT:
+		SBANK	0
+		RETI
+
 	;================================
 	_Int_SHINT:
 		SBANK	0
@@ -195,11 +205,11 @@ JMP_FAIL:
 		BC		TXCSF
 		RETI
 	;================================
-	_Int_IGINT:
+	_Int_AFPWMINT:
 		SBANK	0
-		JBS 	IGSF
-		JMP 	JMP_FAIL
-		BC		IGSF
+		;JBS 	IGSF
+		;JMP 	JMP_FAIL
+		;BC		IGSF
 		RETI
 
 

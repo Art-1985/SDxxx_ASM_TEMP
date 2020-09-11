@@ -144,7 +144,7 @@ AGENT=0
 [LibraryProject]
 LibraryProject=0
 [LastOpenFiles]
-File0=$\SDXXX_ASM_SYS.ASM
+File0=$\SD028_ASM_TEMP.asm
 File Num=1
 [Source Files]
 File Num=1
@@ -159,7 +159,7 @@ File Num=1
 File0=$\SD028_ASM_TEMP.lst
 [Map Files]
 File Num=1
-File0=?
+File0=$\SD028_ASM_TEMP.map
 [Library Files]
 File Num=0
 [BOOKMARK]
@@ -464,7 +464,7 @@ PopUp WDTReset Msg=1
 Disable EEPROM Protect Msg=0
 [C_LIB BUILD SETTING]
 No Debug Info=0
-[$\SDXXX_ASM_SYS.ASM]
-Rectangle=0100 0100 1118 0609
+[$\SD028_ASM_TEMP.asm]
+Rectangle=0075 0075 1093 0584
 Iconized=0
 Maximized=0

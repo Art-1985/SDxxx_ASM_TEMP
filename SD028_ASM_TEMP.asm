@@ -18,7 +18,7 @@
 ;============================================================
 
 ;==================== Project Include ====================
-INCLUDE		"SDxxx_DEV_TAR.h"
+INCLUDE		"SDXXX_DEV_TAR.h"
 
 ;================ General Purpose Register ===============
 	TMP0	== 0x50
