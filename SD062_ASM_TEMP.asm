@@ -83,6 +83,7 @@ MAIN:
 	SDxxx_GPIO_INIT
 	;SDxxx_EFT_KEY_TRIG
 	SDxxx_EFT_TES_JMP
+	SDxxx_EFT_STACK
 
 
 ;====================== Backgroung =======================
@@ -94,6 +95,10 @@ BACK_GROUND_LOOP:
 JMP_FAIL:
 	SBANK	0
 	JMP		JMP_FAIL
+
+INS_FAIL:
+	SBANK	0
+	JMP		INS_FAIL
 ;================== Jmp Sub Function ==================
 	INST_XOR_JUDGE:
 		JBS		Z			; IF(Z=1) BRANCH
@@ -101,7 +106,6 @@ JMP_FAIL:
 		JBC		N			; IF(N=0) BRANCH
 		JMP		INS_FAIL
 		RET
-
 
 
 ;============== Interrupt Service Routine ================
