@@ -58,52 +58,52 @@ SDxxx_EFT_TES_JMP MACRO
         MOV		STATUS,A
         CLR 	0x50
         INC 	0x50                ;[0x50] = 0x01
-        JMP 	$+1
+        JMP 	$+2
         JMP 	JMP_FAIL
         INC 	0x50                ;[0x50] = 0x02
-        JMP 	$+1
+        JMP 	$+2
         JMP 	JMP_FAIL
         INC 	0x50                ;[0x50] = 0x03
-        JMP 	$+1
+        JMP 	$+2
         JMP 	JMP_FAIL
         INC 	0x50                ;[0x50] = 0x04
-        JMP 	$+1
+        JMP 	$+2
         JMP 	JMP_FAIL
         INC 	0x50                ;[0x50] = 0x05
-        JMP 	$+1
+        JMP 	$+2
         JMP 	JMP_FAIL
         INC 	0x50                ;[0x50] = 0x06
-        JMP 	$+1
+        JMP 	$+2
         JMP 	JMP_FAIL
         INC 	0x50                ;[0x50] = 0x07
-        JMP 	$+1
+        JMP 	$+2
         JMP 	JMP_FAIL
         INC 	0x50                ;[0x50] = 0x08
-        JMP 	$+1
+        JMP 	$+2
         JMP 	JMP_FAIL
         INC 	0x50                ;[0x50] = 0x09
-        JMP 	$+1
+        JMP 	$+2
         JMP 	JMP_FAIL
         INC 	0x50                ;[0x50] = 0x0A
-        JMP 	$+1
+        JMP 	$+2
         JMP 	JMP_FAIL
         INC 	0x50                ;[0x50] = 0x0B
-        JMP 	$+1
+        JMP 	$+2
         JMP 	JMP_FAIL
         INC 	0x50                ;[0x50] = 0x0C
-        JMP 	$+1
+        JMP 	$+2
         JMP 	JMP_FAIL
         INC 	0x50                ;[0x50] = 0x0D
-        JMP 	$+1
+        JMP 	$+2
         JMP 	JMP_FAIL
         INC 	0x50                ;[0x50] = 0x0E
-        JMP 	$+1
+        JMP 	$+2
         JMP 	JMP_FAIL
         INC 	0x50                ;[0x50] = 0x0F
-        JMP 	$+1
+        JMP 	$+2
         JMP 	JMP_FAIL
         INC 	0x50
-        JMP 	$+1                ;[0x50] = 0x10
+        JMP 	$+2                ;[0x50] = 0x10
         JMP 	JMP_FAIL
         MOV 	A,@0x10
         XOR 	0x50,A				;[0x50] = 0x10 ?
@@ -117,43 +117,43 @@ SDxxx_EFT_STACK MACRO
 	TEST_STACK:
 		SBANK	1
 		MOV		A,STKMON
-		XOR		A,@0x01
+		XOR		A,@0x00
 		CALL	INST_XOR_JUDGE
 		CALL	STACK1
-		RET
+		JMP		TEST_STACK_END
 	STACK1:
 		MOV		A,STKMON
-		XOR		A,@0x02
+		XOR		A,@0x01
 		CALL	INST_XOR_JUDGE
 		CALL	STACK2
 		RET
 	STACK2:
 		MOV		A,STKMON
-		XOR		A,@0x03
+		XOR		A,@0x02
 		CALL	INST_XOR_JUDGE
 		CALL	STACK3
 		RET
 	STACK3:
 		MOV		A,STKMON
-		XOR		A,@0x04
+		XOR		A,@0x03
 		CALL	INST_XOR_JUDGE
 		CALL	STACK4
 		RET
 	STACK4:
 		MOV		A,STKMON
-		XOR		A,@0x05
+		XOR		A,@0x04
 		CALL	INST_XOR_JUDGE
 		CALL	STACK5
 		RET
 	STACK5:
 		MOV		A,STKMON
-		XOR		A,@0x06
+		XOR		A,@0x05
 		CALL	INST_XOR_JUDGE
 		CALL	STACK6
 		RET
 	STACK6:
 		MOV		A,STKMON
-		XOR		A,@0x07
+		XOR		A,@0x06
 		CALL	INST_XOR_JUDGE
 		CALL	STACK7
 		RET
@@ -161,5 +161,7 @@ SDxxx_EFT_STACK MACRO
 		NOP
 		;CALL	INST_XOR_JUDGE ;Sack Over(Shut Down Tst)
 		RET
+	TEST_STACK_END:
+		NOP
     ENDM
 
