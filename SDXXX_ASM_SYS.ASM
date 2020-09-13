@@ -1,21 +1,16 @@
 ;ORG 	0x03FF
 ;SDxxx_SYS_INIT:	
-    ;SBANK	0
-    ;BS		CPUS
-    ;BS		IDLE
+    ;SDxxx_SYS_INIT
     ;RET
 
+
+;;====== For IC Application =================================================;;
 SDxxx_SYS_INIT MACRO
     SBANK	0
     BS		CPUS
     BS		IDLE
     ENDM
-SDxxx_GPIO_INIT MACRO
-	SBANK	0
-	CLR		P5
-	MOV		A,@0x0F
-	MOV		IOCR5,A
-    ENDM
+
 DELAY_NOP_NO_10	MACRO
     NOP
     NOP
@@ -111,6 +106,9 @@ SDxxx_WDT_SET MACRO
 	;MOV    A,@0x8F     ; WDTen,1:256
 	;MOV    WDTCR,A
     ENDM
+
+;;====== For IC Function Verify =============================================;;
+
 
 ;RAM_WRITE MACRO G_BANK,START_ADDR,VALUE
 ; GBANK G_BANK
