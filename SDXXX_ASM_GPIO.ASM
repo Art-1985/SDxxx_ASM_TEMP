@@ -1,4 +1,10 @@
 ;ORG 	0x03FF
+;SDxxx_GPIO_INIT:
+    ;SDxxx_GPIO_INIT
+    ;RET
+
+
+
 ;SDxxx_SYS_INIT:	
     ;SBANK	0
     ;BS		CPUS
@@ -11,6 +17,15 @@
 	;CALL		GPIO_Control_04	; O/P: P5,P6,P7 , Pull-HSCR
 	;CALL		GPIO_Control_05	; O/P: P5,P6,P7 , Pull-OD
 
+;;====== For IC Application =================================================;;
+SDxxx_GPIO_INIT MACRO
+	SBANK	0
+	CLR		P5
+	MOV		A,@0x0F
+	MOV		IOCR5,A
+    ENDM
+
+;;====== For IC Function Verify =============================================;;
 SDxxx_GPIO_OUT_P5 MACRO
 	SBANK	0
     MOV		A,@0xFF
