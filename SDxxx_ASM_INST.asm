@@ -38,25 +38,7 @@ INCLUDE		"SDxxx_DEV_TAR.h"
 	TMP5D	== 0x5D
 	TMP5E	== 0x5E
 	TMP5F	== 0x5F
-	
 	INST	== 0x5A
-
-	TMP80	== 0x80
-	TMP81	== 0x81
-	TMP82	== 0x82
-	TMP83	== 0x83
-	TMP84	== 0x84
-	TMP85	== 0x85
-	TMP86	== 0x86
-	TMP87	== 0x87
-	TMP88	== 0x88
-	TMP89	== 0x89
-	TMP8A	== 0x8A
-	TMP8B	== 0x8B
-	TMP8C	== 0x8C
-	TMP8D	== 0x8D
-	TMP8E	== 0x8E
-	TMP8F	== 0x8F
 
 ;================ Interrupt Vector Table =================
 	ORG 	0x0000
@@ -303,8 +285,6 @@ INS_FAIL:
 ;================== Jmp Sub Function ==================
 	TEST_INST_ARITHEMATIC:
 		INST_DAA:			;-------Instruction Test => DAA , C?
-			MOV		A,@0x01
-			MOV		INST,A
 			CALL	STATUS_CLEAR	;-------DAA(0xAA)=10
 			MOV		A,@0xAA
 			DAA
@@ -399,8 +379,6 @@ INS_FAIL:
 
 		
 		INST_CLA:			;-------Instruction Test => CLA
-			MOV		A,@0x08
-			MOV		INST,A
 			MOV		A,@0x5A
 			XOR		A,@0x5A		; Check Result ?
 			JBS		Z			; Check Z = 1?
@@ -418,8 +396,6 @@ INS_FAIL:
 			JBC		N			; Check N = 0?
 			JMP	INS_FAIL
 		INST_CLR:			;-------Instruction Test => CLR
-			MOV		A,@0x09
-			MOV		INST,A
 			MOV		A,@0xAA
 			MOV		0x50,A
 			MOV		A,0x50
@@ -439,8 +415,6 @@ INS_FAIL:
 			JBC		N			; Check N = 0?
 			JMP	INS_FAIL
 		INST_SUB_A_R:		;-------Instruction Test => SUB A,R
-			MOV		A,@0x0A
-			MOV		INST,A
 			MOV		A,@0x00
 			MOV		STATUS,A
 			MOV		A,@0x02		; SUB(2-1)=1
@@ -555,8 +529,6 @@ INS_FAIL:
 			JBC		N			; Check N = 0?
 			JMP	INS_FAIL
 		INST_SUB_R_A:		;-------Instruction Test => SUB R,A
-			MOV		A,@0x0B
-			MOV		INST,A
 			MOV		A,@0x00
 			MOV		STATUS,A
 			MOV		A,@0x02
@@ -606,8 +578,6 @@ INS_FAIL:
 			XOR		A,@0x7F		; Check Result ?
 			CALL	INST_XOR_JUDGE
 		INST_SUB_A_K:		;-------Instruction Test => SUB A,k
-			MOV		A,@0x30
-			MOV		INST,A
 			CALL	STATUS_CLEAR
 			MOV		A,@0xFF		; 0xFF-0xFF
 			SUB		A,@0xFF		; A = 0xFF - 0xFF
@@ -654,8 +624,6 @@ INS_FAIL:
 			XOR		A,@0x7F		; Check Result ?
 			CALL	INST_XOR_JUDGE
 		INST_SUBB_A_R:		;-------Instruction Test => SUBB A,R
-			MOV		A,@0x31
-			MOV		INST,A
 			CALL	STATUS_CLEAR
 			BC		C			; B = 1
 			MOV		A,@0x00		;0x00-0xF
@@ -711,8 +679,6 @@ INS_FAIL:
 			XOR		A,@0x7E		; Check Result ?
 			CALL	INST_XOR_JUDGE
 		INST_SUBB_R_A:			;-------Instruction Test => SUBB R,A
-			MOV		A,@0x32
-			MOV		INST,A
 			CALL	STATUS_CLEAR
 			BC		C			; B = 1
 			MOV		A,@0x00		; 0x00-0xFF
@@ -754,8 +720,6 @@ INS_FAIL:
 			CALL	INST_XOR_JUDGE
 
 		INST_DECA:			;-------Instruction Test => DECA R
-			MOV		A,@0x0C
-			MOV		INST,A
 			MOV		A,@0x00
 			MOV		STATUS,A
 			MOV		A,@0x20		; 0x20-1
@@ -845,8 +809,6 @@ INS_FAIL:
 
 
 		INST_DEC:			;-------Instruction Test => DEC R
-			MOV		A,@0x0D
-			MOV		INST,A
 			MOV		A,@0x00
 			MOV		STATUS,A
 			MOV		A,@0x20		; 0x20-1
@@ -925,8 +887,6 @@ INS_FAIL:
 			JMP	INS_FAIL
 
 		INST_ADD_A_R:		;-------Instruction Test => ADD A,R
-			MOV		A,@0x12
-			MOV		INST,A
 			CALL	STATUS_CLEAR	; 0x80+0x7F
 			MOV		A,@0x80
 			MOV		0x50,A		; [0x50] = 0x80
@@ -994,8 +954,6 @@ INS_FAIL:
 			JBC		N			; Check N = 0?
 			JMP	INS_FAIL
 		INST_ADD_R_A:		;-------Instruction Test => ADD R,A
-			MOV		A,@0x13
-			MOV		INST,A
 			CALL	STATUS_CLEAR	; 0x80+0x7F
 			MOV		A,@0x80
 			MOV		0x50,A		; [0x50] = 0x80
@@ -1051,8 +1009,6 @@ INS_FAIL:
 			JBC		N			; Check N = 0?
 			JMP	INS_FAIL
 		INST_ADD_A_K:		;-------Instruction Test => ADD A,k
-			MOV		A,@0x34
-			MOV		INST,A
 			CALL	STATUS_CLEAR
 			MOV		A,@0x7F		;0x7F+0x01
 			ADD		A,@0x01		; A = 0x01 + A
@@ -1099,8 +1055,6 @@ INS_FAIL:
 			XOR		A,@0xFF		; Check Result ?
 			CALL	INST_XOR_JUDGE
 		INST_ADC_A_R:		;-------Instruction Test => ADC A,R
-			MOV		A,@0x36
-			MOV		INST,A
 			CALL	STATUS_CLEAR
 			BS		C			; 0x7F+0x00
 			MOV		A,@0x7F		
@@ -1138,8 +1092,6 @@ INS_FAIL:
 			XOR		A,@0x00		; Check Result ?
 			CALL	INST_XOR_JUDGE
 		INST_ADC_R_A:		;-------Instruction Test => ADC R,A
-			MOV		A,@0x37
-			MOV		INST,A
 			CALL	STATUS_CLEAR
 			BS		C			;0x7F+0x00
 			MOV		A,@0x7F
@@ -1170,8 +1122,6 @@ INS_FAIL:
 			CALL	INST_XOR_JUDGE
 
 		INST_INCA:			;-------Instruction Test => INCA R
-			MOV		A,@0x17
-			MOV		INST,A
 			CALL	STATUS_CLEAR	; 0x7F+0x01
 			MOV		A,@0x7F
 			MOV		0x50,A		; [0x50] = 0x7F
@@ -1216,8 +1166,6 @@ INS_FAIL:
 			JMP	INS_FAIL
 
 		INST_INC:			;-------Instruction Test => INC R
-			MOV		A,@0x18
-			MOV		INST,A
 			CALL 	STATUS_CLEAR	; 0x7F+0x01
 			MOV		A,@0x7F
 			MOV		0x50,A		; [0x50] = 0x7F
@@ -1254,8 +1202,6 @@ INS_FAIL:
 			JMP	INS_FAIL
 
 		INST_NEG_R:			;-------Instruction Test => NEG R
-			MOV		A,@0x35
-			MOV		INST,A
 			CALL	STATUS_CLEAR
 			MOV		A,@0x00		; 0x00
 			MOV		0x50,A		; [0x50] = 0x00
@@ -1277,7 +1223,7 @@ INS_FAIL:
 			CALL	INST_XOR_JUDGE
 			MOV		A,0x50
 			XOR		A,@0xFF		; Check Result ?
-			CALL	INST_XCH
+			CALL	INST_XOR_JUDGE
 			CALL	STATUS_CLEAR
 			MOV		A,@0x80		; 0x80
 			MOV		0x50,A		; [0x50] = 0x80
@@ -1293,8 +1239,6 @@ INS_FAIL:
 		RET
 	TEST_INST_LOGIC_I:
 		INST_BTG:			;-------Instruction Test => BTG R,b	
-			MOV		A,@0x06
-			MOV		INST,A
 			CALL	STATUS_CLEAR
 			MOV		A,@0xFF
 			MOV		RSR,A		; Start Address
@@ -1303,8 +1247,6 @@ INS_FAIL:
 			XOR		A,@0xFE		; Check Result ?
 			CALL	INST_XOR_JUDGE
 		INST_OR_A_R:		;-------Instruction Test => OR A,R
-			MOV		A,@0x0E
-			MOV		INST,A
 			MOV		A,@0x00
 			MOV		STATUS,A
 			MOV		A,@0x00
@@ -1353,8 +1295,6 @@ INS_FAIL:
 			JMP	INS_FAIL
 
 		INST_OR_R_A:		;-------Instruction Test => OR R,A
-			MOV		A,@0x0F
-			MOV		INST,A
 			MOV		A,@0x00
 			MOV		STATUS,A
 			MOV		A,@0x00
@@ -1400,8 +1340,6 @@ INS_FAIL:
 			JMP	INS_FAIL
 
 		INST_AND_A_R:		;-------Instruction Test => AND A,R
-			MOV		A,@0x10
-			MOV		INST,A
 			CALL	STATUS_CLEAR
 			MOV		A,@0x55
 			MOV		0x50,A		; [0x50] = 0x55
@@ -1443,8 +1381,6 @@ INS_FAIL:
 			JBC		N			; Check N = 0?
 			JMP	INS_FAIL
 		INST_AND_R_A:		;-------Instruction Test => AND R,A
-			MOV		A,@0x11
-			MOV		INST,A
 			CALL	STATUS_CLEAR
 			MOV		A,@0x55
 			MOV		0x50,A		; [0x50] = 0x55
@@ -1486,8 +1422,6 @@ INS_FAIL:
 			JBC		N			; Check N = 0?
 			JMP	INS_FAIL
 		INST_AND_A_K:		;-------Instruction Test => AND A,k
-			MOV		A,@0x29
-			MOV		INST,A
 			CALL	STATUS_CLEAR
 			MOV		A,@0xAA
 			AND		A,@0x55		; A = 0xAA & 0x55
@@ -1523,8 +1457,6 @@ INS_FAIL:
 			CALL	INST_XOR_JUDGE
 
 		INST_COMA:			;-------Instruction Test => COMA R
-			MOV		A,@0x15
-			MOV		INST,A
 			CALL	STATUS_CLEAR
 			MOV		A,@0xFF
 			MOV		0x50,A		; [0x50] = 0xFF
@@ -1564,8 +1496,6 @@ INS_FAIL:
 			JBC		N			; Check N = 0?
 			JMP	INS_FAIL
 		INST_COM:			;-------Instruction Test => COM R
-			MOV		A,@0x16
-			MOV		INST,A
 			CALL	STATUS_CLEAR
 			MOV		A,@0xFF
 			MOV		0x50,A		; [0x50] = 0xFF
@@ -1605,8 +1535,6 @@ INS_FAIL:
 			JBC		N			; Check N = 0?
 			JMP	INS_FAIL
 		INST_OR_A_K:		;-------Instruction Test => OR A,k
-			MOV		A,@0x26
-			MOV		INST,A
 			CALL	STATUS_CLEAR
 			MOV		A,@0xA5
 			OR		A,@0x5A		; A = 0xA5 | 0x5A
@@ -1616,8 +1544,6 @@ INS_FAIL:
 
 	TEST_INST_LOGIC_II:
 		INST_RR_R:			;-------Instruction Test => RR R
-			MOV		A,@0x2B
-			MOV		INST,A
 			CALL	STATUS_CLEAR
 			MOV		A,@0x55
 			MOV		0x50,A		; [0x50] = 0x55
@@ -1631,8 +1557,6 @@ INS_FAIL:
 			CALL	INST_XOR_JUDGE
 
 		INST_RRA_R:			;-------Instruction Test => RRA R
-			MOV		A,@0x2A
-			MOV		INST,A
 			CALL 	STATUS_CLEAR
 			MOV		A,@0x55
 			MOV		0x50,A		; [0x50] = 0x55
@@ -1651,8 +1575,6 @@ INS_FAIL:
 			CALL	INST_XOR_JUDGE
 
 		INST_RRCA_R:		;-------Instruction Test => RRCA R
-			MOV		A,@0x1B
-			MOV		INST,A
 			CALL	STATUS_CLEAR
 			BS		C
 			MOV		A,@0xAA
@@ -1687,8 +1609,6 @@ INS_FAIL:
 			XOR		A,@0x2A		; Check Result ?
 			CALL	INST_XOR_JUDGE
 		INST_RRC_R:			;-------Instruction Test => RRC R
-			MOV		A,@0x1C
-			MOV		INST,A
 			CALL	STATUS_CLEAR
 			BS		C
 			MOV		A,@0xAA
@@ -1718,8 +1638,6 @@ INS_FAIL:
 			XOR		A,@0x2A		; Check Result ?
 			CALL	INST_XOR_JUDGE
 		INST_RLCA_R:		;-------Instruction Test => RLCA R
-			MOV		A,@0x1D
-			MOV		INST,A
 			CALL STATUS_CLEAR
 			BS		C
 			MOV		A,@0x55
@@ -1754,8 +1672,6 @@ INS_FAIL:
 			XOR		A,@0x54		; Check Result ?
 			CALL	INST_XOR_JUDGE
 		INST_RLC_R:			;-------Instruction Test => RLC R
-			MOV		A,@0x1E
-			MOV		INST,A
 			CALL	STATUS_CLEAR
 			BS		C
 			MOV		A,@0x55
@@ -1781,8 +1697,6 @@ INS_FAIL:
 			CALL	INST_XOR_JUDGE
 
 		INST_RLA_A:			;-------Instruction Test => RLA R
-			MOV		A,@0x2E
-			MOV		INST,A
 			CALL	STATUS_CLEAR
 			MOV		A,@0x5A
 			MOV		0x50,A		; [0x50] = 0x5A
@@ -1801,8 +1715,6 @@ INS_FAIL:
 			CALL	INST_XOR_JUDGE
 
 		INST_RL_R:			;-------Instruction Test => RL R
-			MOV		A,@0x2F
-			MOV		INST,A
 			CALL	STATUS_CLEAR
 			MOV		A,@0x5A
 			MOV		0x50,A		; [0x50] = 0xA5
@@ -1818,8 +1730,6 @@ INS_FAIL:
 			XOR		A,@0xB4		; Check Result ?
 			CALL	INST_XOR_JUDGE
 		INST_XCH:			;-------Instruction Test => XCH R
-			MOV		A,@0x2D
-			MOV		INST,A
 			CALL	STATUS_CLEAR
 			MOV		A,@0x55
 			MOV		0x50,A		; [0x50] = 0x55
@@ -1836,8 +1746,6 @@ INS_FAIL:
 		RET
 	TEST_INST_TRANSFER:
 		INST_MOV_R_A:		;-------Instruction Test => MOV R,A
-			MOV		A,@0x07
-			MOV		INST,A
 			CALL	STATUS_CLEAR
 			MOV		A,@0xFF
 			MOV		0x50,A
@@ -1850,8 +1758,6 @@ INS_FAIL:
 			XOR		A,@0xFF		; Check Result ?
 			CALL	INST_XOR_JUDGE
 		INST_MOV_R_R:		;-------Instruction Test => MOV R,R
-			MOV		A,@0x14
-			MOV		INST,A
 			CALL	STATUS_CLEAR
 			MOV		A,@0x00
 			MOV		0x50,A		; [0x50] = 0x00		
@@ -1880,8 +1786,6 @@ INS_FAIL:
 			CALL	INST_XOR_JUDGE
 
 		INST_SWAPA_R:		;-------Instruction Test => SWAPA R
-			MOV		A,@0x1F
-			MOV		INST,A
 			CALL	STATUS_CLEAR
 			MOV		A,@0x5A
 			MOV		0x50,A		; [0x50] = 0x5A
@@ -1889,8 +1793,6 @@ INS_FAIL:
 			XOR		A,@0xA5		; Check Result ?
 			CALL	INST_XOR_JUDGE
 		INST_SWAP_R:		;-------Instruction Test => SWAP R
-			MOV		A,@0x20
-			MOV		INST,A
 			CALL	STATUS_CLEAR
 			MOV		A,@0x5A
 			MOV		0x50,A		; [0x50] = 0x5A
@@ -1945,8 +1847,6 @@ INS_FAIL:
 
 	TEST_INST_BRANCH_I:
 		INST_DJZ_R:			;------- Instruction Test => DJZ R
-			MOV		A,@0x1A
-			MOV		INST,A
 			CALL	STATUS_CLEAR
 			MOV		A,@0x01
 			MOV		0x50,A		; [0x50] = 0x01
@@ -1962,8 +1862,6 @@ INS_FAIL:
 			JMP		$+2
 			JMP		INS_FAIL
 		INST_DJZA_R:		;------- Instruction Test => DJZA R
-			MOV		A,@0x19
-			MOV		INST,A
 			CALL	STATUS_CLEAR
 			MOV		A,@0x01
 			MOV		0x50,A		; [0x50] = 0x01
@@ -1978,8 +1876,6 @@ INS_FAIL:
 			JMP		$+2
 			JMP	INS_FAIL
 		INST_JZA_R:			;-------Instruction Test => JZA R
-			MOV		A,@0x21
-			MOV		INST,A
 			CALL	STATUS_CLEAR
 			MOV		A,@0xFF
 			MOV		0x50,A
@@ -1994,8 +1890,6 @@ INS_FAIL:
 			JMP		$+2
 			JMP		INS_FAIL
 		INST_JZ_R:			;-------Instruction Test => JZ R
-			MOV		A,@0x22
-			MOV		INST,A
 			CALL	STATUS_CLEAR
 			MOV		A,@0xFF
 			MOV		0x50,A		; [0x50] = 0xFF
@@ -2013,8 +1907,6 @@ INS_FAIL:
 		RET
 	TEST_INST_BRANCH_II:
 		INST_JE_R:			;-------Instruction Test => JE R
-			MOV		A,@0x23
-			MOV		INST,A
 			CALL	STATUS_CLEAR
 			MOV		A,@0x5A
 			MOV		0x50,A		; [0x50] = 0x5A
@@ -2027,8 +1919,6 @@ INS_FAIL:
 			JMP		$+2
 			JMP		INS_FAIL
 		INST_JGE_R:			;-------Instruction Test => JGE R
-			MOV		A,@0x24
-			MOV		INST,A
 			CALL	STATUS_CLEAR
 			MOV		A,@0x7F
 			MOV		0x50,A		; [0x50] = 0x7F
@@ -2050,8 +1940,6 @@ INS_FAIL:
 			JMP		INS_FAIL
 
 		INST_JLE_R:			;-------Instruction Test => JLE R
-			MOV		A,@0x25
-			MOV		INST,A
 			CALL	STATUS_CLEAR
 			MOV		A,@0x00
 			MOV		0x50,A		; [0x50] = 0x00
@@ -2073,8 +1961,6 @@ INS_FAIL:
 			JMP		$+2
 			JMP		INS_FAIL
 		INST_JE_K:			;-------Instruction Test => JE k
-			MOV		A,@0x27
-			MOV		INST,A
 			CALL	STATUS_CLEAR
 			MOV		A,@0x7F
 			JE		@0x7F
@@ -2082,8 +1968,6 @@ INS_FAIL:
 		RET
 	TEST_INST_BRANCH_III:
 		INST_CALL_K:		;-------Instruction Test => CALL k
-			MOV	A,@0x02
-			MOV	INST,A
 			CALL	STATUS_CLEAR
 			MOV		A,@0x03
 			MOV		0x50,A
@@ -2093,8 +1977,6 @@ INS_FAIL:
 			CALL	INST_XOR_JUDGE
 
 		INST_LCALL_K:		;-------Instruction Test => LCALL k
-			MOV		A,@0x03
-			MOV		INST,A
 			CALL	STATUS_CLEAR
 			MOV		A,@0x03
 			MOV		0x51,A
@@ -2104,8 +1986,6 @@ INS_FAIL:
 			CALL	INST_XOR_JUDGE
 
 		INST_RETL_K:		;-------Instruction Test => RETL k
-			MOV		A,@0x2C
-			MOV		INST,A
 			CALL	STATUS_CLEAR
 			MOV		A,@0x00
 			CALL	INST_RETL_TABLE
@@ -2126,14 +2006,10 @@ INS_FAIL:
 		RET
 	TEST_INST_CONTROL:
 		INST_ENI:			;-------Instruction Test => ENI , IT?
-			MOV		A,@0x04
-			MOV		INST,A
 			ENI
 			JBS		IT		; Check IT = 1?
 			JMP	INS_FAIL
 		INST_DISI:			;-------Instruction Test => DISI , IT?
-			MOV		A,@0x05
-			MOV		INST,A
 			DISI
 			JBC		IT		; Check IT = 0?
 			JMP	INS_FAIL
@@ -2225,8 +2101,6 @@ INS_FAIL:
 
 	TEST_READ_ROM:
 		INST_TBLRD_R:
-			MOV		A,@0x28
-			MOV		INST,A
 			SBANK	1
 			MOV		A,@0xF1		;ADDR(0x0EF1)
 			MOV		TBPTL,A
@@ -2254,8 +2128,6 @@ INS_FAIL:
 			XOR		A,@0x70
 			CALL	INST_XOR_JUDGE
 		INST_TBRD_R:		;-------Instruction Test => TBRD R
-			MOV		A,@0x33
-			MOV		INST,A
 			SBANK	1
 			MOV		A,@0xF3		;ADDR(0x0EF3)
 			MOV		TBPTL,A
