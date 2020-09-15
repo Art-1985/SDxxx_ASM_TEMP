@@ -89,6 +89,17 @@ MAIN:
 ;====================== Backgroung =======================
 BACK_GROUND_LOOP:
 	SBANK	0
+	SDxxx_EFT_INST_ARITHEMATIC
+	SDxxx_EFT_INST_LOGIC_I
+	SDxxx_EFT_INST_LOGIC_II
+	SDxxx_EFT_INST_TRANSFER
+	SDxxx_EFT_INST_MANIPULATION	0x50
+	SDxxx_EFT_BRANCH_I
+	SDxxx_EFT_BRANCH_II
+	;SDxxx_EFT_BRANCH_III
+	SDxxx_EFT_SHORT_BRANCH
+	SDxxx_EFT_CONTROL
+	SDxxx_EFT_READ_ROM
 	NOP
 	JMP		BACK_GROUND_LOOP
 
@@ -107,7 +118,23 @@ INS_FAIL:
 		JMP		INS_FAIL
 		RET
 
+	STATUS_CLEAR:
+		MOV		A,@0x00
+		MOV		STATUS,A
+		RET
 
+
+ORG	0x0EF0	; ADDR(3824)
+	INST_RETL_TABLE:
+		ADD		PCL, A	;BackUp PC to STACK,then SEARCH TABLE By PC
+		RETL	@0xA1
+		RETL	@0xA2
+		RETL	@0xA4
+		RETL	@0xA8
+		RETL	@0x1A
+		RETL	@0x2A
+		RETL	@0x4A
+		RETL	@0x8A
 ;============== Interrupt Service Routine ================
 	;================================
 	_Int_EXINT:
