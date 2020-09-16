@@ -1,11 +1,11 @@
-/****************************************************************************
- *  Title:       SD062 include file                                        *
- *  Target MCU:  SD062                                                     *
- *  Description: Register/bit definitions                                   *
- *  Company:     ELAN LTD.                            *
- *  Date:        2019-2-21                                                  *
- *  Version:     v1.0                                                       *
- ****************************************************************************/
+/************************************************************************
+ *  Title:       SD062 include file                                     *
+ *  Target MCU:  SD062                                                  *
+ *  Description: Register/bit definitions                               *
+ *  Company:     ELAN LTD.                                              *
+ *  Date:        2019-2-21                                              *
+ *  Version:     v1.0                                                   *
+ ***********************************************************************/
 ;======================================================;
 ; Operational Registers Define                         ;
 ;======================================================;
@@ -435,10 +435,10 @@ TM2DBL      ==  0X0E:rpage 2
 TM2DAH      ==  0X0F:rpage 2
 ;R10/TM2DAL :Timer/Counter 2 Data Buffer A Low Byte
 TM2DAL      ==  0X10:rpage 2
-;R11 RXCR(RX Control Register±±¨î±H¦s¾¹)
+;R11 RXCR(RX Control Registerï¿½ï¿½ï¿½ï¿½Hï¿½sï¿½ï¿½)
 RXCR       ==  0X11:rpage 2
         RXIE       ==  RXCR.7
-;R12 RX1CR1(RX1 Control Register 1±±¨î±H¦s¾¹1)
+;R12 RX1CR1(RX1 Control Register 1ï¿½ï¿½ï¿½ï¿½Hï¿½sï¿½ï¿½1)
 RX1CR1     ==  0X12:rpage 2
         RX1E       ==  RX1CR1.7
         RX1HV4       ==  RX1CR1.4
@@ -446,7 +446,7 @@ RX1CR1     ==  0X12:rpage 2
         RX1HV2       ==  RX1CR1.2
         RX1HV1       ==  RX1CR1.1
         RX1HV0       ==  RX1CR1.0
-;R13 RX1CR2(RX1 Control Register 2±±¨î±H¦s¾¹2)
+;R13 RX1CR2(RX1 Control Register 2ï¿½ï¿½ï¿½ï¿½Hï¿½sï¿½ï¿½2)
 RX1CR2     ==  0X13:rpage 2
         RX1OPE       ==  RX1CR2.7
         RX1OUT       ==  RX1CR2.6
@@ -455,7 +455,7 @@ RX1CR2     ==  0X13:rpage 2
         RX1LV2       ==  RX1CR2.2
         RX1LV1       ==  RX1CR2.1
         RX1LV0       ==  RX1CR2.0
-;R14 RX2CR1(RX2 Control Register 1±±¨î±H¦s¾¹1)
+;R14 RX2CR1(RX2 Control Register 1ï¿½ï¿½ï¿½ï¿½Hï¿½sï¿½ï¿½1)
 RX2CR1     ==  0X14:rpage 2
         RX2E       ==  RX2CR1.7
         RX2HV4       ==  RX2CR1.4
@@ -463,7 +463,7 @@ RX2CR1     ==  0X14:rpage 2
         RX2HV2       ==  RX2CR1.2
         RX2HV1       ==  RX2CR1.1
         RX2HV0       ==  RX2CR1.0
-;R15 RX2CR2(RX2 Control Register 2±±¨î±H¦s¾¹2)
+;R15 RX2CR2(RX2 Control Register 2ï¿½ï¿½ï¿½ï¿½Hï¿½sï¿½ï¿½2)
 RX2CR2     ==  0X15:rpage 2
         RX2OPE       ==  RX2CR2.7
         RX2OUT       ==  RX2CR2.6
@@ -472,7 +472,7 @@ RX2CR2     ==  0X15:rpage 2
         RX2LV2       ==  RX2CR2.2
         RX2LV1       ==  RX2CR2.1
         RX2LV0       ==  RX2CR2.0
-;R16 RXDCR(RX Deglitch Control Register±±¨î±H¦s¾¹)
+;R16 RXDCR(RX Deglitch Control Registerï¿½ï¿½ï¿½ï¿½Hï¿½sï¿½ï¿½)
 RXDCR       ==  0X16:rpage 2
         RX1DS       ==  RXDCR.7
         RX1DT2      ==  RXDCR.6
@@ -482,13 +482,13 @@ RXDCR       ==  0X16:rpage 2
         RX2DT2      ==  RXDCR.2
         RX2DT1      ==  RXDCR.1
         RX2DT0      ==  RXDCR.0
-;R17 TXSC(TX Sink Current Register±H¦s¾¹)
+;R17 TXSC(TX Sink Current Registerï¿½Hï¿½sï¿½ï¿½)
 TXSC       ==  0X17:rpage 2
         TXCS3       ==  TXSC.3
         TXCS2       ==  TXSC.2
         TXCS1       ==  TXSC.1
         TXCS0       ==  TXSC.0
-;R18 TXCR1(TX Control Register 1±±¨î±H¦s¾¹1)
+;R18 TXCR1(TX Control Register 1ï¿½ï¿½ï¿½ï¿½Hï¿½sï¿½ï¿½1)
 TXCR1     ==  0X18:rpage 2
         TXE         ==  TXCR1.7
         TXTM        ==  TXCR1.5
@@ -497,7 +497,7 @@ TXCR1     ==  0X18:rpage 2
         TXMV2       ==  TXCR1.2
         TXMV1       ==  TXCR1.1
         TXMV0       ==  TXCR1.0
-;R19 TXCR2(TX Control Register 2±±¨î±H¦s¾¹2)
+;R19 TXCR2(TX Control Register 2ï¿½ï¿½ï¿½ï¿½Hï¿½sï¿½ï¿½2)
 TXCR2     ==  0X19:rpage 2
         TXS         ==  TXCR2.7
         TXCLK       ==  TXCR2.6
@@ -507,13 +507,13 @@ TXCR2     ==  0X19:rpage 2
         TXCP2       ==  TXCR2.2
         TXCP1       ==  TXCR2.1
         TXCP0       ==  TXCR2.0
-;R1A TXDT(TX Delay Timer Register©µ¿ð±H¦s¾¹)
+;R1A TXDT(TX Delay Timer Registerï¿½ï¿½ï¿½ï¿½Hï¿½sï¿½ï¿½)
 TXDT       ==  0X1A:rpage 2
-;R1B TXCT(TX Sink Current Timer Register¨Ï¯à®É¶¡±H¦s¾¹)
+;R1B TXCT(TX Sink Current Timer Registerï¿½Ï¯ï¿½É¶ï¿½ï¿½Hï¿½sï¿½ï¿½)
 TXCT       ==  0X1B:rpage 2
 ;R1C TXRC (TXTM Read Counting)
 TXRC       ==  0X1C:rpage 2
-;R1D CMP3&LRR (CMP3&Limiting Resistor Register­­¬y¹qªý±H¦s¾¹)
+;R1D CMP3&LRR (CMP3&Limiting Resistor Registerï¿½ï¿½ï¿½yï¿½qï¿½ï¿½ï¿½Hï¿½sï¿½ï¿½)
 CMP3LRR    ==  0X1D:rpage 2
         CMP3DS      ==  CMP3LRR.7
         CMP3DT2     ==  CMP3LRR.6
@@ -521,7 +521,7 @@ CMP3LRR    ==  0X1D:rpage 2
         CMP3DT0     ==  CMP3LRR.4
         CL1   	    ==  CMP3LRR.1
         CL0  	    ==  CMP3LRR.0
-;R1E DCCR (Discharge Control Register ©ñ¹q±±¨î±H¦s¾¹)
+;R1E DCCR (Discharge Control Register ï¿½ï¿½qï¿½ï¿½ï¿½ï¿½Hï¿½sï¿½ï¿½)
 DCCR       ==  0X1E:rpage 2
         CMP3E     ==  DCCR.7
         MCDC      ==  DCCR.6
@@ -530,7 +530,7 @@ DCCR       ==  0X1E:rpage 2
         DCT0      ==  DCCR.2
         DCR1      ==  DCCR.1
         DCR0      ==  DCCR.0
-;R1F DCVS (Discharge Voltage select Register ©ñ¹q¹qÀ£¿ï¾Ü±H¦s¾¹)
+;R1F DCVS (Discharge Voltage select Register ï¿½ï¿½qï¿½qï¿½ï¿½ï¿½ï¿½Ü±Hï¿½sï¿½ï¿½)
 DCVS       ==  0X1F:rpage 2
         CMP3OPE   ==  DCVS.7
         CMP3OUT   ==  DCVS.6
