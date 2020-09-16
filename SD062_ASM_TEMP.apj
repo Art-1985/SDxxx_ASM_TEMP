@@ -466,3 +466,11 @@ PopUp WDTReset Msg=1
 Disable EEPROM Protect Msg=0
 [C_LIB BUILD SETTING]
 No Debug Info=0
+[$\SD062_ASM_TEMP.asm]
+Rectangle=0025 0025 0911 0562
+Iconized=0
+Maximized=0
+[$\SDXXX_DEV_TAR.H]
+Rectangle=0050 0050 0940 0589
+Iconized=0
+Maximized=0
