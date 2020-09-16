@@ -30,15 +30,29 @@ SDxxx_GPIO_OUT_P5 MACRO
 	SBANK	0
     MOV		A,@0xFF
 	MOV		PORT5,A
-    MOV     A,@0x01
+    MOV     0x50,@0xFE
+    MOV     A,0x50
     MOV		IOCR5,A
-    ;; <<A
+    RL      0x50
+    MOV     A,0x50
     MOV		IOCR5,A
+    RL      0x50
+    MOV     A,0x50
     MOV		IOCR5,A
+    RL      0x50
+    MOV     A,0x50
     MOV		IOCR5,A
+    RL      0x50
+    MOV     A,0x50
     MOV		IOCR5,A
+    RL      0x50
+    MOV     A,0x50    
     MOV		IOCR5,A
+    RL      0x50
+    MOV     A,0x50
     MOV		IOCR5,A
+    RL      0x50
+    MOV     A,0x50
     MOV		IOCR5,A
     ENDM
 
@@ -46,15 +60,28 @@ SDxxx_GPIO_OUT_P6 MACRO
 	SBANK	0
     MOV		A,@0xFF
 	MOV		PORT6,A
-    MOV     A,@0x01
+    MOV     A,@0xFF
     MOV		IOCR6,A
-    ;; <<A
+    MOV     0x50,@0xFE
+    MOV     A,0x50
     MOV		IOCR6,A
+    RL      0x50
+    MOV     A,0x50
     MOV		IOCR6,A
+    RL      0x50
+    MOV     A,0x50
     MOV		IOCR6,A
+    RL      0x50
+    MOV     A,0x50
     MOV		IOCR6,A
+    RL      0x50
+    MOV     A,0x50
     MOV		IOCR6,A
+    RL      0x50
+    MOV     A,0x50
     MOV		IOCR6,A
+    RL      0x50
+    MOV     A,0x50
     MOV		IOCR6,A
     ENDM
 
@@ -62,14 +89,43 @@ SDxxx_GPIO_OUT_P7 MACRO
 	SBANK	0
     MOV		A,@0xFF
 	MOV		PORT7,A
-    MOV     A,@0x01
+    MOV     A,@0xFF
     MOV		IOCR7,A
-    ;; <<A
+    MOV     0x50,@0xFE
+    MOV     A,0x50
     MOV		IOCR7,A
+    RL      0x50
+    MOV     A,0x50
     MOV		IOCR7,A
+    RL      0x50
+    MOV     A,0x50
     MOV		IOCR7,A
+    RL      0x50
+    MOV     A,0x50
     MOV		IOCR7,A
+    RL      0x50
+    MOV     A,0x50
     MOV		IOCR7,A
+    RL      0x50
+    MOV     A,0x50
     MOV		IOCR7,A
+    RL      0x50
+    MOV     A,0x50
     MOV		IOCR7,A
+    ENDM
+
+SDxxx_GPIO_PH_P5 MACRO
+	SBANK	0
+    ENDM
+
+SDxxx_GPIO_PL_P5 MACRO
+	SBANK	0
+    ENDM
+
+SDxxx_GPIO_OD_P5 MACRO
+	SBANK	0
+    ENDM
+
+SDxxx_GPIO_HD_P5 MACRO
+	SBANK	0
     ENDM

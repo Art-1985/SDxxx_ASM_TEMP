@@ -102,13 +102,11 @@ SDxxx_ROM_READ  MACRO ADDR_H,ADDR_L,BYTE_H
 
 SDxxx_WDT_SET MACRO
 	SBANK	0
-	MOV    A,@0x80     ; WDTen,1:1
-	;MOV    A,@0x8F     ; WDTen,1:256
-	;MOV    WDTCR,A
+	MOV		A,@0x88
+	MOV		WDTCR,A
     ENDM
 
 ;;====== For IC Function Verify =============================================;;
-
 
 ;RAM_WRITE MACRO G_BANK,START_ADDR,VALUE
 ; GBANK G_BANK

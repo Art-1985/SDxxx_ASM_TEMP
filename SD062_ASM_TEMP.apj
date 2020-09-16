@@ -6,15 +6,23 @@ ICE=ED062
 [CallRamBlock]
 BlockNum=0
 [EEPROMBlock]
-BlockNum=0
+BlockNum=8
+iID0=0
+iID1=1
+iID2=2
+iID3=3
+iID4=4
+iID5=5
+iID6=6
+iID7=7
 [DATA_AREABlock]
-BlockNum=0
+BlockNum=8
 [BREAKPOINT]
 BP Num=0
 [CODEOPTION]
 Option Num=115
 IRC Trim=1
-Protect=0
+Protect=1
 NRE=1
 NRHL=1
 ENWDT=1
@@ -143,18 +151,20 @@ AGENT=0
 [LibraryProject]
 LibraryProject=0
 [LastOpenFiles]
-File0=$\SD062_ASM_TEMP.asm
+File0=$\SD062.INC
 File Num=1
 [Source Files]
 File Num=1
 File0=$\SD062_ASM_TEMP.asm
 [Reference Files]
-File Num=5
+File Num=7
 File0=$\SDXXX_DEV_TAR.H
 File1=$\SD062.INC
 File2=$\SDXXX_ASM_SYS.ASM
 File3=$\SDXXX_ASM_GPIO.ASM
 File4=$\SDXXX_ASM_EFT.ASM
+File5=$\SDXXX_ASM_RAM.ASM
+File6=$\SDXXX_ASM_ROM.ASM
 [List Files]
 File Num=1
 File0=$\SD062_ASM_TEMP.lst
@@ -447,14 +457,14 @@ R4D=4D
 R4E=4E
 R4F=4F
 [RAMBreakPoint]
-Set0=0 0 0 0 0 0 0
-Set1=0 0 0 0 0 0 0
-Set2=0 0 0 0 0 0 0
-Set3=0 0 0 0 0 0 0
-Set4=0 0 0 0 0 0 0
-Set5=0 0 0 0 0 0 0
-Set6=0 0 0 0 0 0 0
-Set7=0 0 0 0 0 0 0
+Set0=0 0 0 0 0 0
+Set1=0 0 0 0 0 0
+Set2=0 0 0 0 0 0
+Set3=0 0 0 0 0 0
+Set4=0 0 0 0 0 0
+Set5=0 0 0 0 0 0
+Set6=0 0 0 0 0 0
+Set7=0 0 0 0 0 0
 [Watch]
 Size#0=0
 Size#1=0
@@ -473,7 +483,7 @@ PopUp WDTReset Msg=1
 Disable EEPROM Protect Msg=0
 [C_LIB BUILD SETTING]
 No Debug Info=0
-[$\SD062_ASM_TEMP.asm]
-Rectangle=0000 0000 0454 0426
+[$\SD062.INC]
+Rectangle=0225 0225 1096 0764
 Iconized=0
 Maximized=0

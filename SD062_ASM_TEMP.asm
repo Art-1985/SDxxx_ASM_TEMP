@@ -83,12 +83,14 @@ MAIN:
 	SDxxx_GPIO_INIT
 	;SDxxx_EFT_KEY_TRIG
 	SDxxx_EFT_TES_JMP
-	SDxxx_EFT_STACK
-
+	SDxxx_WDT_SET
+	SDxxx_RAM_SHA_INIT
+	SDxxx_RAM_IND_INIT 0
 
 ;====================== Backgroung =======================
 BACK_GROUND_LOOP:
 	SBANK	0
+	SDxxx_EFT_STACK
 	SDxxx_EFT_INST_ARITHEMATIC
 	SDxxx_EFT_INST_LOGIC_I
 	SDxxx_EFT_INST_LOGIC_II
@@ -100,8 +102,15 @@ BACK_GROUND_LOOP:
 	SDxxx_EFT_SHORT_BRANCH
 	SDxxx_EFT_CONTROL
 	SDxxx_EFT_READ_ROM
-	NOP
+	SDxxx_RAM_WR_ALL 0,0x55
+	SDxxx_RAM_WR_ALL 1,0xAA
+	CAlL	JMP_PASS
 	JMP		BACK_GROUND_LOOP
+
+JMP_PASS:
+	BTG		P5,1
+	WDTC
+	RET
 
 JMP_FAIL:
 	SBANK	0
@@ -110,6 +119,10 @@ JMP_FAIL:
 INS_FAIL:
 	SBANK	0
 	JMP		INS_FAIL
+	
+RAM_FAIL:
+	SBANK	0
+	JMP		RAM_FAIL
 ;================== Jmp Sub Function ==================
 	INST_XOR_JUDGE:
 		JBS		Z			; IF(Z=1) BRANCH
