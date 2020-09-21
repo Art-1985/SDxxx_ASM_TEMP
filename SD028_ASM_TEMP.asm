@@ -27,8 +27,6 @@ INCLUDE		"SDXXX_DEV_TAR.h"
 	TMP3	== 0x53
 
 ;================ Interrupt Vector Table =================
-	ORG 	0x0000
-		JMP MAIN
 	ORG		0x0002
 		JMP	_Int_EXINT
 	ORG		0x0004
@@ -71,6 +69,8 @@ INCLUDE		"SDXXX_DEV_TAR.h"
 	JMP JMP_FAIL	;0x004F
 
 ;==================== Main Function ======================
+	ORG 	0x0000
+	JMP 	MAIN
 	ORG		0x0050
 MAIN:
 	SDxxx_SYS_INIT
@@ -84,9 +84,23 @@ BACK_GROUND_LOOP:
 	NOP
 	JMP		BACK_GROUND_LOOP
 
+JMP_PASS:
+	BTG		P5,1
+	WDTC
+	RET
+
 JMP_FAIL:
 	SBANK	0
 	JMP		JMP_FAIL
+
+INS_FAIL:
+	SBANK	0
+	JMP		INS_FAIL
+
+RAM_FAIL:
+	SBANK	0
+	JMP		RAM_FAIL
+
 
 ;================== Jmp Sub Function ==================
 
@@ -190,5 +204,43 @@ JMP_FAIL:
 		JMP 	JMP_FAIL
 		BC		IGSF
 		RETI
+
+ORG	0x1700	;ADDR(6K-256)
+	DW	0x1234
+	DW	0x1234
+	DW	0x1234
+	DW	0x1234
+	DW	0x1234
+	DW	0x1234
+	DW	0x1234
+	DW	0x1234
+	DW	0x1234
+	DW	0x1234
+	DW	0x1234
+	DW	0x1234
+	DW	0x1234
+	DW	0x1234
+	DW	0x1234
+	DW	0x1234	;ADDR(0x170F)
+	DW	0x1234
+	DW	0x1234
+	DW	0x1234
+	DW	0x1234
+	DW	0x1234
+	DW	0x1234
+	DW	0x1234
+	DW	0x1234
+	DW	0x1234
+	DW	0x1234
+	DW	0x1234
+	DW	0x1234
+	DW	0x1234
+	DW	0x1234
+	DW	0x1234
+	DW	0x1234	;ADDR(0x171F)
+
+ORG	0x17FE
+    RETL    @0x17FE
+    RETL    @0x17FF
 
 

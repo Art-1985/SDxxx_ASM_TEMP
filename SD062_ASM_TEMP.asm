@@ -76,8 +76,12 @@ INCLUDE		"SDXXX_DEV_TAR.h"
 ;==================== Main Function ======================
 	ORG 	0x0000
 	JMP 	MAIN
-
 	ORG		0x0050
+	DW		0x0101
+	DW		0x0102
+	DW		0x0103
+	DW		0x0104
+	ORG		0x0060
 MAIN:
 	SDxxx_SYS_INIT
 	SDxxx_GPIO_INIT
@@ -119,7 +123,7 @@ JMP_FAIL:
 INS_FAIL:
 	SBANK	0
 	JMP		INS_FAIL
-	
+
 RAM_FAIL:
 	SBANK	0
 	JMP		RAM_FAIL
