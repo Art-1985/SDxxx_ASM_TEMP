@@ -187,6 +187,43 @@ BACK_GROUND_LOOP:
 	WDTC
 	JMP		BACK_GROUND_LOOP
 
+
+#define StartADC1P0Measure {
+	ADCONBUF	= 0x80
+    ADISR		= 0x00
+	ADRUN		= 1
+    while(ADRUN== 1)
+
+// Voltage Detect (pin9,ADC5)
+//ADC Buffer Enable,PTR=1//Buffer = ADC5
+#define StartADC1P5Measure {ADCONBUF = 0x81;\
+                            ADISR        = 0x05;\
+                            ADRUN    = 1;   \
+                                                                 while(ADRUN== 1);}
+
+         ADER1 = 0x29;		//P57,P71,P67 set to adc input channel    
+         ADCR1 = 0xAB;		//Tad = 1us,12Tad/convert
+         ADCR2 = 0x00;		//Reference Voltage = AVDD    
+         ADRUN = 0;			//1: A/D conversion starts. This bit can be set by software
+
+byte AverageFour(byte *cArray){
+         return ((word) cArray[0] + (word) cArray[1]+ (word) cArray[2] + (word) cArray[3]) >> 2;
+}
+void CheckPWMInput(void)
+{
+         
+         StartADC1P0Measure;      
+         AdcFifo[AdcFifoCounter&0x03] = ADDH;
+         AdcFifoCounter++;
+//      PWMTemp = (byte) (((word) AdcFifo[0] + (word) AdcFifo[1]+ (word) AdcFifo[2] + (word) AdcFifo[3]) >> 2);
+         PWMTemp = AverageFour(AdcFifo);         
+
+}
+
+
+
+
+
 ;====================== ERROR_LOOP =====================
 JMP_FAIL:
 	SBANK	0
