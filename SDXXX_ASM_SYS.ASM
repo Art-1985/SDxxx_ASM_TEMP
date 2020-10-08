@@ -107,6 +107,23 @@ SDxxx_WDT_SET MACRO
     ENDM
 
 ;;====== For IC Function Verify =============================================;;
+SDxxx_WR_COBS_IRC MACRO
+	SBANK	1
+	MOV		A,@0xA0
+	MOV		COBS1,A
+    MOV		A,@0x3F
+	MOV		COBS2,A
+    MOV		A,@0x0F
+	MOV		COBS3,A
+	SBANK	2
+	MOV		A,@0x1F
+	MOV		COBS4,A
+    MOV		A,@0x3F
+	MOV		COBS2,A
+    MOV		A,@0x0F
+	MOV		COBS3,A
+    ENDM
+
 
 ;RAM_WRITE MACRO G_BANK,START_ADDR,VALUE
 ; GBANK G_BANK

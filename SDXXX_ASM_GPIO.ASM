@@ -4,7 +4,6 @@
     ;RET
 
 
-
 ;SDxxx_SYS_INIT:	
     ;SBANK	0
     ;BS		CPUS
