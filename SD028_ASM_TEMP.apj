@@ -6,24 +6,18 @@ ICE=ED028
 [CallRamBlock]
 BlockNum=0
 [EEPROMBlock]
-BlockNum=8
-iID0=0
-iID1=1
-iID2=2
-iID3=3
-iID4=4
-iID5=5
-iID6=6
-iID7=7
+BlockNum=0
 [DATA_AREABlock]
-BlockNum=8
+BlockNum=0
 [BREAKPOINT]
-BP Num=0
+BP Num=2
+BP0=1,A,1634908,1,1830660068,120,$\SD028_ASM_IAP.asm
+BP1=1,A,1634908,1,1830660068,135,$\SD028_ASM_IAP.asm
 [CODEOPTION]
 Option Num=116
 WD2 1=1
 IRC Trim=1
-Protect=1
+Protect=0
 NRE=1
 NRHL=1
 ENWDT=1
@@ -152,11 +146,11 @@ AGENT=0
 [LibraryProject]
 LibraryProject=0
 [LastOpenFiles]
-File0=$\SD028_ASM_TEMP.asm
+File0=$\SD028_ASM_IAP.asm
 File Num=1
 [Source Files]
 File Num=1
-File0=$\SD028_ASM_TEMP.asm
+File0=$\SD028_ASM_IAP.asm
 [Reference Files]
 File Num=7
 File0=$\SDXXX_DEV_TAR.H
@@ -168,7 +162,7 @@ File5=$\SDXXX_ASM_RAM.ASM
 File6=$\SDXXX_ASM_ROM.ASM
 [List Files]
 File Num=1
-File0=$\SD028_ASM_TEMP.lst
+File0=$\SD028_ASM_IAP.lst
 [Map Files]
 File Num=1
 File0=$\SD028_ASM_TEMP.map
@@ -485,7 +479,7 @@ PopUp WDTReset Msg=1
 Disable EEPROM Protect Msg=0
 [C_LIB BUILD SETTING]
 No Debug Info=0
-[$\SD028_ASM_TEMP.asm]
-Rectangle=0100 0100 0501 0417
+[$\SD028_ASM_IAP.asm]
+Rectangle=0025 0025 1071 0399
 Iconized=0
 Maximized=0
