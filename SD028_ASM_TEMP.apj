@@ -10,8 +10,9 @@ BlockNum=0
 [DATA_AREABlock]
 BlockNum=0
 [BREAKPOINT]
-BP Num=1
-BP0=1,A,1634908,1,1809295332,178,$\SD028_ASM_IAP.asm
+BP Num=2
+BP0=1,A,1634908,1,1661708260,62,$\SDXXX_ASM_RAM.ASM
+BP1=1,A,1634944,1,1661708260,178,$\SD028_ASM_IAP.asm
 [CODEOPTION]
 Option Num=116
 WD2 1=1
@@ -131,7 +132,7 @@ WD10 15=1
 [CONTTYPE]
 CONTTYPE=16
 [DUMPCHECK]
-DUMPCHECK=1
+DUMPCHECK=0
 [SHOWLABEL]
 SHOWLABEL=1
 [TRACELOGSOURCE]
@@ -145,11 +146,12 @@ AGENT=0
 [LibraryProject]
 LibraryProject=0
 [LastOpenFiles]
-File0=$\SD028_ASM_IAP.asm
-File Num=1
+File0=$\SD028_ASM_TEMP.asm
+File1=$\SDXXX_ASM_RAM.ASM
+File Num=2
 [Source Files]
 File Num=1
-File0=$\SD028_ASM_IAP.asm
+File0=$\SD028_ASM_TEMP.asm
 [Reference Files]
 File Num=7
 File0=$\SDXXX_DEV_TAR.H
@@ -161,7 +163,7 @@ File5=$\SDXXX_ASM_RAM.ASM
 File6=$\SDXXX_ASM_ROM.ASM
 [List Files]
 File Num=1
-File0=$\SD028_ASM_IAP.lst
+File0=$\SD028_ASM_TEMP.lst
 [Map Files]
 File Num=1
 File0=$\SD028_ASM_TEMP.map
@@ -466,7 +468,7 @@ Size#1=0
 Size#2=0
 [UBRG SETTING]
 Voltage=5.000000
-IsExVoltage=0
+IsExVoltage=1
 Monitor DriftVol=0.500000
 Interface=0
 Monitor DriftVolEnable=1
@@ -478,7 +480,11 @@ PopUp WDTReset Msg=1
 Disable EEPROM Protect Msg=0
 [C_LIB BUILD SETTING]
 No Debug Info=0
-[$\SD028_ASM_IAP.asm]
-Rectangle=0025 0025 1071 0399
+[$\SD028_ASM_TEMP.asm]
+Rectangle=0100 0100 0852 0626
+Iconized=0
+Maximized=0
+[$\SDXXX_ASM_RAM.ASM]
+Rectangle=0125 0125 0881 0653
 Iconized=0
 Maximized=0
