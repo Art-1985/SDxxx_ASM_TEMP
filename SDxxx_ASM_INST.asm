@@ -79,11 +79,11 @@ INCLUDE		"SDxxx_DEV_TAR.h"
 ;==================== Main Function ======================
 	ORG		0x0050
 MAIN:
-	;CALL 	EFT_INIT
 	CALL	SYS_INIT
 	CALL	GPIO_INIT
 	;CALL	WAKE_INIT
-	;CALL	KEY_DEBOUNCE
+	CALL	WDT_QK
+	CALL	KEY_DEBOUNCE
 	CALL	RAM_SHA_INIT
 	CALL	RAM_IND_INIT
 	CALL	EEPROM_INIT
@@ -107,11 +107,11 @@ BACK_GROUND_LOOP:
 	CALL	TEST_SHORT_BRANCH		;SJC, SJZ, SJNC, SJNZ
 	CALL	TEST_READ_ROM			;TBRD, TBRDA
 	CALL	TEST_RAM_BANK_0_5		;Write(0x55),Read(0x55),Clear(0x00)
-	CALL	TEST_RAM_BANK_0_A		;Write(0xAA),Read(0xAA),Clear(0x00)
-	CALL	TEST_RAM_BANK_1_3		;Write(0x33),Read(0x33),Clear(0x00)
-	CALL	TEST_RAM_BANK_1_C		;Write(0xCC),Read(0xCC),Clear(0x00)
+	CALL	TEST_RAM_BANK_1_A		;Write(0xAA),Read(0xAA),Clear(0x00)
+	CALL	TEST_RAM_BANK_2_3		;Write(0x33),Read(0x33),Clear(0x00)
+	CALL	TEST_RAM_BANK_3_C		;Write(0xCC),Read(0xCC),Clear(0x00)
 	JMP_PASS:
-	BTG		P5,1
+	BTG		P5,0
 	WDTC
 	JMP		BACK_GROUND_LOOP
 
@@ -119,15 +119,19 @@ BACK_GROUND_LOOP:
 JMP_FAIL:
 	SBANK	0
 	BC		P5,2
-	JMP		JMP_FAIL
+	JMP		BACK_GROUND_LOOP
 RAM_FAIL:
 	SBANK	0
 	BC		P5,3
-	JMP		RAM_FAIL
+	JMP		BACK_GROUND_LOOP
 INS_FAIL:
 	SBANK	0
 	BC		P5,4
-	JMP		INS_FAIL
+	JMP		BACK_GROUND_LOOP
+RST_FAIL:
+	SBANK	0
+	BC		P5,5
+	JMP		BACK_GROUND_LOOP
 
 ;================== PEIPHERAL_INITIAL ==================
 	;-------------------------------;
@@ -142,10 +146,11 @@ INS_FAIL:
 	GPIO_INIT:
 		SBANK	0
 		CLR		P5
-		MOV		A,@0xF0
+		MOV		A,@0x02
 		MOV		IOCR5,A
 		MOV		A,@0xFF	;Turn-Off LED (Active-Low)
 		MOV		P5,A
+		BC		P50
 		RET
 
 	;-------------------------------;
@@ -165,30 +170,36 @@ INS_FAIL:
 		BC		P5,0		; PWR ON reset,Light PWR_LED
 		SLEP		
 		RET
+		
+	WDT_QK:
+		JBS		T
+		JMP		RST_FAIL
+		NOP
+		RET
 	;-------------------------------;
 	KEY_DEBOUNCE:
-		JBS		P5,5		; Push, or not
+		JBS		P5,1		; Push, or not
 		JMP		$+2
 		JMP		$-2
-		JBS		P5,5
+		JBS		P5,1
 		JMP		KEY_DEBOUNCE
-		JBS		P5,5
+		JBS		P5,1
 		JMP		KEY_DEBOUNCE
-		JBS		P5,5
+		JBS		P5,1
 		JMP		KEY_DEBOUNCE
-		JBS		P5,5
+		JBS		P5,1
 		JMP		KEY_DEBOUNCE
-		JBS		P5,5
+		JBS		P5,1
 		JMP		KEY_DEBOUNCE
-		JBS		P5,5
+		JBS		P5,1
 		JMP		KEY_DEBOUNCE
-		JBS		P5,5
+		JBS		P5,1
 		JMP		KEY_DEBOUNCE
-		JBS		P5,5
+		JBS		P5,1
 		JMP		KEY_DEBOUNCE
-		JBS		P5,5
+		JBS		P5,1
 		JMP		KEY_DEBOUNCE
-		JBS		P5,5
+		JBS		P5,1
 		JMP		$-2
 		MOV		A,@0xFF		; Turn Off all LED
 		MOV		P5,A		
@@ -2244,10 +2255,10 @@ ORG	0x0F00	; ADDR(3840)
 		JBS		Z
 		JMP		$-8
 		RET
-	TEST_RAM_BANK_0_A:
+	TEST_RAM_BANK_1_A:
 		MOV		A,@0x80		; Write Start SRAM(0xAA)
 		MOV		RSR,A
-		GBANK	0
+		GBANK	1
 		MOV		A,@0xAA		; SRAM(0xAA)
 		MOV		IAR,A
 		INC		RSR
@@ -2257,7 +2268,7 @@ ORG	0x0F00	; ADDR(3840)
 		JMP		$-6
 		MOV		A,@0x80
 		MOV		RSR,A
-		GBANK	0
+		GBANK	1
 		MOV		A,@0xAA
 		XOR		IAR,A
 		JBS		Z
@@ -2268,10 +2279,10 @@ ORG	0x0F00	; ADDR(3840)
 		JBS		Z
 		JMP		$-8
 		RET
-	TEST_RAM_BANK_1_3:
+	TEST_RAM_BANK_2_3:
 		MOV		A,@0x80		; Write Start SRAM(0x33)
 		MOV		RSR,A
-		GBANK	1
+		GBANK	2
 		MOV		A,@0x33		; SRAM(0x33)
 		MOV		IAR,A
 		INC		RSR
@@ -2281,7 +2292,7 @@ ORG	0x0F00	; ADDR(3840)
 		JMP		$-6
 		MOV		A,@0x80
 		MOV		RSR,A
-		GBANK	1
+		GBANK	2
 		MOV		A,@0x33
 		XOR		IAR,A
 		JBS		Z
@@ -2292,10 +2303,10 @@ ORG	0x0F00	; ADDR(3840)
 		JBS		Z
 		JMP		$-8
 		RET
-	TEST_RAM_BANK_1_C:
+	TEST_RAM_BANK_3_C:
 		MOV		A,@0x80		; Write Start SRAM(0xCC)
 		MOV		RSR,A
-		GBANK	1
+		GBANK	3
 		MOV		A,@0xCC		; SRAM(0xCC)
 		MOV		IAR,A
 		INC		RSR
@@ -2305,7 +2316,7 @@ ORG	0x0F00	; ADDR(3840)
 		JMP		$-6
 		MOV		A,@0x80
 		MOV		RSR,A
-		GBANK	1
+		GBANK	3
 		MOV		A,@0xCC
 		XOR		IAR,A
 		JBS		Z

@@ -20,7 +20,7 @@
 SDxxx_GPIO_INIT MACRO
 	SBANK	0
 	CLR		P5
-	MOV		A,@0x0F
+	MOV		A,@0x00
 	MOV		IOCR5,A
     ENDM
 
