@@ -144,23 +144,16 @@ AGENT=0
 [LibraryProject]
 LibraryProject=0
 [LastOpenFiles]
-File0=$\SDXXX_ASM_INST.asm
-File Num=1
+File Num=0
 [Source Files]
 File Num=1
-File0=$\SDXXX_ASM_INST.asm
+File0=$\WDT.dt
 [Reference Files]
-File Num=7
-File0=$\SDXXX_DEV_TAR.H
-File1=$\SD028.INC
-File2=$\SDXXX_ASM_SYS.ASM
-File3=$\SDXXX_ASM_GPIO.ASM
-File4=$\SDXXX_ASM_EFT.ASM
-File5=$\SDXXX_ASM_RAM.ASM
-File6=$\SDXXX_ASM_ROM.ASM
+File Num=1
+File0=$\SD028.INC
 [List Files]
 File Num=1
-File0=$\SDXXX_ASM_INST.lst
+File0=$\WDT.lst
 [Map Files]
 File Num=1
 File0=$\SD028_ASM_TEMP.map
@@ -477,7 +470,7 @@ PopUp WDTReset Msg=1
 Disable EEPROM Protect Msg=0
 [C_LIB BUILD SETTING]
 No Debug Info=0
-[$\SDXXX_ASM_INST.asm]
-Rectangle=0050 0050 0984 0473
+[$\SD028_ASM_TEMP.map]
+Rectangle=0075 0075 0750 0475
 Iconized=0
 Maximized=0
