@@ -105,7 +105,6 @@ SDxxx_WDT_SET MACRO
 	MOV		A,@0x88
 	MOV		WDTCR,A
     ENDM
-
 ;;====== For IC Function Verify =============================================;;
 SDxxx_WR_COBS_IRC MACRO
 	SBANK	1
@@ -135,5 +134,131 @@ SDxxx_WR_COBS_IRC MACRO
 ; JBS Z
 ; JMP $-3
 ;ENDM
+
+SDxxx_WDT_SCAL_1_SLP_NOR MACRO  ; 16ms
+	SBANK 0
+	MOV     A,@0x0F
+	MOV     IOCR5,A
+	BC      IDLE
+	MOV     A,@0b00000000
+	MOV     WDTCR,A
+	BS      WDTE
+	BS      P5,5
+	WDTC
+	SLEP
+	JMP     $
+    ENDM
+
+SDxxx_WDT_SCAL_2_SLP_NOR MACRO  ; 128ms
+	SBANK 0
+	MOV     A,@0x0F
+	MOV     IOCR5,A
+	BC      IDLE
+	MOV     A,@0b00001000
+	MOV     WDTCR,A
+	BS      WDTE
+	BS      P5,5
+	WDTC
+	SLEP
+	JMP     $
+    ENDM
+
+SDxxx_WDT_SCAL_4_SLP_NOR MACRO  ; 256ms
+	SBANK 0
+	MOV     A,@0x0F
+	MOV     IOCR5,A
+	BC      IDLE
+	MOV     A,@0b00001001
+	MOV     WDTCR,A
+	BS      WDTE
+	BS      P5,5
+	WDTC
+	SLEP
+	JMP     $
+    ENDM
+
+SDxxx_WDT_SCAL_8_SLP_NOR MACRO  ; 512ms
+	SBANK 0
+	MOV     A,@0x0F
+	MOV     IOCR5,A
+	BC      IDLE
+	MOV     A,@0b00001010
+	MOV     WDTCR,A
+	BS      WDTE
+	BS      P5,5
+	WDTC
+	SLEP
+	JMP     $
+    ENDM
+
+SDxxx_WDT_SCAL_16_SLP_NOR MACRO  ; 1024ms
+	SBANK 0
+	MOV     A,@0x0F
+	MOV     IOCR5,A
+	BC      IDLE
+	MOV     A,@0b00001011
+	MOV     WDTCR,A
+	BS      WDTE
+	BS      P5,5
+	WDTC
+	SLEP
+	JMP     $
+    ENDM
+
+SDxxx_WDT_SCAL_32_SLP_NOR MACRO  ; 2048ms
+	SBANK 0
+	MOV     A,@0x0F
+	MOV     IOCR5,A
+	BC      IDLE
+	MOV     A,@0b00001100
+	MOV     WDTCR,A
+	BS      WDTE
+	BS      P5,5
+	WDTC
+	SLEP
+	JMP     $
+    ENDM
+
+SDxxx_WDT_SCAL_64_SLP_NOR MACRO  ; 4096ms
+	SBANK 0
+	MOV     A,@0x0F
+	MOV     IOCR5,A
+	BC      IDLE
+	MOV     A,@0b00001101
+	MOV     WDTCR,A
+	BS      WDTE
+	BS      P5,5
+	WDTC
+	SLEP
+	JMP     $
+    ENDM
+
+SDxxx_WDT_SCAL_128_SLP_NOR MACRO  ; 8192ms
+	SBANK 0
+	MOV     A,@0x0F
+	MOV     IOCR5,A
+	BC      IDLE
+	MOV     A,@0b00001110
+	MOV     WDTCR,A
+	BS      WDTE
+	BS      P5,5
+	WDTC
+	SLEP
+	JMP     $
+    ENDM
+
+SDxxx_WDT_SCAL_256_SLP_NOR MACRO  ; 16384ms
+	SBANK 0
+	MOV     A,@0x0F
+	MOV     IOCR5,A
+	BC      IDLE
+	MOV     A,@0b00001111
+	MOV     WDTCR,A
+	BS      WDTE
+	BS      P5,5
+	WDTC
+	SLEP
+	JMP     $
+    ENDM
 
 
