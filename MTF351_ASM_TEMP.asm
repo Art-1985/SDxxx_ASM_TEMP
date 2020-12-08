@@ -19,7 +19,8 @@
 ;============================================================
 
 ;==================== Project Include ====================
-Include	"MTF351.INC"
+INCLUDE		"MTF351.INC"
+INCLUDE		"SDxxx_ASM_RAM.ASM"
 
 ;================ General Purpose Register ===============
 	TMP50	== 0x50
@@ -158,7 +159,11 @@ MAIN:
 	;CALL	TEST_FLASH (Do not loop forever)
 	MOV		A,@0x88
 	MOV		WDTCR,A
-
+	SBANK	0
+	BC		P5,1
+	BC		P5,2
+	BC		P5,3
+	BC		P5,4
 ;====================== BACK_GROUND_LOOP ================
 BACK_GROUND_LOOP:
 	SBANK	0
@@ -174,20 +179,25 @@ BACK_GROUND_LOOP:
 	CALL	TEST_INST_CONTROL		;ENI, DISI, WDTC, SLEP, NOP, RETI, RET
 	CALL	TEST_SHORT_BRANCH		;SJC, SJZ, SJNC, SJNZ
 	CALL	TEST_READ_ROM			;TBRD, TBRDA
+	
 	CALL	TEST_RAM_BANK_0_5		;Write(0x55),Read(0x55),Clear(0x00)
 	CALL	TEST_RAM_BANK_0_A		;Write(0xAA),Read(0xAA),Clear(0x00)
 	CALL	TEST_RAM_BANK_1_3		;Write(0x33),Read(0x33),Clear(0x00)
 	CALL	TEST_RAM_BANK_1_C		;Write(0xCC),Read(0xCC),Clear(0x00)
+	CALL	TEST_RAM_BANK_0_3C
+	CALL	TEST_RAM_BANK_1_5A
 	JMP_PASS:
-	BTG		P5,0
-	BC		P5,1
-	BS		P5,2
-	BC		P5,3
-	BS		P5,4
+		SBANK	0
+		BTG		P5,0
+		;BC		P5,1
+		;BS		P5,2
+		;BC		P5,3
+		;BS		P5,4
+		BS		P5,4
 	WDTC
 	JMP		BACK_GROUND_LOOP
 
-
+/*
 #define StartADC1P0Measure {
 	ADCONBUF	= 0x80
     ADISR		= 0x00
@@ -199,7 +209,7 @@ BACK_GROUND_LOOP:
 #define StartADC1P5Measure {ADCONBUF = 0x81;\
                             ADISR        = 0x05;\
                             ADRUN    = 1;   \
-                                                                 while(ADRUN== 1);}
+                            while(ADRUN== 1);}
 
          ADER1 = 0x29;		//P57,P71,P67 set to adc input channel    
          ADCR1 = 0xAB;		//Tad = 1us,12Tad/convert
@@ -220,7 +230,7 @@ void CheckPWMInput(void)
 
 }
 
-
+*/
 
 
 
@@ -228,23 +238,26 @@ void CheckPWMInput(void)
 JMP_FAIL:
 	SBANK	0
 	BS		P5,1
-	BC		P5,2
-	BS		P5,3
-	BC		P5,4
+	;BS		P5,1
+	;BC		P5,2
+	;BS		P5,3
+	;BC		P5,4
 	JMP		JMP_FAIL
 RAM_FAIL:
 	SBANK	0
-	BS		P5,1
-	BC		P5,2
-	BS		P5,3
-	BC		P5,4
+	BS		P5,2
+	;BS		P5,1
+	;BC		P5,2
+	;BS		P5,3
+	;BC		P5,4
 	JMP		RAM_FAIL
 INS_FAIL:
 	SBANK	0
-	BS		P5,1
-	BC		P5,2
 	BS		P5,3
-	BC		P5,4	
+	;BS		P5,1
+	;BC		P5,2
+	;BS		P5,3
+	;BC		P5,4	
 	JMP		INS_FAIL
 
 ;================== PEIPHERAL_INITIAL ==================
@@ -2484,6 +2497,54 @@ ORG	0x0F00	; ADDR(3840)
 		MOV		RSR,A
 		GBANK	1
 		MOV		A,@0xCC
+		XOR		IAR,A
+		JBS		Z
+		JMP		RAM_FAIL
+		INC		RSR
+		MOV		A,@0x00
+		XOR		A,RSR		; INC(0x80),UNTIL(0x00)
+		JBS		Z
+		JMP		$-8
+		RET
+	TEST_RAM_BANK_0_3C:
+		MOV		A,@0x80		; Write Start SRAM(0xCC)
+		MOV		RSR,A
+		GBANK	0
+		MOV		A,@0x3C		; SRAM(0xCC)
+		MOV		IAR,A
+		INC		RSR
+		MOV		A,@0x00
+		XOR		A,RSR		; INC(0x80),UNTIL(0x00)
+		JBS		Z
+		JMP		$-6
+		MOV		A,@0x80
+		MOV		RSR,A
+		GBANK	0
+		MOV		A,@0x3C
+		XOR		IAR,A
+		JBS		Z
+		JMP		RAM_FAIL
+		INC		RSR
+		MOV		A,@0x00
+		XOR		A,RSR		; INC(0x80),UNTIL(0x00)
+		JBS		Z
+		JMP		$-8
+		RET
+	TEST_RAM_BANK_1_5A:
+		MOV		A,@0x80		; Write Start SRAM(0xCC)
+		MOV		RSR,A
+		GBANK	1
+		MOV		A,@0x5A		; SRAM(0xCC)
+		MOV		IAR,A
+		INC		RSR
+		MOV		A,@0x00
+		XOR		A,RSR		; INC(0x80),UNTIL(0x00)
+		JBS		Z
+		JMP		$-6
+		MOV		A,@0x80
+		MOV		RSR,A
+		GBANK	1
+		MOV		A,@0x5A
 		XOR		IAR,A
 		JBS		Z
 		JMP		RAM_FAIL
