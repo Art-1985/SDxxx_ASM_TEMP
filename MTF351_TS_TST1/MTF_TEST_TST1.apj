@@ -1,8 +1,8 @@
 [PROJECT]
-PROJECTNAME=$\MTF351_ASM_TEMP.apj
+PROJECTNAME=$\MTF_TEST_TST1.apj
 [MCU]
 NAME=MTF351
-ICE=ED350
+ICE=ED351
 [CallRamBlock]
 BlockNum=0
 [EEPROMBlock]
@@ -13,7 +13,7 @@ BlockNum=0
 BP Num=0
 [CODEOPTION]
 Option Num=97
-IRC Trim=1
+IRC Trim=0
 WD0 0=0
 WD0 1=0
 WD0 2=0
@@ -32,10 +32,10 @@ COBS=0
 COBSIRC=0
 RCOUT=0
 OSC0=0
-OSC1=0
+OSC1=1
 WD1 3=0
 RCM0=0
-RCM1=1
+RCM1=0
 WD1 6=0
 CLK0=0
 CLK1=0
@@ -54,13 +54,13 @@ WD2 4=0
 WD2 5=0
 WD2 6=0
 IRCPSS=0
-BORT0=0
-BORT1=0
-BORT2=0
+BORT0=1
+BORT1=1
+BORT2=1
 BOREN=1
 SHCLK0=0
 SHCLK1=0
-SHEN=0
+SHEN=1
 WD2 15=0
 ID0=0
 ID1=0
@@ -127,21 +127,21 @@ AGENT=0
 [LibraryProject]
 LibraryProject=0
 [LastOpenFiles]
-File0=$\MTF351_ASM_TEMP.asm
+File0=$\MTF351.INC
+File1=$\MTF351.INC
 File Num=1
 [Source Files]
 File Num=1
-File0=$\MTF351_ASM_TEMP.asm
+File0=$\MTF351_TEST_TST1.asm
 [Reference Files]
-File Num=2
+File Num=1
 File0=$\MTF351.INC
-File1=$\SDXXX_ASM_RAM.ASM
 [List Files]
 File Num=1
-File0=$\MTF351_ASM_TEMP.lst
+File0=$\MTF351_TEST_TST1.lst
 [Map Files]
 File Num=1
-File0=?
+File0=$\MTF_TEST_TST1.map
 [Library Files]
 File Num=0
 [BOOKMARK]
@@ -504,8 +504,7 @@ R4D=4D
 R4E=4E
 R4F=4F
 [Watch]
-Size#0=1
-0,0=INST,R,Register(0),5A,0,0
+Size#0=0
 Size#1=0
 Size#2=0
 [UBRG SETTING]
@@ -522,7 +521,33 @@ PopUp WDTReset Msg=1
 Disable EEPROM Protect Msg=0
 [C_LIB BUILD SETTING]
 No Debug Info=0
-[$\MTF351_ASM_TEMP.asm]
-Rectangle=0075 0075 0798 0602
+[$\MTF351_TEST_TST1.asm]
+Rectangle=0022 0029 0569 0287
+Iconized=0
+Maximized=0
+[$\MTF351.INC]
+Rectangle=0050 0050 0496 0335
+Iconized=0
+Maximized=0
+[RegisterWnd]
+OPEN=1
+[OutputBar]
+OPEN=1
+[CallStack]
+OPEN=0
+[RamBar]
+OPEN=1
+[CallRamBar]
+OPEN=0
+[EEPROM]
+OPEN=0
+[WatchBar]
+OPEN=1
+[LCDBar]
+OPEN=0
+[DataAreaBar]
+OPEN=0
+[$\MTF351_TEST_TST1.lst]
+Rectangle=0050 0050 0520 0317
 Iconized=0
 Maximized=0
