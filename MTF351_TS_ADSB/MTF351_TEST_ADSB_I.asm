@@ -117,92 +117,37 @@ MAIN:
 	MOV PORT6,A                                          
 	MOV PORT7,A                                          
 	MOV IOCR5,A
+	MOV A,@0x7F
+	MOV	IOCR6,A
 	NOP
-	NOP     
-	MOV IOCR6,A     ; 
-	BS  IOCR6,2
-	NOP                                                                                    
-	MOV IOCR7,A
+	NOP 
 
-	BS  PORT5,0
-	NOP
-	NOP
-	BS  PORT5,1
-	NOP
-	NOP
-	BS  PORT5,2	
-	NOP
-	NOP
-	NOP
-	NOP
-	BC		P6,0
-	NOP
-	NOP
-	NOP
-	NOP	
-	BC		P6,1
-	NOP
-	NOP
-	NOP
-	NOP
-	BS  PORT6,3	;P61-P62@1PAD
-	NOP
-	NOP
-	NOP
-	NOP
-	BC  PORT5,2
-	NOP
-	NOP	
-	BC  PORT5,1
-	NOP
-	NOP
-	BC  PORT5,0	
-	NOP
-	NOP
-	CALL TESTREG
-	NOP
-	NOP
-    SBANK 00
-    BC              P6,0
-    BC              P6,1
-    CLR P5
-    CALL SBANK0REG
-	SBANK 00	
-	BS		P6,0	
-	BS		P6,1
-	CLR P5
-	CALL SBANK3REG
-	SBANK 00
-	BC		P6,0	
-	BS		P6,1
-	CLR P5
-	CALL SBANK2REG
-	SBANK 00
-	BS		P6,0	
-	BC		P6,1
-	CLR P5
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP
-	NOP	
-	CALL SBANK1REG
-;	SBANK 00
-;	BC		P6,0	
-;	BC		P6,1
-;	CLR P5
-;	CALL SBANK0REG
+REGTEST:
+		SBANK	0
+		BS	P6,7
+		NOP
+		NOP
+		NOP
+		BC	P6,7
+		SBANK	3
+        BS STATUS,0
+        MOV A,@0xFF
+        MOV SFR9,A
+        MOV A,@0xFF
+        ADC A,SFR9
+        CALL B3P5_DSP
+        CLR SFR9		
+
+        BC STATUS,0
+        MOV A,@0xFF		;R=00
+        MOV RSR,A		
+        COMA RSR		;ACC=00 ;DO=FF
+        SUBB A,SFR9		
+        XOR A,@0xFF
+        ;CALL B3P5_DSP
+        CLR SFR9
+
+	JMP	REGTEST
 	SBANK 00
 	CLR P5
 	CALL ENDDISPLAY
@@ -533,8 +478,8 @@ PC19C:
 
 ;====== P5       0x05  ====== 
         BS STATUS,0
-        MOV A,@0xFF
-        MOV P5,A
+        ;MOV A,@0xFF
+        ;MOV P5,A
         NOP
         NOP
         NOP
@@ -551,8 +496,8 @@ PC19C:
         NOP
         NOP
         NOP
-        MOV A,@0x00
-        ADC A,P5
+        ;MOV A,@0x00
+        ;ADC A,P5
         NOP
         NOP
         NOP
@@ -576,7 +521,7 @@ PC19C:
         MOV A,@0xFF		;R=00
         MOV RSR,A		
         COMA RSR		 	;ACC=00 ;DO=FF
-        SUBB A,P5
+        ;SUBB A,P5
         NOP
         NOP
         NOP
@@ -797,9 +742,9 @@ PC19C:
 ;====== IOCR5	 0x0B  ====== 
         BS STATUS,0
         MOV A,@0xFF
-        MOV IOCR5	,A
+        ;MOV IOCR5	,A
         MOV A,@0x00
-        ADC A,IOCR5	
+        ;ADC A,IOCR5	
         CALL B0P6_DSP
         CLR IOCR5	
 
@@ -807,9 +752,9 @@ PC19C:
         MOV A,@0xFF		;R=00
         MOV RSR,A		
         COMA RSR		;ACC=00 ;DO=FF        
-        SUBB A,IOCR5	
+        ;SUBB A,IOCR5	
         XOR A,@0xFF
-        CLR IOCR5
+        ;CLR IOCR5
         CALL B0P6_DSP
 	
 
@@ -1090,43 +1035,43 @@ PC19C:
 SBANK1REG:
         SBANK 00
         MOV A,@0xFF
-        MOV IOCR5,A
+        ;MOV IOCR5,A
         SBANK 01
 ;====== P5PHCR	 0x08  ====== 
         BS STATUS,0
-        MOV P5PHCR,A
+        ;MOV P5PHCR,A
         MOV A,@0x00
-        ADC A,P5PHCR	
+        ;ADC A,P5PHCR	
         CALL B1P6_DSP
-        CLR P5PHCR	
+        ;CLR P5PHCR	
 
         BC STATUS,0
         MOV A,@0xFF		;R=00
         MOV RSR,A		
         COMA RSR		;ACC=00 ;DO=FF
-        SUBB A,P5PHCR	
+        ;SUBB A,P5PHCR	
         XOR A,@0xFF
         CALL B1P6_DSP
-        CLR P5PHCR
+        ;CLR P5PHCR
         	
 ;====== P5PLCR	 0x0B  ====== 
         BS STATUS,0
         MOV A,@0xFF
-        MOV P5PLCR	,A
+        ;MOV P5PLCR	,A
         MOV A,@0x00
-        ADC A,P5PLCR	
+        ;ADC A,P5PLCR	
         CALL B1P6_DSP	
 
         BC STATUS,0
         MOV A,@0xFF		;R=00
         MOV RSR,A		
         COMA RSR		;ACC=00 ;DO=FF
-        SUBB A,P5PLCR	
+        ;SUBB A,P5PLCR	
         XOR A,@0xFF
         CALL B1P6_DSP
-        CLR P5PLCR	
+        ;CLR P5PLCR	
         SBANK 00
-        CLR IOCR5
+        ;CLR IOCR5
         MOV A,@0xFF        
         MOV IOCR6,A 
         SBANK 01         
@@ -1208,11 +1153,11 @@ SBANK1REG:
 ;====== P5HDSCR	 0x0E  ====== 
         BS STATUS,0
         MOV A,@0xFF
-        MOV P5HDSCR	,A
+        ;MOV P5HDSCR	,A
         MOV A,@0x00
-        ADC A,P5HDSCR	
+        ;ADC A,P5HDSCR	
         CALL B1P5_DSP
-        CLR P5HDSCR	
+        ;CLR P5HDSCR	
 
         BC STATUS,0
         MOV A,@0xFF		;R=00
@@ -1221,7 +1166,7 @@ SBANK1REG:
         SUBB A,P5HDSCR	
         XOR A,@0xFF
         CALL B1P5_DSP
-        CLR P5HDSCR	
+        ;CLR P5HDSCR	
 
 ;====== P6HDSCR	 0x0F  ====== 
         BS STATUS,0
@@ -1292,11 +1237,11 @@ SBANK1REG:
 ;====== P5ODCR	 0x11  ====== 
         BS STATUS,0
         MOV A,@0xFF
-        MOV P5ODCR	,A
+        ;MOV P5ODCR	,A
         MOV A,@0x00
-        ADC A,P5ODCR	
+        ;ADC A,P5ODCR	
         CALL B1P5_DSP
-        CLR P5ODCR	
+        ;CLR P5ODCR	
 		NOP
 		NOP
 		NOP
@@ -1317,10 +1262,10 @@ SBANK1REG:
         MOV A,@0xFF		;R=00
         MOV RSR,A		
         COMA RSR		;ACC=00 ;DO=FF
-        SUBB A,P5ODCR	
+        ;SUBB A,P5ODCR	
         XOR A,@0xFF
         CALL B1P5_DSP
-        CLR P5ODCR	
+        ;CLR P5ODCR	
 
 ;====== P6ODCR	 0x12  ====== 
         BS STATUS,0
@@ -2484,7 +2429,7 @@ SBANK3REG:
         MOV EIOPWMPE0	,A
         MOV A,@0xC0
         ADC A,EIOPWMPE0	
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR EIOPWMPE0	
 
         BC STATUS,0
@@ -2493,7 +2438,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,EIOPWMPE0	
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR EIOPWMPE0	
 
 ;====== EOPWMPE0	 0x06  ====== 
@@ -2502,7 +2447,7 @@ SBANK3REG:
         MOV EOPWMPE0	,A
         MOV A,@0xCF
         ADC A,EOPWMPE0	
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR EOPWMPE0	
 
         BC STATUS,0
@@ -2511,7 +2456,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,EOPWMPE0	
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR EOPWMPE0	
 
 ;====== EIOPHAPE	 0x07  ====== 
@@ -2520,7 +2465,7 @@ SBANK3REG:
         MOV EIOPHAPE	,A
         MOV A,@0xC0
         ADC A,EIOPHAPE	
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR EIOPHAPE	
 
         BC STATUS,0
@@ -2529,7 +2474,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,EIOPHAPE	
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR EIOPHAPE	
 
 ;====== T5CRH		 0x09  ====== 
@@ -2538,7 +2483,7 @@ SBANK3REG:
         MOV T5CRH		,A
         MOV A,@0x00
         ADC A,T5CRH		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T5CRH		
 
         BC STATUS,0
@@ -2547,7 +2492,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,T5CRH		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T5CRH		
 
 ;====== T5CRL		 0x0A  ====== 
@@ -2556,7 +2501,7 @@ SBANK3REG:
         MOV T5CRL		,A
         MOV A,@0x4E
         ADC A,T5CRL		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T5CRL		
 
         BC STATUS,0
@@ -2565,7 +2510,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,T5CRL		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T5CRL		
 
 ;====== T6CRH		 0x0B  ====== 
@@ -2574,7 +2519,7 @@ SBANK3REG:
         MOV T6CRH		,A
         MOV A,@0x00
         ADC A,T6CRH		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T6CRH		
 
         BC STATUS,0
@@ -2583,7 +2528,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,T6CRH		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T6CRH		
 
 ;====== T6CRL		 0x0C  ====== 
@@ -2592,7 +2537,7 @@ SBANK3REG:
         MOV T6CRL		,A
         MOV A,@0x00
         ADC A,T6CRL		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T6CRL		
 
         BC STATUS,0
@@ -2601,7 +2546,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,T6CRL		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T6CRL		
 
 ;====== PWMCR1H		 0x0D  ====== 
@@ -2610,7 +2555,7 @@ SBANK3REG:
         MOV PWMCR1H		,A
         MOV A,@0xC0
         ADC A,PWMCR1H		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR PWMCR1H		
 
         BC STATUS,0
@@ -2619,7 +2564,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,PWMCR1H		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR PWMCR1H		
 
 ;====== PWMCR1L		 0x0E  ====== 
@@ -2628,7 +2573,7 @@ SBANK3REG:
         MOV PWMCR1L		,A
         MOV A,@0xC0
         ADC A,PWMCR1L		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR PWMCR1L		
 
         BC STATUS,0
@@ -2637,7 +2582,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,PWMCR1L		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR PWMCR1L		
 
 ;====== PWMCR2H		 0x0F  ====== 
@@ -2646,7 +2591,7 @@ SBANK3REG:
         MOV PWMCR2H		,A
         MOV A,@0x38
         ADC A,PWMCR2H		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR PWMCR2H		
 
         BC STATUS,0
@@ -2655,7 +2600,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,PWMCR2H		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR PWMCR2H		
 
 ;====== PWMCR2L		 0x10  ====== 
@@ -2664,7 +2609,7 @@ SBANK3REG:
         MOV PWMCR2L		,A
         MOV A,@0x8F
         ADC A,PWMCR2L		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR PWMCR2L		
 
         BC STATUS,0
@@ -2673,7 +2618,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,PWMCR2L		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR PWMCR2L		
 
 ;====== T5OPMS		 0x11  ====== 
@@ -2682,7 +2627,7 @@ SBANK3REG:
         MOV T5OPMS		,A
         MOV A,@0xEA
         ADC A,T5OPMS		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T5OPMS		
 
         BC STATUS,0
@@ -2691,7 +2636,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,T5OPMS		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T5OPMS		
 
 ;====== T6OPMS		 0x12  ====== 
@@ -2700,7 +2645,7 @@ SBANK3REG:
         MOV T6OPMS		,A
         MOV A,@0x03
         ADC A,T6OPMS		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T6OPMS		
 
         BC STATUS,0
@@ -2709,7 +2654,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,T6OPMS		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T6OPMS		
 
 ;====== ASPWM		 0x13  ====== 
@@ -2718,7 +2663,7 @@ SBANK3REG:
         MOV ASPWM		,A
         MOV A,@0xC0
         ADC A,ASPWM		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR ASPWM		
 
         BC STATUS,0
@@ -2727,7 +2672,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,ASPWM		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR ASPWM		
 
 ;====== LVPWM		 0x14  ====== 
@@ -2736,7 +2681,7 @@ SBANK3REG:
         MOV LVPWM		,A
         MOV A,@0xC0
         ADC A,LVPWM		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR LVPWM		
 
         BC STATUS,0
@@ -2745,7 +2690,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,LVPWM		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR LVPWM		
 
 ;====== SLPWM		 0x15  ====== 
@@ -2754,7 +2699,7 @@ SBANK3REG:
         MOV SLPWM		,A
         MOV A,@0xFC
         ADC A,SLPWM		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR SLPWM		
 
         BC STATUS,0
@@ -2763,7 +2708,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,SLPWM		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR SLPWM		
 
 ;====== COPH		 0x16  ====== 
@@ -2772,7 +2717,7 @@ SBANK3REG:
         MOV COPH		,A
         MOV A,@0xFF
         ADC A,COPH		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR COPH		
 
         BC STATUS,0
@@ -2781,7 +2726,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,COPH		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR COPH		
 
 ;====== COPL		 0x17  ====== 
@@ -2790,7 +2735,7 @@ SBANK3REG:
         MOV COPL		,A
         MOV A,@0xFF
         ADC A,COPL		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR COPL		
 
         BC STATUS,0
@@ -2799,7 +2744,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,COPL		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR COPL		
 
 ;====== MCOPH		 0x18  ====== 
@@ -2808,7 +2753,7 @@ SBANK3REG:
         MOV MCOPH		,A
         MOV A,@0x88
         ADC A,MCOPH		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR MCOPH		
 
         BC STATUS,0
@@ -2817,7 +2762,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,MCOPH		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR MCOPH		
 
 ;====== MCOP		 0x19  ====== 
@@ -2826,7 +2771,7 @@ SBANK3REG:
         MOV MCOP		,A
         MOV A,@0xC0
         ADC A,MCOP		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR MCOP		
 
         BC STATUS,0
@@ -2835,7 +2780,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,MCOP		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR MCOP		
 
 ;====== T5DECR		 0x1A  ====== 
@@ -2844,7 +2789,7 @@ SBANK3REG:
         MOV T5DECR		,A
         MOV A,@0x88
         ADC A,T5DECR		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T5DECR		
 
         BC STATUS,0
@@ -2853,7 +2798,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,T5DECR		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T5DECR		
 
 ;====== T5DEB		 0x1B  ====== 
@@ -2862,7 +2807,7 @@ SBANK3REG:
         MOV T5DEB		,A
         MOV A,@0x00
         ADC A,T5DEB		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T5DEB		
 
         BC STATUS,0
@@ -2871,7 +2816,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,T5DEB		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T5DEB		
 
 ;====== HACRH		 0x1C  ====== 
@@ -2880,7 +2825,7 @@ SBANK3REG:
         MOV HACRH		,A
         MOV A,@0x80
         ADC A,HACRH		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR HACRH		
 
         BC STATUS,0
@@ -2889,7 +2834,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,HACRH		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR HACRH		
 
 ;====== HACRL		 0x1D  ====== 
@@ -2898,7 +2843,7 @@ SBANK3REG:
         MOV HACRL		,A
         MOV A,@0x1F
         ADC A,HACRL		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR HACRL		
 
         BC STATUS,0
@@ -2907,7 +2852,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,HACRL		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR HACRL		
 
 ;====== BRKCR1H		 0x1E  ====== 
@@ -2916,7 +2861,7 @@ SBANK3REG:
         MOV BRKCR1H		,A
         MOV A,@0x7C
         ADC A,BRKCR1H		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR BRKCR1H		
 
         BC STATUS,0
@@ -2925,7 +2870,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,BRKCR1H		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR BRKCR1H		
 
 ;====== BRKCR1L		 0x1F  ====== 
@@ -2934,7 +2879,7 @@ SBANK3REG:
 ;        MOV BRKCR1L		,A
 ;        MOV A,@0xFF
 ;        ADC A,BRKCR1L		
-;        CALL B3P5_DSP
+;        ;CALL B3P5_DSP
         CLR BRKCR1L		
 
         BC STATUS,0
@@ -2943,7 +2888,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,BRKCR1L		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR BRKCR1L		
 
 ;====== BRKCR2H		 0x20  ====== 
@@ -2952,7 +2897,7 @@ SBANK3REG:
         MOV BRKCR2H		,A
         MOV A,@0xE8
         ADC A,BRKCR2H		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR BRKCR2H		
 
         BC STATUS,0
@@ -2961,7 +2906,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,BRKCR2H		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR BRKCR2H		
 
 ;====== BRKCR2L		 0x21  ====== 
@@ -2970,7 +2915,7 @@ SBANK3REG:
         MOV BRKCR2L		,A
         MOV A,@0xC0
         ADC A,BRKCR2L		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR BRKCR2L		
 
         BC STATUS,0
@@ -2979,7 +2924,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,BRKCR2L		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR BRKCR2L		
 
 ;====== TRADCR		 0x22  ====== 
@@ -2988,7 +2933,7 @@ SBANK3REG:
         MOV TRADCR		,A
         MOV A,@0x00
         ADC A,TRADCR		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR TRADCR		
 
         BC STATUS,0
@@ -2997,7 +2942,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,TRADCR		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR TRADCR		
 
 ;====== TSF1H		 0x23  ====== 
@@ -3006,7 +2951,7 @@ SBANK3REG:
         MOV TSF1H,A
         MOV A,@0xFF		;A=00 DO=FF***
         ADC A,TSF1H		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR TSF1H		
 
         BC STATUS,0
@@ -3015,7 +2960,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,TSF1H		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR TSF1H		
 
 ;====== TSF1L		 0x24  ====== 
@@ -3024,7 +2969,7 @@ SBANK3REG:
         MOV TSF1L		,A
         MOV A,@0xFF
         ADC A,TSF1L		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR TSF1L		
 
         BC STATUS,0
@@ -3033,7 +2978,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,TSF1L		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR TSF1L		
 
 ;====== SETM1H		 0x25  ====== 
@@ -3042,7 +2987,7 @@ SBANK3REG:
         MOV SETM1H		,A
         MOV A,@0xB3
         ADC A,SETM1H		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR SETM1H		
 
         BC STATUS,0
@@ -3051,7 +2996,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,SETM1H		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR SETM1H		
 
 ;====== SETM1L		 0x26  ====== 
@@ -3060,7 +3005,7 @@ SBANK3REG:
         MOV SETM1L		,A
         MOV A,@0xF0
         ADC A,SETM1L		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR SETM1L		
 
         BC STATUS,0
@@ -3069,7 +3014,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,SETM1L		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR SETM1L		
 
 ;====== RSTM1H		 0x27  ====== 
@@ -3078,7 +3023,7 @@ SBANK3REG:
         MOV RSTM1H		,A
         MOV A,@0xB3
         ADC A,RSTM1H		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR RSTM1H		
 
         BC STATUS,0
@@ -3087,7 +3032,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,RSTM1H		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR RSTM1H		
 
 ;====== RSTM1L		 0x28  ====== 
@@ -3096,7 +3041,7 @@ SBANK3REG:
         MOV RSTM1L		,A
         MOV A,@0xF0
         ADC A,RSTM1L		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR RSTM1L		
 
         BC STATUS,0
@@ -3105,7 +3050,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,RSTM1L		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR RSTM1L		
 
 ;====== T5VALH		 0x2B  ====== 
@@ -3114,7 +3059,7 @@ SBANK3REG:
         MOV T5VALH		,A
         MOV A,@0xFF
         ADC A,T5VALH		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T5VALH		
 
         BC STATUS,0
@@ -3123,7 +3068,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,T5VALH		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T5VALH		
 
 ;====== T5VALL		 0x2C  ====== 
@@ -3132,7 +3077,7 @@ SBANK3REG:
         MOV T5VALL		,A
         MOV A,@0xFF
         ADC A,T5VALL		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T5VALL		
 
         BC STATUS,0
@@ -3141,7 +3086,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,T5VALL		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T5VALL		
 
 ;====== T5PDH		 0x2D  ====== 
@@ -3150,7 +3095,7 @@ SBANK3REG:
         MOV T5PDH		,A
         MOV A,@0x00
         ADC A,T5PDH		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T5PDH		
 
         BC STATUS,0
@@ -3159,7 +3104,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,T5PDH		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T5PDH		
 
 ;====== T5PDL		 0x2E  ====== 
@@ -3168,7 +3113,7 @@ SBANK3REG:
         MOV T5PDL		,A
         MOV A,@0x00
         ADC A,T5PDL		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T5PDL		
 
         BC STATUS,0
@@ -3177,7 +3122,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,T5PDL		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T5PDL		
 
 ;====== T5ACDH		 0x2F  ====== 
@@ -3186,7 +3131,7 @@ SBANK3REG:
         MOV T5ACDH		,A
         MOV A,@0xFF
         ADC A,T5ACDH		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T5ACDH		
 
         BC STATUS,0
@@ -3195,7 +3140,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,T5ACDH		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T5ACDH		
 
 ;====== T5ACDL		 0x30  ====== 
@@ -3204,7 +3149,7 @@ SBANK3REG:
         MOV T5ACDL		,A
         MOV A,@0xFF
         ADC A,T5ACDL		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T5ACDL		
 
         BC STATUS,0
@@ -3213,7 +3158,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,T5ACDL		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T5ACDL		
 
 ;====== T5BCDH		 0x31  ====== 
@@ -3222,7 +3167,7 @@ SBANK3REG:
         MOV T5BCDH		,A
         MOV A,@0xFF
         ADC A,T5BCDH		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T5BCDH		
 
         BC STATUS,0
@@ -3231,7 +3176,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,T5BCDH		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T5BCDH		
 
 ;====== T5BCDL		 0x32  ====== 
@@ -3240,7 +3185,7 @@ SBANK3REG:
         MOV T5BCDL		,A
         MOV A,@0xFF
         ADC A,T5BCDL		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T5BCDL		
 
         BC STATUS,0
@@ -3249,7 +3194,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,T5BCDL		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T5BCDL		
 
 ;====== T5CCDH		 0x33  ====== 
@@ -3258,7 +3203,7 @@ SBANK3REG:
         MOV T5CCDH		,A
         MOV A,@0xFF
         ADC A,T5CCDH		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T5CCDH		
 
         BC STATUS,0
@@ -3267,7 +3212,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,T5CCDH		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T5CCDH		
 
 ;====== T5CCDL		 0x34  ====== 
@@ -3276,7 +3221,7 @@ SBANK3REG:
         MOV T5CCDL		,A
         MOV A,@0xFF
         ADC A,T5CCDL		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T5CCDL		
 
         BC STATUS,0
@@ -3285,7 +3230,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,T5CCDL		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T5CCDL		
 
 ;====== T5ACDMH		 0x35  ====== 
@@ -3294,7 +3239,7 @@ SBANK3REG:
         MOV T5ACDMH		,A
         MOV A,@0x00
         ADC A,T5ACDMH		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T5ACDMH		
 
         BC STATUS,0
@@ -3303,7 +3248,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,T5ACDMH		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T5ACDMH		
 
 ;====== T5ACDML		 0x36  ====== 
@@ -3312,7 +3257,7 @@ SBANK3REG:
         MOV T5ACDML		,A
         MOV A,@0x00
         ADC A,T5ACDML		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T5ACDML		
 
         BC STATUS,0
@@ -3321,7 +3266,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,T5ACDML		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T5ACDML		
 
 ;====== T5BCDMH		 0x37  ====== 
@@ -3330,7 +3275,7 @@ SBANK3REG:
         MOV T5BCDMH		,A
         MOV A,@0x00
         ADC A,T5BCDMH		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T5BCDMH		
 
         BC STATUS,0
@@ -3339,7 +3284,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,T5BCDMH		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T5BCDMH		
 
 ;====== T5BCDML		 0x38  ====== 
@@ -3348,7 +3293,7 @@ SBANK3REG:
         MOV T5BCDML		,A
         MOV A,@0x00
         ADC A,T5BCDML		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T5BCDML		
 
         BC STATUS,0
@@ -3357,7 +3302,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,T5BCDML		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T5BCDML		
 
 ;====== T5CCDMH		 0x39  ====== 
@@ -3366,7 +3311,7 @@ SBANK3REG:
         MOV T5CCDMH		,A
         MOV A,@0x00
         ADC A,T5CCDMH		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T5CCDMH		
 
         BC STATUS,0
@@ -3375,7 +3320,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,T5CCDMH		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T5CCDMH		
 
 ;====== T5CCDML		 0x3A  ====== 
@@ -3384,7 +3329,7 @@ SBANK3REG:
         MOV T5CCDML		,A
         MOV A,@0x00
         ADC A,T5CCDML		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T5CCDML		
 
         BC STATUS,0
@@ -3393,7 +3338,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,T5CCDML		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T5CCDML		
 
 ;====== TRAD1VH		 0x3B  ====== 
@@ -3402,7 +3347,7 @@ SBANK3REG:
         MOV TRAD1VH		,A
         MOV A,@0x00
         ADC A,TRAD1VH		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR TRAD1VH		
 
         BC STATUS,0
@@ -3411,7 +3356,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,TRAD1VH		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR TRAD1VH		
 
 ;====== TRAD1VL		 0x3C  ====== 
@@ -3420,7 +3365,7 @@ SBANK3REG:
         MOV TRAD1VL		,A
         MOV A,@0x00
         ADC A,TRAD1VL		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR TRAD1VL		
 
         BC STATUS,0
@@ -3429,7 +3374,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,TRAD1VL		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR TRAD1VL		
 
 ;====== TRAD2VH		 0x3D  ====== 
@@ -3438,7 +3383,7 @@ SBANK3REG:
         MOV TRAD2VH		,A
         MOV A,@0x00
         ADC A,TRAD2VH		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR TRAD2VH		
 
         BC STATUS,0
@@ -3447,7 +3392,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,TRAD2VH		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR TRAD2VH		
 
 ;====== TRAD2VL		 0x3E  ====== 
@@ -3456,7 +3401,7 @@ SBANK3REG:
         MOV TRAD2VL		,A
         MOV A,@0x00
         ADC A,TRAD2VL		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR TRAD2VL		
 
         BC STATUS,0
@@ -3465,7 +3410,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,TRAD2VL		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR TRAD2VL		
 
 ;====== T6VALH		 0x3F  ====== 
@@ -3474,7 +3419,7 @@ SBANK3REG:
         MOV T6VALH		,A
         MOV A,@0xFF
         ADC A,T6VALH		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T6VALH		
 
         BC STATUS,0
@@ -3483,7 +3428,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,T6VALH		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T6VALH		
 
 ;====== T6VALL		 0x40  ====== 
@@ -3492,7 +3437,7 @@ SBANK3REG:
         MOV T6VALL		,A
         MOV A,@0xFF
         ADC A,T6VALL		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T6VALL		
 
         BC STATUS,0
@@ -3501,7 +3446,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,T6VALL		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T6VALL		
 
 ;====== T6PDH		 0x41  ====== 
@@ -3510,7 +3455,7 @@ SBANK3REG:
         MOV T6PDH		,A
         MOV A,@0x00
         ADC A,T6PDH		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T6PDH		
 
         BC STATUS,0
@@ -3519,7 +3464,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,T6PDH		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T6PDH		
 
 ;====== T6PDL		 0x42  ====== 
@@ -3528,7 +3473,7 @@ SBANK3REG:
         MOV T6PDL		,A
         MOV A,@0x00
         ADC A,T6PDL		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T6PDL		
 
         BC STATUS,0
@@ -3537,7 +3482,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,T6PDL		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T6PDL		
 
 ;====== T6CDH		 0x43  ====== 
@@ -3546,7 +3491,7 @@ SBANK3REG:
         MOV T6CDH		,A
         MOV A,@0xFF
         ADC A,T6CDH		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T6CDH		
 
         BC STATUS,0
@@ -3555,7 +3500,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,T6CDH		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T6CDH		
 
 ;====== T6CDL		 0x44  ====== 
@@ -3564,7 +3509,7 @@ SBANK3REG:
         MOV T6CDL		,A
         MOV A,@0xFF
         ADC A,T6CDL		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T6CDL		
 
         BC STATUS,0
@@ -3573,7 +3518,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,T6CDL		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T6CDL		
 
 ;====== T6CDMH		 0x45  ====== 
@@ -3582,7 +3527,7 @@ SBANK3REG:
         MOV T6CDMH		,A
         MOV A,@0x00
         ADC A,T6CDMH		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T6CDMH		
 
         BC STATUS,0
@@ -3591,7 +3536,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,T6CDMH		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T6CDMH		
 
 ;====== T6CDML		 0x46  ====== 
@@ -3600,7 +3545,7 @@ SBANK3REG:
         MOV T6CDML		,A
         MOV A,@0xFF
         ADC A,T6CDML		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T6CDML		
 
         BC STATUS,0
@@ -3609,7 +3554,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,T6CDML		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR T6CDML		
 
 ;====== SFR9		 0x4C  ====== 
@@ -3617,9 +3562,9 @@ SBANK3REG:
         MOV A,@0xFF
         MOV SFR9,A
         MOV A,@0xFF
-        ADC A,SFR9		
+        ADC A,SFR9
         CALL B3P5_DSP
-        CLR SFR9
+        CLR SFR9		
 
         BC STATUS,0
         MOV A,@0xFF		;R=00
@@ -3627,7 +3572,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,SFR9		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR SFR9		
 
 ;====== SFR10		 0x4D  ====== 
@@ -3636,7 +3581,7 @@ SBANK3REG:
         MOV SFR10,A
         MOV A,@0x7F
         ADC A,SFR10		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR SFR10		
 
         BC STATUS,0
@@ -3645,7 +3590,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,SFR10		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR SFR10		
 
 ;====== IMR9		 0x4E  ====== 
@@ -3654,7 +3599,7 @@ SBANK3REG:
         MOV IMR9		,A
         MOV A,@0x00
         ADC A,IMR9		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR IMR9		
 
         BC STATUS,0
@@ -3663,7 +3608,7 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,IMR9		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR IMR9		
 
 ;====== IMR10		 0x4F  ====== 
@@ -3672,7 +3617,7 @@ SBANK3REG:
         MOV IMR10		,A
         MOV A,@0x00
         ADC A,IMR10		
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR IMR10		
 
         BC STATUS,0
@@ -3681,13 +3626,13 @@ SBANK3REG:
         COMA RSR		;ACC=00 ;DO=FF
         SUBB A,IMR10		
         XOR A,@0xFF
-        CALL B3P5_DSP
+        ;CALL B3P5_DSP
         CLR IMR10		
 
         RET
 				;----------- B0P5 DISPLAY	-----------
 B0P5_DSP:
-	MOV	P5,A	
+	;MOV	P5,A	
 	NOP
 	NOP
 	NOP
@@ -3706,9 +3651,9 @@ B0P5_DSP:
         NOP
         NOP
         NOP
-	MOV A,STATUS
-        XOR A,@0x1c
-	MOV	P5,A
+	;MOV A,STATUS
+        ;XOR A,@0x1c
+	;MOV	P5,A
 	NOP
 	NOP
 	NOP
@@ -3731,7 +3676,7 @@ B0P5_DSP:
 	
 B2P5_DSP:
 	SBANK	0
-	MOV	P5,A
+	;MOV	P5,A
 	NOP	
 	NOP
 	NOP
@@ -3750,9 +3695,9 @@ B2P5_DSP:
         NOP
         NOP
         NOP
-	MOV A,STATUS
-	XOR A,@0x1c
-	MOV	P5,A
+	;MOV A,STATUS
+	;XOR A,@0x1c
+	;MOV	P5,A
 	NOP
 	NOP
 	NOP
@@ -3795,9 +3740,9 @@ B3P5_DSP:
         NOP
         NOP
         NOP
-	MOV A,STATUS
-	XOR A,@0x1c
-	MOV	P5,A
+	;MOV A,STATUS
+	;XOR A,@0x1c
+	;MOV	P5,A
 	NOP
 	NOP
 	NOP
@@ -3868,7 +3813,7 @@ B0P6_DSP:
 	;----------- B1P5 DISPLAY	-----------
 B1P5_DSP:
 	SBANK	0
-	MOV	P5,A
+	;MOV	P5,A
 	NOP
         NOP
         NOP
@@ -3894,9 +3839,9 @@ B1P5_DSP:
         NOP
         NOP
         NOP	
-	MOV A,STATUS
-        XOR A,@0x1c
-	MOV	P5,A
+	;MOV A,STATUS
+        ;XOR A,@0x1c
+	;MOV	P5,A
 	NOP
 	NOP
 	NOP
@@ -3956,7 +3901,7 @@ B1P6_DSP:
         NOP                   
 	NOP	                        
 	MOV A,STATUS                
-    XOR A,@0x1c           
+        XOR A,@0x1c           
 	MOV	P6,A                    
 	NOP                         
 	NOP                         

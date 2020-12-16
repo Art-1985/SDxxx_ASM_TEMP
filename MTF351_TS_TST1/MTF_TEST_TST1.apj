@@ -127,7 +127,7 @@ AGENT=0
 [LibraryProject]
 LibraryProject=0
 [LastOpenFiles]
-File0=$\MTF351.INC
+File0=$\MTF351_TEST_TST1.asm
 File1=$\MTF351.INC
 File Num=1
 [Source Files]
@@ -536,13 +536,13 @@ OPEN=1
 [CallStack]
 OPEN=0
 [RamBar]
-OPEN=1
+OPEN=0
 [CallRamBar]
 OPEN=0
 [EEPROM]
 OPEN=0
 [WatchBar]
-OPEN=1
+OPEN=0
 [LCDBar]
 OPEN=0
 [DataAreaBar]

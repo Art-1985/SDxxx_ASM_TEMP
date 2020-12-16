@@ -127,9 +127,8 @@ AGENT=0
 [LibraryProject]
 LibraryProject=0
 [LastOpenFiles]
-File0=$\MTF351_TEST_ADSB.asm
-File1=$\MTF351.INC
-File Num=0
+File0=$\MTF351_TEST_ADSB_I.asm
+File Num=1
 [Source Files]
 File Num=1
 File0=$\MTF351_TEST_ADSB.asm
@@ -503,6 +502,15 @@ R4C=4C
 R4D=4D
 R4E=4E
 R4F=4F
+[RAMBreakPoint]
+Set0=0 0 0 0 0 0
+Set1=0 0 0 0 0 0
+Set2=0 0 0 0 0 0
+Set3=0 0 0 0 0 0
+Set4=0 0 0 0 0 0
+Set5=0 0 0 0 0 0
+Set6=0 0 0 0 0 0
+Set7=0 0 0 0 0 0
 [Watch]
 Size#0=0
 Size#1=0
@@ -521,14 +529,6 @@ PopUp WDTReset Msg=1
 Disable EEPROM Protect Msg=0
 [C_LIB BUILD SETTING]
 No Debug Info=0
-[$\MTF351_TEST_ADSB.asm]
-Rectangle=0187 -001 0778 0371
-Iconized=0
-Maximized=0
-[$\MTF351.INC]
-Rectangle=0323 0096 0769 0381
-Iconized=0
-Maximized=0
 [RegisterWnd]
 OPEN=1
 [OutputBar]
@@ -542,12 +542,16 @@ OPEN=0
 [EEPROM]
 OPEN=0
 [WatchBar]
-OPEN=1
+OPEN=0
 [LCDBar]
 OPEN=0
 [DataAreaBar]
 OPEN=0
-[$\MTF351_TEST_ADSB.lst]
-Rectangle=0050 0050 0520 0317
+[$\MTF351_TEST_ADSB_I.asm]
+Rectangle=0000 0000 0666 0548
+Iconized=0
+Maximized=0
+[$\MTF351_TEST_ADSB.asm]
+Rectangle=0050 0050 0720 0600
 Iconized=0
 Maximized=0

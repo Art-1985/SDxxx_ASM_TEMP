@@ -51,6 +51,33 @@ SDxxx_RAM_IND_INIT MACRO RAM_BANK
 ;;====== For IC Function Verify =============================================;;
 
 ;Write(WR_VAL),Read(WR_VAL),Clear(0x00)
+SDxxx_SRAM_WR_ALL MACRO WR_VAL
+    SBANK	0
+    MOV		A,@0x50     ;Write Start
+    MOV		RSR,A
+    MOV		A,@WR_VAL
+    MOV		IAR,A
+    INC		RSR
+    MOV		A,@0x80
+    XOR		A,RSR
+    JBS		Z
+    JMP		$-6
+    MOV		A,@0x50     ;Read Back Start
+    MOV		RSR,A
+    MOV		A,@WR_VAL
+    XOR		A,IAR
+    JBS		Z
+    JMP		RAM_FAIL
+    INC		RSR
+    MOV		A,@0x80
+    XOR		A,RSR
+    JBS		Z
+    JMP		$-8
+    ENDM
+
+
+
+;Write(WR_VAL),Read(WR_VAL),Clear(0x00)
 SDxxx_RAM_WR_ALL MACRO RAM_BANK,WR_VAL
     MOV		A,@0x80		; Write Start SRAM(WR_VAL)
     MOV		RSR,A
