@@ -536,13 +536,13 @@ OPEN=1
 [CallStack]
 OPEN=0
 [RamBar]
-OPEN=0
+OPEN=1
 [CallRamBar]
 OPEN=0
 [EEPROM]
 OPEN=0
 [WatchBar]
-OPEN=0
+OPEN=1
 [LCDBar]
 OPEN=0
 [DataAreaBar]
