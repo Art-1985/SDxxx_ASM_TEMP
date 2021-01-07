@@ -32,7 +32,6 @@ SDxxx_GPIO_INIT MACRO
 ;CALL		GPIO_Control_04	; O/P: P5,P6,P7 , Pull-Lo
 ;CALL		GPIO_Control_05	; O/P: P5,P6,P7 , Pull-HSCR
 ;CALL		GPIO_Control_06	; O/P: P5,P6,P7 , Pull-OD
-JMP		BackgroundLoop
 
 
 ;輸出預設為H，依序控制IOCR，每次一個BIT

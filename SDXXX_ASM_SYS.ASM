@@ -148,6 +148,48 @@ SDxxx_WR_COBS_IRC MACRO
 ; JMP $-3
 ;ENDM
 
+
+;驗證BSR(SBANK)
+SD028_SYS_SBANK MACRO
+    SBANK   0
+    GBANK   0
+    MOV     A,@0x00
+    XOR     A,BSR
+    JBS		Z
+    JMP     INS_FAIL
+        MOV     A,BSR 
+        XOR     A,@0x00
+        JBS		Z
+        JMP     INS_FAIL
+	SBANK	1
+    MOV     A,@0x10
+    XOR     A,BSR
+    JBS		Z
+    JMP     INS_FAIL
+        MOV     A,BSR 
+        XOR     A,@0x10
+        JBS		Z
+        JMP     INS_FAIL
+    SBANK	2
+    MOV     A,@0x20
+    XOR     A,BSR
+    JBS		Z
+    JMP     INS_FAIL
+        MOV     A,BSR 
+        XOR     A,@0x20
+        JBS		Z
+        JMP     INS_FAIL
+    SBANK	3
+    MOV     A,@0x30
+    XOR     A,BSR
+    JBS		Z
+    JMP     INS_FAIL
+        MOV     A,BSR 
+        XOR     A,@0x30
+        JBS		Z
+        JMP     INS_FAIL
+    ENDM
+
 SDxxx_WDT_IDLE_NORMAL MACRO
 	SBANK	 0
 	MOV 	A,@0x0F

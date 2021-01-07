@@ -50,6 +50,49 @@ SDxxx_RAM_IND_INIT MACRO RAM_BANK
 
 ;;====== For IC Function Verify =============================================;;
 
+;驗證BSR(GBANK)
+SD028_RAM_GBANK MACRO
+    SBANK   0
+    GBANK   0
+    MOV     A,@0x00
+    XOR     A,BSR
+    JBS		Z
+    JMP     RAM_FAIL
+        MOV     A,BSR 
+        XOR     A,@0x00
+        JBS		Z
+        JMP     RAM_FAIL
+    INC     BSR
+    MOV     A,@0x01
+    XOR     A,BSR
+    JBS		Z
+    JMP     RAM_FAIL
+        MOV     A,BSR 
+        XOR     A,@0x01
+        JBS		Z
+        JMP     RAM_FAIL
+    INC     BSR
+    MOV     A,@0x02
+    XOR     A,BSR
+    JBS		Z
+    JMP     RAM_FAIL
+        MOV     A,BSR 
+        XOR     A,@0x02
+        JBS		Z
+        JMP     RAM_FAIL
+    INC     BSR
+    MOV     A,@0x03
+    XOR     A,BSR
+    JBS		Z
+    JMP     RAM_FAIL
+        MOV     A,BSR 
+        XOR     A,@0x03
+        JBS		Z
+        JMP     RAM_FAIL
+    NOP
+    ENDM
+
+
 ;Write(WR_VAL),Read(WR_VAL),Clear(0x00)
 SDxxx_SRAM_WR_ALL MACRO WR_VAL
     SBANK	0

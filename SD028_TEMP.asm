@@ -77,6 +77,8 @@ MAIN:
 	SDxxx_GPIO_INIT
 	DELAY_NOP_NO_10
 	SDxxx_RAM_WR_ALL 0x01,0x55
+	SD028_SYS_SBANK
+	SD028_RAM_GBANK
 	;SDxxx_IAP_WR
 	
 ;====================== Backgroung =======================
