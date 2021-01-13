@@ -56,7 +56,7 @@
     34            C        	INCLUDE		"SDXXX_ASM_RAM.ASM"
     35            C        	INCLUDE		"SDXXX_ASM_ROM.ASM"
     36            C        ELSEIF(SD028_DEV)
-    37            C        	INCLUDE		"SD028.INC"
+    37            C        	INCLUDE		".\inc\SD028.INC"
      1            C        ;===========================================================================;
      2            C        ;  Title:       SD028 Include File                                          ;
      3            C        ;  Target MCU:  SD028                                                       ;
@@ -996,120 +996,396 @@
     24            C            NOP
     25            C            ENDM
     26            C        
-    27            C        SDxxx_RAM_TABLE MACRO
-    28            C            MOV		A,@0x80		; Write Start SRAM
-    29            C            MOV		RSR,A
-    30            C            GBANK	3
-    31            C            MOV		A,@0x55		; SRAM(0x0085)
-    32            C            MOV		IAR,A
-    33            C            INC		RSR
-    34            C            MOV		A,@0xAA
-    35            C            MOV		IAR,A
-    36            C            INC		RSR		
-    37            C            MOV		A,@0xF0
-    38            C            XOR		A,RSR		; INC(0x80),UNTIL(0xC0)
-    39            C            JBS		Z
-    40            C            JMP		$-9
-    41            C            ENDM
-    42            C        
-    43            C        SDxxx_IAP_WR MACRO
-    44            C            SBANK	1		
-    45            C            MOV		A,@0x00
-    46            C            MOV		TBWAL,A
-    47            C            MOV		A,@0x0C
-    48            C            MOV		TBWAH,A
-    49            C            MOV		A,@0x01
-    50            C            MOV		TBWCR,A
-    51            C            MOV		A,@0xB4
-    52            C            MOV		FLKR,A
-    53            C            TBWR
+    27            C        DELA_NOP_NO_100 MACRO
+    28            C        	SBANK 	0
+    29            C        	BC 		CPUS
+    30            C        	MOV 	A,@100
+    31            C        	MOV 	0x80,A	;RAM(0x80)
+    32            C        	DELAY_LOOP1:
+    33            C        		DJZ 0x80
+    34            C        		JMP DELAY_LOOP1
+    35            C        		BS CPUS
+    36            C        	ENDM
+    37            C        
+    38            C        
+    39            C        
+    40            C        SDxxx_RAM_TABLE MACRO
+    41            C            MOV		A,@0x80		; Write Start SRAM
+    42            C            MOV		RSR,A
+    43            C            GBANK	3
+    44            C            MOV		A,@0x55		; SRAM(0x0085)
+    45            C            MOV		IAR,A
+    46            C            INC		RSR
+    47            C            MOV		A,@0xAA
+    48            C            MOV		IAR,A
+    49            C            INC		RSR		
+    50            C            MOV		A,@0xF0
+    51            C            XOR		A,RSR		; INC(0x80),UNTIL(0xC0)
+    52            C            JBS		Z
+    53            C            JMP		$-9
     54            C            ENDM
     55            C        
-    56            C        SDxxx_IAP_RD MACRO
-    57            C        	GBANK	0
-    58            C            MOV		A,@0x80
-    59            C            MOV		TMP4,A
-    60            C            MOV		A,@0x00
-    61            C            MOV		TMP3,A			
-    62            C            TEXT1:
-    63            C            MOV		A,TMP4
-    64            C            MOV		RSR,A
-    65            C            SBANK	1
-    66            C            MOV		A,TMP3	; Set ROM Pointer
-    67            C            MOV		TBPTL,A
-    68            C            MOV		A,@0x0C
-    69            C            MOV		TBPTH,A
-    70            C            TBRDA	TMP5	; A(LowByte),TMP5(HiByte)
-    71            C            MOV		IAR,A
-    72            C            INC		RSR
-    73            C            MOV		A,TMP5
-    74            C            MOV		IAR,A
-    75            C            INC		TMP3
-    76            C            INC		TMP4
-    77            C            INC		TMP4
-    78            C            MOV		A,TMP4
-    79            C            XOR		A,@0xC0
-    80            C            JBS		Z
-    81            C            JMP		TEXT1
-    82            C            ENDM
-    83            C        
-    84            C        SDxxx_ROM_PROTECT   MACRO RANGE
-    85            C        	SBANK	2
-    86            C        	BS		LOCKEN
-    87            C        	SBANK	1
-    88            C        	MOV		A,@0xC5
-    89            C        	MOV		FLKR,A
-    90            C        	SBANK	2
-    91            C        	MOV		A,@RANGE    ;0x01
-    92            C        	MOV		LOCKPR,A	;Lock(0x0000~0x007F)
-    93            C            ENDM
-    94            C        SDxxx_ROM_READ  MACRO ADDR_H,ADDR_L,BYTE_H
-    95            C        	SBANK	1
-    96            C        	MOV		A,@ADDR_L
-    97            C        	MOV		TBPTL,A
-    98            C        	MOV		A,@ADDR_H
-    99            C        	MOV		TBPTH,A
-   100            C        	TBRDA	BYTE_H	    ;A(LowByte),TMP5(HiByte)
-   101            C            ENDM
-   102            C        
-   103            C        SDxxx_WDT_SET MACRO
-   104            C        	SBANK	0
-   105            C        	MOV		A,@0x88
-   106            C        	MOV		WDTCR,A
-   107            C            ENDM
-   108            C        
-   109            C        ;;====== For IC Function Verify =============================================;;
-   110            C        SDxxx_WR_COBS_IRC MACRO
-   111            C        	SBANK	1
-   112            C        	MOV		A,@0xA0
-   113            C        	MOV		COBS1,A
-   114            C            MOV		A,@0x3F
-   115            C        	MOV		COBS2,A
-   116            C            MOV		A,@0x0F
-   117            C        	MOV		COBS3,A
-   118            C        	SBANK	2
-   119            C        	MOV		A,@0x1F
-   120            C        	MOV		COBS4,A
-   121            C            MOV		A,@0x3F
-   122            C        	MOV		COBS2,A
-   123            C            MOV		A,@0x0F
-   124            C        	MOV		COBS3,A
-   125            C            ENDM
-   126            C        
-   127            C        
-   128            C        ;RAM_WRITE MACRO G_BANK,START_ADDR,VALUE
-   129            C        ; GBANK G_BANK
-   130            C        ; MOV A,@START_ADDR
-   131            C        ; MOV RSR,A
-   132            C        ; MOV A,@VALUE
-   133            C        ; MOV IAR,A
-   134            C        ; INC RSR
-   135            C        ; JBS Z
-   136            C        ; JMP $-3
-   137            C        ;ENDM
+    56            C        SDxxx_IAP_WR MACRO
+    57            C            SBANK	1		
+    58            C            MOV		A,@0x00
+    59            C            MOV		TBWAL,A
+    60            C            MOV		A,@0x0C
+    61            C            MOV		TBWAH,A
+    62            C            MOV		A,@0x01
+    63            C            MOV		TBWCR,A
+    64            C            MOV		A,@0xB4
+    65            C            MOV		FLKR,A
+    66            C            TBWR
+    67            C            ENDM
+    68            C        
+    69            C        SDxxx_IAP_RD MACRO
+    70            C        	GBANK	0
+    71            C            MOV		A,@0x80
+    72            C            MOV		TMP4,A
+    73            C            MOV		A,@0x00
+    74            C            MOV		TMP3,A			
+    75            C            TEXT1:
+    76            C            MOV		A,TMP4
+    77            C            MOV		RSR,A
+    78            C            SBANK	1
+    79            C            MOV		A,TMP3	; Set ROM Pointer
+    80            C            MOV		TBPTL,A
+    81            C            MOV		A,@0x0C
+    82            C            MOV		TBPTH,A
+    83            C            TBRDA	TMP5	; A(LowByte),TMP5(HiByte)
+    84            C            MOV		IAR,A
+    85            C            INC		RSR
+    86            C            MOV		A,TMP5
+    87            C            MOV		IAR,A
+    88            C            INC		TMP3
+    89            C            INC		TMP4
+    90            C            INC		TMP4
+    91            C            MOV		A,TMP4
+    92            C            XOR		A,@0xC0
+    93            C            JBS		Z
+    94            C            JMP		TEXT1
+    95            C            ENDM
+    96            C        
+    97            C        SDxxx_ROM_PROTECT   MACRO RANGE
+    98            C        	SBANK	2
+    99            C        	BS		LOCKEN
+   100            C        	SBANK	1
+   101            C        	MOV		A,@0xC5
+   102            C        	MOV		FLKR,A
+   103            C        	SBANK	2
+   104            C        	MOV		A,@RANGE    ;0x01
+   105            C        	MOV		LOCKPR,A	;Lock(0x0000~0x007F)
+   106            C            ENDM
+   107            C        SDxxx_ROM_READ  MACRO ADDR_H,ADDR_L,BYTE_H
+   108            C        	SBANK	1
+   109            C        	MOV		A,@ADDR_L
+   110            C        	MOV		TBPTL,A
+   111            C        	MOV		A,@ADDR_H
+   112            C        	MOV		TBPTH,A
+   113            C        	TBRDA	BYTE_H	    ;A(LowByte),TMP5(HiByte)
+   114            C            ENDM
+   115            C        
+   116            C        SDxxx_WDT_SET MACRO
+   117            C        	SBANK	0
+   118            C        	MOV		A,@0x88
+   119            C        	MOV		WDTCR,A
+   120            C            ENDM
+   121            C        ;;====== For IC Function Verify =============================================;;
+   122            C        SDxxx_WR_COBS_IRC MACRO
+   123            C        	SBANK	1
+   124            C        	MOV		A,@0xA0
+   125            C        	MOV		COBS1,A
+   126            C            MOV		A,@0x3F
+   127            C        	MOV		COBS2,A
+   128            C            MOV		A,@0x0F
+   129            C        	MOV		COBS3,A
+   130            C        	SBANK	2
+   131            C        	MOV		A,@0x1F
+   132            C        	MOV		COBS4,A
+   133            C            MOV		A,@0x3F
+   134            C        	MOV		COBS2,A
+   135            C            MOV		A,@0x0F
+   136            C        	MOV		COBS3,A
+   137            C            ENDM
    138            C        
    139            C        
-   140            C        
+   140            C        ;RAM_WRITE MACRO G_BANK,START_ADDR,VALUE
+   141            C        ; GBANK G_BANK
+   142            C        ; MOV A,@START_ADDR
+   143            C        ; MOV RSR,A
+   144            C        ; MOV A,@VALUE
+   145            C        ; MOV IAR,A
+   146            C        ; INC RSR
+   147            C        ; JBS Z
+   148            C        ; JMP $-3
+   149            C        ;ENDM
+   150            C        
+   151            C        
+   152            C        ;驗證BSR(SBANK)
+   153            C        SD028_SYS_SBANK MACRO
+   154            C            SBANK   0
+   155            C            GBANK   0
+   156            C            MOV     A,@0x00
+   157            C            XOR     A,BSR
+   158            C            JBS		Z
+   159            C            JMP     INS_FAIL
+   160            C                MOV     A,BSR 
+   161            C                XOR     A,@0x00
+   162            C                JBS		Z
+   163            C                JMP     INS_FAIL
+   164            C        	SBANK	1
+   165            C            MOV     A,@0x10
+   166            C            XOR     A,BSR
+   167            C            JBS		Z
+   168            C            JMP     INS_FAIL
+   169            C                MOV     A,BSR 
+   170            C                XOR     A,@0x10
+   171            C                JBS		Z
+   172            C                JMP     INS_FAIL
+   173            C            SBANK	2
+   174            C            MOV     A,@0x20
+   175            C            XOR     A,BSR
+   176            C            JBS		Z
+   177            C            JMP     INS_FAIL
+   178            C                MOV     A,BSR 
+   179            C                XOR     A,@0x20
+   180            C                JBS		Z
+   181            C                JMP     INS_FAIL
+   182            C            SBANK	3
+   183            C            MOV     A,@0x30
+   184            C            XOR     A,BSR
+   185            C            JBS		Z
+   186            C            JMP     INS_FAIL
+   187            C                MOV     A,BSR 
+   188            C                XOR     A,@0x30
+   189            C                JBS		Z
+   190            C                JMP     INS_FAIL
+   191            C            ENDM
+   192            C        
+   193            C        SDxxx_WDT_IDLE_NORMAL MACRO
+   194            C        	SBANK	 0
+   195            C        	MOV 	A,@0x0F
+   196            C        	MOV 	IOCR5,A
+   197            C        	BS 		IDLE
+   198            C        	;BS 	HLFS
+   199            C        	MOV 	A,@0b00000000
+   200            C        	MOV		WDTCR,A
+   201            C        	BS 		WDTE
+   202            C        	BS 		P5,5
+   203            C        	WDTC
+   204            C        	SLEP
+   205            C        	JMP 	$
+   206            C        	ENDM
+   207            C        
+   208            C        SDxxx_WDT_NORMAL MACRO
+   209            C        	SBANK 	0
+   210            C        	MOV 	A,@0x0F
+   211            C        	MOV 	IOCR5,A
+   212            C        	BS 		CPUS
+   213            C        	DELA_NOP_NO_100
+   214            C        	CLR		WDTCR
+   215            C        	BS 		WDTE
+   216            C        	BS 		P5,5
+   217            C        	WDTC
+   218            C        	JMP 	$
+   219            C        	ENDM
+   220            C        
+   221            C        SDxxx_WDT_GREEN_NNORMAL MACRO
+   222            C        	SBANK 	0
+   223            C        	MOV 	A,@0x0F
+   224            C        	MOV 	IOCR5,A
+   225            C        	BC 		CPUS
+   226            C        	MOV 	A,@0b00000000
+   227            C        	MOV 	WDTCR,A
+   228            C        	BS 		WDTE
+   229            C        	BS 		P5,5
+   230            C        	WDTC
+   231            C        	JMP 	$	
+   232            C        	ENDM
+   233            C        
+   234            C        SDxxx_WDT_NORMAL_GREEN MACRO
+   235            C        	SBANK 	0
+   236            C        	MOV 	A,@0x0F
+   237            C        	MOV 	IOCR5,A
+   238            C        	BS 		CPUS
+   239            C        	MOV 	A,@0b00000000
+   240            C        	MOV 	WDTCR,A
+   241            C        	BS 		WDTE
+   242            C        	BS 		P5,5
+   243            C        	WDTC
+   244            C        	JMP 	$
+   245            C        	ENDM
+   246            C        
+   247            C        SDxxx_WDT_GREEN MACRO
+   248            C        	SBANK 	0
+   249            C        	MOV 	A,@0x0F
+   250            C        	MOV 	IOCR5,A
+   251            C        	MOV 	A,@0b00000000
+   252            C        	MOV 	WDTCR,A
+   253            C        	BS 		WDTE
+   254            C        	BS 		P5,5
+   255            C        	WDTC
+   256            C        	JMP 	$
+   257            C        	ENDM
+   258            C        
+   259            C        SDxxx_WDT_SLEEP_GREEN MACRO
+   260            C        	SBANK 	0
+   261            C        	MOV 	A,@0x0F
+   262            C        	MOV 	IOCR5,A
+   263            C        	BC 		IDLE
+   264            C        	;BC 		CPUS
+   265            C        	MOV 	A,@0b00000000
+   266            C        	MOV 	WDTCR,A
+   267            C        	BS 		WDTE
+   268            C        	BS 		P5,5
+   269            C        	WDTC
+   270            C        	SLEP
+   271            C        	JMP 	$
+   272            C        	ENDM
+   273            C        
+   274            C        SDxxx_WDT_IDLE_GREEN MACRO
+   275            C        	SBANK 	0
+   276            C        	MOV 	A,@0x0F
+   277            C        	MOV 	IOCR5,A
+   278            C        	BS 		IDLE
+   279            C        	;BC 		CPUS
+   280            C        	MOV 	A,@0b00000000
+   281            C        	MOV 	WDTCR,A
+   282            C        	BS 		WDTE
+   283            C        	BS 		P5,5
+   284            C        	WDTC
+   285            C        	SLEP
+   286            C        	JMP 	$
+   287            C        	ENDM
+   288            C        
+   289            C        SDxxx_WDT_SCAL_1_SLP_NOR MACRO  ; 16ms
+   290            C        	SBANK 0
+   291            C        	MOV     A,@0x0F
+   292            C        	MOV     IOCR5,A
+   293            C        	BC      IDLE
+   294            C        	MOV     A,@0b00000000
+   295            C        	MOV     WDTCR,A
+   296            C        	BS      WDTE
+   297            C        	BS      P5,5
+   298            C        	WDTC
+   299            C        	SLEP
+   300            C        	JMP     $
+   301            C            ENDM
+   302            C        
+   303            C        SDxxx_WDT_SCAL_2_SLP_NOR MACRO  ; 128ms
+   304            C        	SBANK 0
+   305            C        	MOV     A,@0x0F
+   306            C        	MOV     IOCR5,A
+   307            C        	BC      IDLE
+   308            C        	MOV     A,@0b00001000
+   309            C        	MOV     WDTCR,A
+   310            C        	BS      WDTE
+   311            C        	BS      P5,5
+   312            C        	WDTC
+   313            C        	SLEP
+   314            C        	JMP     $
+   315            C            ENDM
+   316            C        
+   317            C        SDxxx_WDT_SCAL_4_SLP_NOR MACRO  ; 256ms
+   318            C        	SBANK 0
+   319            C        	MOV     A,@0x0F
+   320            C        	MOV     IOCR5,A
+   321            C        	BC      IDLE
+   322            C        	MOV     A,@0b00001001
+   323            C        	MOV     WDTCR,A
+   324            C        	BS      WDTE
+   325            C        	BS      P5,5
+   326            C        	WDTC
+   327            C        	SLEP
+   328            C        	JMP     $
+   329            C            ENDM
+   330            C        
+   331            C        SDxxx_WDT_SCAL_8_SLP_NOR MACRO  ; 512ms
+   332            C        	SBANK 0
+   333            C        	MOV     A,@0x0F
+   334            C        	MOV     IOCR5,A
+   335            C        	BC      IDLE
+   336            C        	MOV     A,@0b00001010
+   337            C        	MOV     WDTCR,A
+   338            C        	BS      WDTE
+   339            C        	BS      P5,5
+   340            C        	WDTC
+   341            C        	SLEP
+   342            C        	JMP     $
+   343            C            ENDM
+   344            C        
+   345            C        SDxxx_WDT_SCAL_16_SLP_NOR MACRO  ; 1024ms
+   346            C        	SBANK 0
+   347            C        	MOV     A,@0x0F
+   348            C        	MOV     IOCR5,A
+   349            C        	BC      IDLE
+   350            C        	MOV     A,@0b00001011
+   351            C        	MOV     WDTCR,A
+   352            C        	BS      WDTE
+   353            C        	BS      P5,5
+   354            C        	WDTC
+   355            C        	SLEP
+   356            C        	JMP     $
+   357            C            ENDM
+   358            C        
+   359            C        SDxxx_WDT_SCAL_32_SLP_NOR MACRO  ; 2048ms
+   360            C        	SBANK 0
+   361            C        	MOV     A,@0x0F
+   362            C        	MOV     IOCR5,A
+   363            C        	BC      IDLE
+   364            C        	MOV     A,@0b00001100
+   365            C        	MOV     WDTCR,A
+   366            C        	BS      WDTE
+   367            C        	BS      P5,5
+   368            C        	WDTC
+   369            C        	SLEP
+   370            C        	JMP     $
+   371            C            ENDM
+   372            C        
+   373            C        SDxxx_WDT_SCAL_64_SLP_NOR MACRO  ; 4096ms
+   374            C        	SBANK 0
+   375            C        	MOV     A,@0x0F
+   376            C        	MOV     IOCR5,A
+   377            C        	BC      IDLE
+   378            C        	MOV     A,@0b00001101
+   379            C        	MOV     WDTCR,A
+   380            C        	BS      WDTE
+   381            C        	BS      P5,5
+   382            C        	WDTC
+   383            C        	SLEP
+   384            C        	JMP     $
+   385            C            ENDM
+   386            C        
+   387            C        SDxxx_WDT_SCAL_128_SLP_NOR MACRO  ; 8192ms
+   388            C        	SBANK 0
+   389            C        	MOV     A,@0x0F
+   390            C        	MOV     IOCR5,A
+   391            C        	BC      IDLE
+   392            C        	MOV     A,@0b00001110
+   393            C        	MOV     WDTCR,A
+   394            C        	BS      WDTE
+   395            C        	BS      P5,5
+   396            C        	WDTC
+   397            C        	SLEP
+   398            C        	JMP     $
+   399            C            ENDM
+   400            C        
+   401            C        SDxxx_WDT_SCAL_256_SLP_NOR MACRO  ; 16384ms
+   402            C        	SBANK 0
+   403            C        	MOV     A,@0x0F
+   404            C        	MOV     IOCR5,A
+   405            C        	BC      IDLE
+   406            C        	MOV     A,@0b00001111
+   407            C        	MOV     WDTCR,A
+   408            C        	BS      WDTE
+   409            C        	BS      P5,5
+   410            C        	WDTC
+   411            C        	SLEP
+   412            C        	JMP     $
+   413            C            ENDM
+   414            C        
+   415            C        
+   416            C        
     39            C        	INCLUDE		"SDxxx_ASM_GPIO.ASM"
      1            C        ;ORG 	0x03FF
      2            C        ;SDxxx_GPIO_INIT:
@@ -1138,110 +1414,156 @@
     25            C            ENDM
     26            C        
     27            C        ;;====== For IC Function Verify =============================================;;
-    28            C        SDxxx_GPIO_OUT_P5 MACRO
-    29            C        	SBANK	0
-    30            C            MOV		A,@0xFF
-    31            C        	MOV		PORT5,A
-    32            C            MOV     0x50,@0xFE
-    33            C            MOV     A,0x50
-    34            C            MOV		IOCR5,A
-    35            C            RL      0x50
-    36            C            MOV     A,0x50
-    37            C            MOV		IOCR5,A
-    38            C            RL      0x50
-    39            C            MOV     A,0x50
-    40            C            MOV		IOCR5,A
-    41            C            RL      0x50
-    42            C            MOV     A,0x50
-    43            C            MOV		IOCR5,A
-    44            C            RL      0x50
-    45            C            MOV     A,0x50
-    46            C            MOV		IOCR5,A
-    47            C            RL      0x50
-    48            C            MOV     A,0x50    
-    49            C            MOV		IOCR5,A
-    50            C            RL      0x50
-    51            C            MOV     A,0x50
-    52            C            MOV		IOCR5,A
-    53            C            RL      0x50
-    54            C            MOV     A,0x50
-    55            C            MOV		IOCR5,A
-    56            C            ENDM
-    57            C        
-    58            C        SDxxx_GPIO_OUT_P6 MACRO
-    59            C        	SBANK	0
-    60            C            MOV		A,@0xFF
-    61            C        	MOV		PORT6,A
-    62            C            MOV     A,@0xFF
-    63            C            MOV		IOCR6,A
-    64            C            MOV     0x50,@0xFE
-    65            C            MOV     A,0x50
-    66            C            MOV		IOCR6,A
-    67            C            RL      0x50
-    68            C            MOV     A,0x50
-    69            C            MOV		IOCR6,A
-    70            C            RL      0x50
-    71            C            MOV     A,0x50
-    72            C            MOV		IOCR6,A
-    73            C            RL      0x50
-    74            C            MOV     A,0x50
-    75            C            MOV		IOCR6,A
-    76            C            RL      0x50
-    77            C            MOV     A,0x50
-    78            C            MOV		IOCR6,A
-    79            C            RL      0x50
-    80            C            MOV     A,0x50
-    81            C            MOV		IOCR6,A
-    82            C            RL      0x50
-    83            C            MOV     A,0x50
-    84            C            MOV		IOCR6,A
-    85            C            ENDM
-    86            C        
-    87            C        SDxxx_GPIO_OUT_P7 MACRO
-    88            C        	SBANK	0
-    89            C            MOV		A,@0xFF
-    90            C        	MOV		PORT7,A
-    91            C            MOV     A,@0xFF
-    92            C            MOV		IOCR7,A
-    93            C            MOV     0x50,@0xFE
-    94            C            MOV     A,0x50
-    95            C            MOV		IOCR7,A
-    96            C            RL      0x50
-    97            C            MOV     A,0x50
-    98            C            MOV		IOCR7,A
-    99            C            RL      0x50
-   100            C            MOV     A,0x50
-   101            C            MOV		IOCR7,A
-   102            C            RL      0x50
-   103            C            MOV     A,0x50
-   104            C            MOV		IOCR7,A
-   105            C            RL      0x50
-   106            C            MOV     A,0x50
-   107            C            MOV		IOCR7,A
-   108            C            RL      0x50
-   109            C            MOV     A,0x50
-   110            C            MOV		IOCR7,A
-   111            C            RL      0x50
-   112            C            MOV     A,0x50
-   113            C            MOV		IOCR7,A
-   114            C            ENDM
-   115            C        
-   116            C        SDxxx_GPIO_PH_P5 MACRO
-   117            C        	SBANK	0
-   118            C            ENDM
-   119            C        
-   120            C        SDxxx_GPIO_PL_P5 MACRO
-   121            C        	SBANK	0
-   122            C            ENDM
-   123            C        
-   124            C        SDxxx_GPIO_OD_P5 MACRO
-   125            C        	SBANK	0
-   126            C            ENDM
-   127            C        
-   128            C        SDxxx_GPIO_HD_P5 MACRO
-   129            C        	SBANK	0
-   130            C            ENDM
-   131            C        
+    28            C        
+    29            C        
+    30            C        ;CALL		GPIO_Control_02 ; I/P:P5,P6,P7
+    31            C        ;CALL		GPIO_Control_03	; O/P: P5,P6,P7 , Pull-Hi
+    32            C        ;CALL		GPIO_Control_04	; O/P: P5,P6,P7 , Pull-Lo
+    33            C        ;CALL		GPIO_Control_05	; O/P: P5,P6,P7 , Pull-HSCR
+    34            C        ;CALL		GPIO_Control_06	; O/P: P5,P6,P7 , Pull-OD
+    35            C        
+    36            C        
+    37            C        ;輸出預設為H，依序控制IOCR，每次一個BIT
+    38            C        SDxxx_GPIO_OUT_P5 MACRO
+    39            C        	SBANK	0
+    40            C            MOV		A,@0xFF
+    41            C        	MOV		PORT5,A
+    42            C            MOV     0x50,@0xFE
+    43            C            MOV     A,0x50
+    44            C            MOV		IOCR5,A ;P50
+    45            C            RL      0x50
+    46            C            MOV     A,0x50
+    47            C            MOV		IOCR5,A ;P51
+    48            C            RL      0x50
+    49            C            MOV     A,0x50
+    50            C            MOV		IOCR5,A ;P52
+    51            C            RL      0x50
+    52            C            MOV     A,0x50
+    53            C            MOV		IOCR5,A ;P53
+    54            C            RL      0x50
+    55            C            MOV     A,0x50
+    56            C            MOV		IOCR5,A ;P54
+    57            C            RL      0x50
+    58            C            MOV     A,0x50    
+    59            C            MOV		IOCR5,A ;P55
+    60            C            RL      0x50
+    61            C            MOV     A,0x50
+    62            C            MOV		IOCR5,A ;P56
+    63            C            RL      0x50
+    64            C            MOV     A,0x50
+    65            C            MOV		IOCR5,A ;P57
+    66            C            ENDM
+    67            C        
+    68            C        SDxxx_GPIO_OUT_P6 MACRO
+    69            C        	SBANK	0
+    70            C            MOV		A,@0xFF
+    71            C        	MOV		PORT6,A
+    72            C            MOV     A,@0xFF
+    73            C            MOV		IOCR6,A
+    74            C            MOV     0x50,@0xFE
+    75            C            MOV     A,0x50
+    76            C            MOV		IOCR6,A
+    77            C            RL      0x50
+    78            C            MOV     A,0x50
+    79            C            MOV		IOCR6,A
+    80            C            RL      0x50
+    81            C            MOV     A,0x50
+    82            C            MOV		IOCR6,A
+    83            C            RL      0x50
+    84            C            MOV     A,0x50
+    85            C            MOV		IOCR6,A
+    86            C            RL      0x50
+    87            C            MOV     A,0x50
+    88            C            MOV		IOCR6,A
+    89            C            RL      0x50
+    90            C            MOV     A,0x50
+    91            C            MOV		IOCR6,A
+    92            C            RL      0x50
+    93            C            MOV     A,0x50
+    94            C            MOV		IOCR6,A
+    95            C            ENDM
+    96            C        
+    97            C        SDxxx_GPIO_OUT_P7 MACRO
+    98            C        	SBANK	0
+    99            C            MOV		A,@0xFF
+   100            C        	MOV		PORT7,A
+   101            C            MOV     A,@0xFF
+   102            C            MOV		IOCR7,A
+   103            C            MOV     0x50,@0xFE
+   104            C            MOV     A,0x50
+   105            C            MOV		IOCR7,A
+   106            C            RL      0x50
+   107            C            MOV     A,0x50
+   108            C            MOV		IOCR7,A
+   109            C            RL      0x50
+   110            C            MOV     A,0x50
+   111            C            MOV		IOCR7,A
+   112            C            RL      0x50
+   113            C            MOV     A,0x50
+   114            C            MOV		IOCR7,A
+   115            C            RL      0x50
+   116            C            MOV     A,0x50
+   117            C            MOV		IOCR7,A
+   118            C            RL      0x50
+   119            C            MOV     A,0x50
+   120            C            MOV		IOCR7,A
+   121            C            RL      0x50
+   122            C            MOV     A,0x50
+   123            C            MOV		IOCR7,A
+   124            C            ENDM
+   125            C        ;輸入，依序PH每一個BIT
+   126            C        SDxxx_GPIO_PH_P5 MACRO
+   127            C        	SBANK	0
+   128            C        	MOV		A,@0xFF
+   129            C        	MOV		IOCR5,A
+   130            C            MOV		A,@0x00
+   131            C        	MOV		PORT5,A
+   132            C            SBANK	1
+   133            C            MOV     0x50,@0xFE
+   134            C            MOV     A,0x50
+   135            C            MOV		P5PHCR,A    ;PH50
+   136            C            RL      0x50
+   137            C            MOV     A,0x50
+   138            C            MOV		P5PHCR,A    ;PH51
+   139            C            RL      0x50
+   140            C            MOV     A,0x50
+   141            C            MOV		P5PHCR,A    ;PH52
+   142            C            RL      0x50
+   143            C            MOV     A,0x50
+   144            C            MOV		P5PHCR,A    ;PH53
+   145            C            RL      0x50
+   146            C            MOV     A,0x50
+   147            C            MOV		P5PHCR,A    ;PH54
+   148            C            RL      0x50
+   149            C            MOV     A,0x50
+   150            C            MOV		P5PHCR,A    ;PH55
+   151            C            RL      0x50
+   152            C            MOV     A,0x50
+   153            C            MOV		P5PHCR,A    ;PH56
+   154            C            RL      0x50
+   155            C            MOV     A,0x50
+   156            C            MOV		P5PHCR,A    ;PH57
+   157            C            ENDM
+   158            C        SDxxx_GPIO_PL_P5 MACRO
+   159            C        	SBANK	0
+   160            C        	SBANK	1
+   161            C        	MOV		A,@0xFE
+   162            C            MOV		P5PLCR,A
+   163            C            ENDM
+   164            C        
+   165            C        ;輸出
+   166            C        SDxxx_GPIO_OD_P5 MACRO
+   167            C        	SBANK	0
+   168            C            SBANK	1
+   169            C            MOV		A,@0x01
+   170            C        	MOV		P5ODCR,A
+   171            C        
+   172            C            ENDM
+   173            C        ;輸出
+   174            C        SDxxx_GPIO_HD_P5 MACRO
+   175            C        	SBANK	0
+   176            C            ENDM
+   177            C        
     40            C        	INCLUDE		"SDxxx_ASM_EFT.ASM"
      1            C        SDxxx_EFT_INIT MACRO
      2            C        
@@ -3371,98 +3693,168 @@
     50            C        
     51            C        ;;====== For IC Function Verify =============================================;;
     52            C        
-    53            C        ;Write(WR_VAL),Read(WR_VAL),Clear(0x00)
-    54            C        SDxxx_RAM_WR_ALL MACRO RAM_BANK,WR_VAL
-    55            C            MOV		A,@0x80		; Write Start SRAM(WR_VAL)
-    56            C            MOV		RSR,A
-    57            C            GBANK	RAM_BANK
-    58            C            MOV		A,@WR_VAL
-    59            C            MOV		IAR,A
-    60            C            INC		RSR
-    61            C            MOV		A,@0x00
-    62            C            XOR		A,RSR		; INC(0x80),UNTIL(0x00)
-    63            C            JBS		Z
-    64            C            JMP		$-6
-    65            C            MOV		A,@0x80		; Read Start SRAM(WR_VAL)
-    66            C            MOV		RSR,A
-    67            C            GBANK	RAM_BANK
-    68            C            MOV		A,@WR_VAL
-    69            C            XOR		IAR,A
-    70            C            JBS		Z
-    71            C            JMP		RAM_FAIL
-    72            C            INC		RSR
-    73            C            MOV		A,@0x00
-    74            C            XOR		A,RSR		; INC(0x80),UNTIL(0x00)
-    75            C            JBS		Z
-    76            C            JMP		$-8
-    77            C            ENDM
-    78            C        
-    79            C        ;Write(0x00,0xFF)
-    80            C        SDxxx_RAM_SHA_WORD_QB MACRO
-    81            C            MOV		A,@0x00
-    82            C            MOV		0x50,A
-    83            C            MOV		0x51,A
-    84            C            MOV		0x52,A
-    85            C            MOV		0x53,A
-    86            C            MOV		A,@0xFF
-    87            C            MOV		0x54,A
-    88            C            MOV		0x55,A
-    89            C            MOV		0x56,A
-    90            C            MOV		0x57,A
-    91            C            MOV		A,@0x00
-    92            C            MOV		0x58,A
-    93            C            MOV		0x59,A
-    94            C            MOV		0x5A,A
-    95            C            MOV		0x5B,A
-    96            C            MOV		A,@0xFF
-    97            C            MOV		0x5C,A
-    98            C            MOV		0x5D,A
-    99            C            MOV		0x5E,A
-   100            C            MOV		0x5F,A
-   101            C            ;-------------
-   102            C            MOV		A,@0x00
-   103            C            MOV		0x60,A
-   104            C            MOV		0x61,A
-   105            C            MOV		0x62,A
-   106            C            MOV		0x63,A
-   107            C            MOV		A,@0xFF
-   108            C            MOV		0x64,A
-   109            C            MOV		0x65,A
-   110            C            MOV		0x66,A
-   111            C            MOV		0x67,A
-   112            C            MOV		A,@0x00
-   113            C            MOV		0x68,A
-   114            C            MOV		0x69,A
-   115            C            MOV		0x6A,A
-   116            C            MOV		0x6B,A
-   117            C            MOV		A,@0xFF
-   118            C            MOV		0x6C,A
-   119            C            MOV		0x6D,A
-   120            C            MOV		0x6E,A
-   121            C            MOV		0x6F,A
-   122            C            ;-------------
-   123            C            MOV		A,@0x00
-   124            C            MOV		0x70,A
-   125            C            MOV		0x71,A
-   126            C            MOV		0x72,A
-   127            C            MOV		0x73,A
-   128            C            MOV		A,@0xFF
-   129            C            MOV		0x74,A
-   130            C            MOV		0x75,A
-   131            C            MOV		0x76,A
-   132            C            MOV		0x77,A
-   133            C            MOV		A,@0x00
-   134            C            MOV		0x78,A
-   135            C            MOV		0x79,A
-   136            C            MOV		0x7A,A
-   137            C            MOV		0x7B,A
-   138            C            MOV		A,@0xFF
-   139            C            MOV		0x7C,A
-   140            C            MOV		0x7D,A
-   141            C            MOV		0x7E,A
-   142            C            MOV		0x7F,A
-   143            C            ENDM
-   144            C        
+    53            C        ;驗證BSR(GBANK)
+    54            C        SD028_RAM_GBANK MACRO
+    55            C            SBANK   0
+    56            C            GBANK   0
+    57            C            MOV     A,@0x00
+    58            C            XOR     A,BSR
+    59            C            JBS		Z
+    60            C            JMP     RAM_FAIL
+    61            C                MOV     A,BSR 
+    62            C                XOR     A,@0x00
+    63            C                JBS		Z
+    64            C                JMP     RAM_FAIL
+    65            C            INC     BSR
+    66            C            MOV     A,@0x01
+    67            C            XOR     A,BSR
+    68            C            JBS		Z
+    69            C            JMP     RAM_FAIL
+    70            C                MOV     A,BSR 
+    71            C                XOR     A,@0x01
+    72            C                JBS		Z
+    73            C                JMP     RAM_FAIL
+    74            C            INC     BSR
+    75            C            MOV     A,@0x02
+    76            C            XOR     A,BSR
+    77            C            JBS		Z
+    78            C            JMP     RAM_FAIL
+    79            C                MOV     A,BSR 
+    80            C                XOR     A,@0x02
+    81            C                JBS		Z
+    82            C                JMP     RAM_FAIL
+    83            C            INC     BSR
+    84            C            MOV     A,@0x03
+    85            C            XOR     A,BSR
+    86            C            JBS		Z
+    87            C            JMP     RAM_FAIL
+    88            C                MOV     A,BSR 
+    89            C                XOR     A,@0x03
+    90            C                JBS		Z
+    91            C                JMP     RAM_FAIL
+    92            C            NOP
+    93            C            ENDM
+    94            C        
+    95            C        
+    96            C        ;Write(WR_VAL),Read(WR_VAL),Clear(0x00)
+    97            C        SDxxx_SRAM_WR_ALL MACRO WR_VAL
+    98            C            SBANK	0
+    99            C            MOV		A,@0x50     ;Write Start
+   100            C            MOV		RSR,A
+   101            C            MOV		A,@WR_VAL
+   102            C            MOV		IAR,A
+   103            C            INC		RSR
+   104            C            MOV		A,@0x80
+   105            C            XOR		A,RSR
+   106            C            JBS		Z
+   107            C            JMP		$-6
+   108            C            MOV		A,@0x50     ;Read Back Start
+   109            C            MOV		RSR,A
+   110            C            MOV		A,@WR_VAL
+   111            C            XOR		A,IAR
+   112            C            JBS		Z
+   113            C            JMP		RAM_FAIL
+   114            C            INC		RSR
+   115            C            MOV		A,@0x80
+   116            C            XOR		A,RSR
+   117            C            JBS		Z
+   118            C            JMP		$-8
+   119            C            ENDM
+   120            C        
+   121            C        
+   122            C        
+   123            C        ;Write(WR_VAL),Read(WR_VAL),Clear(0x00)
+   124            C        SDxxx_RAM_WR_ALL MACRO RAM_BANK,WR_VAL
+   125            C            MOV		A,@0x80		; Write Start SRAM(WR_VAL)
+   126            C            MOV		RSR,A
+   127            C            GBANK	RAM_BANK
+   128            C            MOV		A,@WR_VAL
+   129            C            MOV		IAR,A
+   130            C            INC		RSR
+   131            C            MOV		A,@0x00
+   132            C            XOR		A,RSR		; INC(0x80),UNTIL(0x00)
+   133            C            JBS		Z
+   134            C            JMP		$-6
+   135            C            MOV		A,@0x80		; Read Start SRAM(WR_VAL)
+   136            C            MOV		RSR,A
+   137            C            GBANK	RAM_BANK
+   138            C            MOV		A,@WR_VAL
+   139            C            XOR		IAR,A
+   140            C            JBS		Z
+   141            C            JMP		RAM_FAIL
+   142            C            INC		RSR
+   143            C            MOV		A,@0x00
+   144            C            XOR		A,RSR		; INC(0x80),UNTIL(0x00)
+   145            C            JBS		Z
+   146            C            JMP		$-8
+   147            C            ENDM
+   148            C        
+   149            C        ;Write(0x00,0xFF)
+   150            C        SDxxx_RAM_SHA_WORD_QB MACRO
+   151            C            MOV		A,@0x00
+   152            C            MOV		0x50,A
+   153            C            MOV		0x51,A
+   154            C            MOV		0x52,A
+   155            C            MOV		0x53,A
+   156            C            MOV		A,@0xFF
+   157            C            MOV		0x54,A
+   158            C            MOV		0x55,A
+   159            C            MOV		0x56,A
+   160            C            MOV		0x57,A
+   161            C            MOV		A,@0x00
+   162            C            MOV		0x58,A
+   163            C            MOV		0x59,A
+   164            C            MOV		0x5A,A
+   165            C            MOV		0x5B,A
+   166            C            MOV		A,@0xFF
+   167            C            MOV		0x5C,A
+   168            C            MOV		0x5D,A
+   169            C            MOV		0x5E,A
+   170            C            MOV		0x5F,A
+   171            C            ;-------------
+   172            C            MOV		A,@0x00
+   173            C            MOV		0x60,A
+   174            C            MOV		0x61,A
+   175            C            MOV		0x62,A
+   176            C            MOV		0x63,A
+   177            C            MOV		A,@0xFF
+   178            C            MOV		0x64,A
+   179            C            MOV		0x65,A
+   180            C            MOV		0x66,A
+   181            C            MOV		0x67,A
+   182            C            MOV		A,@0x00
+   183            C            MOV		0x68,A
+   184            C            MOV		0x69,A
+   185            C            MOV		0x6A,A
+   186            C            MOV		0x6B,A
+   187            C            MOV		A,@0xFF
+   188            C            MOV		0x6C,A
+   189            C            MOV		0x6D,A
+   190            C            MOV		0x6E,A
+   191            C            MOV		0x6F,A
+   192            C            ;-------------
+   193            C            MOV		A,@0x00
+   194            C            MOV		0x70,A
+   195            C            MOV		0x71,A
+   196            C            MOV		0x72,A
+   197            C            MOV		0x73,A
+   198            C            MOV		A,@0xFF
+   199            C            MOV		0x74,A
+   200            C            MOV		0x75,A
+   201            C            MOV		0x76,A
+   202            C            MOV		0x77,A
+   203            C            MOV		A,@0x00
+   204            C            MOV		0x78,A
+   205            C            MOV		0x79,A
+   206            C            MOV		0x7A,A
+   207            C            MOV		0x7B,A
+   208            C            MOV		A,@0xFF
+   209            C            MOV		0x7C,A
+   210            C            MOV		0x7D,A
+   211            C            MOV		0x7E,A
+   212            C            MOV		0x7F,A
+   213            C            ENDM
+   214            C        
     42            C        	INCLUDE		"SDXXX_ASM_ROM.ASM"
      1            C        ;;====== For IC Application =================================================;;
      2            C        
