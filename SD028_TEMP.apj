@@ -144,11 +144,11 @@ AGENT=0
 [LibraryProject]
 LibraryProject=0
 [LastOpenFiles]
-File0=$\SD028_TEMP.asm
+File0=$\SDXXX_ASM_INST.ASM
 File Num=1
 [Source Files]
 File Num=1
-File0=$\SD028_TEMP.asm
+File0=$\SDXXX_ASM_INST.ASM
 [Reference Files]
 File Num=7
 File0=$\SDXXX_DEV_TAR.H
@@ -160,7 +160,7 @@ File5=$\SDXXX_ASM_RAM.ASM
 File6=$\SDXXX_ASM_ROM.ASM
 [List Files]
 File Num=1
-File0=$\SD028_TEMP.lst
+File0=$\SDXXX_ASM_INST.lst
 [Map Files]
 File Num=1
 File0=$\SD028_TEMP.map
@@ -450,14 +450,14 @@ R4D=4D
 R4E=4E
 R4F=4F
 [RAMBreakPoint]
-Set0=0 0 0 0 0 0
-Set1=0 0 0 0 0 0
-Set2=0 0 0 0 0 0
-Set3=0 0 0 0 0 0
-Set4=0 0 0 0 0 0
-Set5=0 0 0 0 0 0
-Set6=0 0 0 0 0 0
-Set7=0 0 0 0 0 0
+Set0=0 0 0 0 0 0 0
+Set1=0 0 0 0 0 0 0
+Set2=0 0 0 0 0 0 0
+Set3=0 0 0 0 0 0 0
+Set4=0 0 0 0 0 0 0
+Set5=0 0 0 0 0 0 0
+Set6=0 0 0 0 0 0 0
+Set7=0 0 0 0 0 0 0
 [Watch]
 Size#0=0
 Size#1=0
@@ -476,7 +476,7 @@ PopUp WDTReset Msg=1
 Disable EEPROM Protect Msg=0
 [C_LIB BUILD SETTING]
 No Debug Info=0
-[$\SD028_TEMP.asm]
-Rectangle=0100 0100 0759 0615
+[$\SDXXX_ASM_INST.ASM]
+Rectangle=0100 0100 0759 0628
 Iconized=0
 Maximized=0
