@@ -23,7 +23,8 @@ START:
 	CALL	DC_Initial
 	;SBANK 0
 	;BC		CPUS	;Green
-	SLEP
+	;SLEP
+	NOP
 	JMP $
 ;	CLR P5
 ;-----------RX Initial---------------------------------------------------

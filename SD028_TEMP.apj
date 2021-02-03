@@ -157,7 +157,7 @@ File Num=1
 File0=$\SD028_ASM_ISB.lst
 [Map Files]
 File Num=1
-File0=$\SD028_TEMP.map
+File0=?
 [Library Files]
 File Num=0
 [BOOKMARK]
@@ -169,15 +169,6 @@ TRACELOG_FREQUENCY=4.000000
 ENABLE=0
 [INSTRUCTION_PERIOD]
 INSTRUCTION_PERIOD=2
-[RAMBreakPoint]
-Set0=0 0 0 0 0 0
-Set1=0 0 0 0 0 0
-Set2=0 0 0 0 0 0
-Set3=0 0 0 0 0 0
-Set4=0 0 0 0 0 0
-Set5=0 0 0 0 0 0
-Set6=0 0 0 0 0 0
-Set7=0 0 0 0 0 0
 [Watch]
 Size#0=0
 Size#1=0
