@@ -145,7 +145,8 @@ AGENT=0
 LibraryProject=0
 [LastOpenFiles]
 File0=$\INC\SD028.INC
-File Num=1
+File1=$\SDxxx_ASM_INST.asm
+File Num=2
 [Source Files]
 File Num=1
 File0=$\SDxxx_ASM_INST.asm
@@ -449,6 +450,15 @@ R4C=4C
 R4D=4D
 R4E=4E
 R4F=4F
+[RAMBreakPoint]
+Set0=0 0 0 0 0 0
+Set1=0 0 0 0 0 0
+Set2=0 0 0 0 0 0
+Set3=0 0 0 0 0 0
+Set4=0 0 0 0 0 0
+Set5=0 0 0 0 0 0
+Set6=0 0 0 0 0 0
+Set7=0 0 0 0 0 0
 [Watch]
 Size#0=0
 Size#1=0
@@ -469,5 +479,9 @@ Disable EEPROM Protect Msg=0
 No Debug Info=0
 [$\INC\SD028.INC]
 Rectangle=0026 0026 1454 0548
+Iconized=0
+Maximized=0
+[$\SDxxx_ASM_INST.asm]
+Rectangle=0156 0156 0962 0533
 Iconized=0
 Maximized=0
